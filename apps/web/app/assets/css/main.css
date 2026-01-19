@@ -2,13 +2,13 @@
 @import "tailwindcss-primeui";
 
 :root {
-  @apply bg-surface-200 text-surface-700 overflow-y-scroll font-[Inter] text-[14px];
+	@apply bg-surface-200 text-surface-700 overflow-y-scroll font-[Inter] text-[14px];
 }
 
 .container {
-  @apply px-8;
+	@apply px-8;
 }
 
 .iconify {
-  @apply aspect-square;
+	@apply aspect-square;
 }

@@ -1,21 +1,21 @@
 {
-  "name": "seatmate",
-  "private": true,
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write ."
-  },
-  "devDependencies": {
-    "@types/node": "^25.0.9",
-    "prettier": "^3.2.5",
-    "prettier-plugin-tailwindcss": "^0.7.2",
-    "turbo": "^2.7.5"
-  },
-  "packageManager": "pnpm@10.28.0",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ]
+	"name": "seatmate",
+	"private": true,
+	"scripts": {
+		"build": "turbo run build",
+		"dev": "turbo run dev",
+		"lint": "turbo run lint",
+		"format": "prettier --write ."
+	},
+	"devDependencies": {
+		"@types/node": "^25.0.9",
+		"prettier": "^3.2.5",
+		"prettier-plugin-tailwindcss": "^0.7.2",
+		"turbo": "^2.7.5"
+	},
+	"packageManager": "pnpm@10.28.0",
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	]
 }

@@ -1,9 +1,9 @@
 {
-  "name": "@repo/assets",
-  "version": "1.0.0",
-  "types": "src/index.ts",
-  "files": [
-    "src"
-  ],
-  "type": "module"
+	"name": "@repo/assets",
+	"version": "1.0.0",
+	"types": "src/index.ts",
+	"files": [
+		"src"
+	],
+	"type": "module"
 }
