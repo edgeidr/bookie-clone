@@ -1,0 +1,18 @@
+{
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "vue.suggest.propNameCasing": "alwaysCamelCase",
+  "vue.suggest.componentNameCasing": "alwaysPascalCase",
+  "i18n-ally.enabledFrameworks": ["vue"],
+  "i18n-ally.localesPaths": ["packages/i18n"],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.regex.usageMatchAppend": [
+    "\"((common.message|common.validation)\\.[^\"]+)\""
+  ],
+  "files.eol": "\n"
+}
