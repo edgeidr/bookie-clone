@@ -1,0 +1,24 @@
+{
+	"plugins": ["prettier-plugin-tailwindcss"],
+	"trailingComma": "all",
+	"tabWidth": 4,
+	"printWidth": 100,
+	"vueIndentScriptAndStyle": true,
+	"bracketSameLine": true,
+	"useTabs": true,
+	"endOfLine": "lf",
+	"overrides": [
+		{
+			"files": "**/*.hbs",
+			"options": {
+				"parser": "lwc"
+			}
+		},
+		{
+			"files": "**/*.css.hbs",
+			"options": {
+				"parser": "css"
+			}
+		}
+	]
+}
