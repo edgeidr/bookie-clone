@@ -4,6 +4,9 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
 	compatibilityDate: "2025-07-15",
 	devtools: { enabled: true },
+	devServer: {
+		port: 3010,
+	},
 	modules: ["@nuxt/fonts", "@nuxt/icon", "@nuxtjs/i18n", "@vueuse/nuxt", "@primevue/nuxt-module"],
 	ssr: false,
 	css: ["~/assets/css/main.css"],
@@ -12,13 +15,13 @@ export default defineNuxtConfig({
 	},
 	app: {
 		head: {
-			title: process.env.APP_NAME,
+			title: process.env.APP_PREFIX + " " + process.env.APP_NAME,
 			link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
 		},
 	},
 	runtimeConfig: {
 		public: {
-			appName: process.env.APP_NAME || "",
+			appName: process.env.APP_PREFIX + " " + process.env.APP_NAME || "",
 			brandName: process.env.BRAND_NAME || "",
 			apiBaseUrl: process.env.API_BASE_URL || "",
 			toastLife: Number(process.env.TOAST_LIFE) || 5000,
