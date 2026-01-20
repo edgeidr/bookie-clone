@@ -1,5 +1,5 @@
 {
-	"name": "seatmate",
+	"name": "bookie",
 	"private": true,
 	"scripts": {
 		"build": "turbo run build",
