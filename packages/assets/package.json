@@ -1,6 +1,7 @@
 {
 	"name": "@repo/assets",
 	"version": "1.0.0",
+	"main": "src/index.js",
 	"types": "src/index.ts",
 	"files": [
 		"src"

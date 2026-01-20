@@ -1,0 +1,31 @@
+{
+	"name": "admin",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"build": "nuxt build",
+		"dev": "nuxt dev",
+		"generate": "nuxt generate",
+		"preview": "nuxt preview",
+		"postinstall": "nuxt prepare"
+	},
+	"dependencies": {
+		"@repo/assets": "workspace:*",
+		"@repo/shared": "workspace:*",
+		"@nuxt/fonts": "0.12.1",
+		"@nuxt/icon": "2.2.0",
+		"@nuxtjs/i18n": "10.2.1",
+		"@primeuix/themes": "^2.0.2",
+		"@tailwindcss/vite": "^4.1.18",
+		"@vueuse/nuxt": "14.1.0",
+		"nuxt": "^4.2.2",
+		"primevue": "^4.5.4",
+		"tailwindcss": "^4.1.18",
+		"tailwindcss-primeui": "^0.6.1",
+		"vue": "^3.5.26",
+		"vue-router": "^4.6.4"
+	},
+	"devDependencies": {
+		"@primevue/nuxt-module": "^4.5.4"
+	}
+}

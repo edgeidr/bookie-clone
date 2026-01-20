@@ -1,1 +1,16 @@
-{}
+{
+	"common": {
+		"message": {
+			"tryAgain": "Something went wrong. Try again later."
+		},
+		"status": {
+			"info": "Info!",
+			"success": "Success!",
+			"error": "Error!",
+			"serverError": "Server Error!"
+		},
+		"actions": {
+			"logout": "Logout"
+		}
+	}
+}
