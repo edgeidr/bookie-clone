@@ -12,5 +12,7 @@
 	"i18n-ally.localesPaths": ["packages/i18n"],
 	"i18n-ally.keystyle": "nested",
 	"i18n-ally.regex.usageMatchAppend": ["\"((common.message|common.validation)\\.[^\"]+)\""],
-	"files.eol": "\n"
+	"files.eol": "\n",
+	"javascript.preferences.importModuleSpecifier": "shortest",
+	"typescript.preferences.importModuleSpecifier": "shortest"
 }
