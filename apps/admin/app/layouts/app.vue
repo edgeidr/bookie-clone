@@ -2,7 +2,9 @@
 	<div>
 		<TheSidebar class="duration-200!" :class="[isSidebarCollapsed ? 'w-0' : 'w-80']" />
 
-		<div class="grow p-8 duration-200!" :class="[isSidebarCollapsed ? 'ml-0' : 'ml-80']">
+		<div
+			class="min-h-screen flex-1 p-8 duration-200!"
+			:class="[isSidebarCollapsed ? 'ml-0' : 'ml-80']">
 			<TheHeader />
 			<TheMain>
 				<slot />

@@ -11,7 +11,7 @@
 				</template>
 			</Button>
 
-			<span class="font-semibold">{{ route.meta.title }}</span>
+			<span class="font-semibold">{{ t(route.meta.titleKey as string) }}</span>
 		</div>
 
 		<div>

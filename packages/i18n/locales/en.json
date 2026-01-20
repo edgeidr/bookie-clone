@@ -10,7 +10,40 @@
 			"serverError": "Server Error!"
 		},
 		"actions": {
-			"logout": "Logout"
+			"logout": "Logout",
+			"save": "Save",
+			"undo": "Undo",
+			"redo": "Redo",
+			"cut": "Cut",
+			"copy": "Copy",
+			"paste": "Paste",
+			"delete": "Delete",
+			"addText": "Add Text",
+			"draw": "Draw",
+			"brush": "Brush"
+		},
+		"layoutComponents": {
+			"seats": "Seats",
+			"tables": "Tables",
+			"walls": "Walls",
+			"misc": "Misc."
+		},
+		"ui": {
+			"commandPalette": "Command Palette",
+			"properties": "Properties",
+			"components": "Components",
+			"emptyState": {
+				"noSelection": {
+					"title": "No selection",
+					"description": "Select an element to edit its properties.",
+					"tip": "Tip: Drag components to add new items."
+				}
+			}
+		}
+	},
+	"pages": {
+		"layoutsNew": {
+			"title": "Create New Layout"
 		}
 	}
 }
