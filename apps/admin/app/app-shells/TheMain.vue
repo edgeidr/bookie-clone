@@ -1,5 +1,7 @@
 <template>
-	<main class="grow"></main>
+	<main class="flex">
+		<slot />
+	</main>
 </template>
 
 <script setup lang="ts"></script>

@@ -7,7 +7,7 @@ export const useCurrentUser = () => {
 	const hasUser = computed(() => !!user.value);
 
 	const fullName = computed(() => {
-		if (!hasUser.value) return "";
+		if (!hasUser.value) return "New User";
 
 		return [user.value?.userProfile?.firstName, user.value?.userProfile?.lastName]
 			.filter(Boolean)
