@@ -18,9 +18,10 @@
 			"copy": "Copy",
 			"paste": "Paste",
 			"delete": "Delete",
-			"addText": "Add Text",
+			"text": "Text",
 			"draw": "Draw",
-			"brush": "Brush"
+			"brush": "Brush",
+			"shapes": "Shapes"
 		},
 		"layoutComponents": {
 			"seats": "Seats",

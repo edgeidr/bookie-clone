@@ -50,6 +50,9 @@ export default defineNuxtConfig({
 			ripple: true,
 			inputVariant: "filled",
 		},
+		components: {
+			exclude: ["ColorPicker"],
+		},
 	},
 	i18n: {
 		locales: [{ code: "en", language: "en-US", file: "en.json" }],

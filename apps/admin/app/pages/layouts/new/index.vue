@@ -1,12 +1,15 @@
 <template>
-	<ActionBar />
+	<div
+		ref="el"
+		class="flex w-full gap-8 overflow-hidden"
+		:style="`height: ${remainingHeight}px;`">
+		<div class="flex flex-1 flex-col">
+			<ActionBar />
+			<CanvasPanel />
+		</div>
 
-	<div ref="el" class="flex w-full gap-8" :style="`height: ${remainingHeight}px;`">
-		<ComponentsCard />
-		<CanvasPanel />
-
-		<div class="flex flex-col gap-8">
-			<PropertiesCard />
+		<div class="mt-20 flex w-96 flex-col gap-8">
+			<!-- <InspectorCard /> -->
 			<CommandPaletteCard />
 		</div>
 	</div>
@@ -16,8 +19,7 @@
 	import ActionBar from "./_components/action-bar.vue";
 	import CanvasPanel from "./_components/canvas-panel.vue";
 	import CommandPaletteCard from "./_components/command-palette-card.vue";
-	import ComponentsCard from "./_components/components-card.vue";
-	import PropertiesCard from "./_components/properties-card.vue";
+	import InspectorCard from "./_components/inspector-card.vue";
 
 	definePageMeta({
 		layout: "admin",

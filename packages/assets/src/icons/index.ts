@@ -14,4 +14,10 @@ export const Icons = {
 	text: "hugeicons:text",
 	draw: "hugeicons:pencil",
 	brush: "hugeicons:brush",
+	components: "hugeicons:layers-01",
+	shapes: "hugeicons:square",
+	add: "hugeicons:add-01",
+	remove: "hugeicons:remove-01",
+	instantBooking: "hugeicons:zap",
+	approvalRequired: "hugeicons:hourglass",
 };

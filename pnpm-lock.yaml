@@ -23,6 +23,9 @@ importers:
 
   apps/admin:
     dependencies:
+      '@cyhnkckali/vue3-color-picker':
+        specifier: ^2.1.5
+        version: 2.1.5(vue@3.5.27(typescript@5.9.3))
       '@nuxt/fonts':
         specifier: 0.12.1
         version: 0.12.1(db0@0.3.4)(ioredis@5.9.2)(magicast@0.5.1)(vite@7.3.1(@types/node@25.0.9)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.46.0)(yaml@2.8.2))
@@ -267,6 +270,11 @@ packages:
   '@cloudflare/kv-asset-handler@0.4.2':
     resolution: {integrity: sha512-SIOD2DxrRRwQ+jgzlXCqoEFiKOFqaPjhnNTGKXSRLvp1HiOvapLaFG2kEr9dYQTYe8rKrd9uvDUzmAITeNyaHQ==}
     engines: {node: '>=18.0.0'}
+
+  '@cyhnkckali/vue3-color-picker@2.1.5':
+    resolution: {integrity: sha512-vFNUPZxn6+htojmj7rUGjQAV0BYALa73DqTn5M72xTsMLNJKwlkOX+TGMzVUDslkYIAwH9AtWbS+PLDMzkudLw==}
+    peerDependencies:
+      vue: ^3.3.8
 
   '@dxup/nuxt@0.2.2':
     resolution: {integrity: sha512-RNpJjDZs9+JcT9N87AnOuHsNM75DEd58itADNd/s1LIF6BZbTLZV0xxilJZb55lntn4TYvscTaXLCBX2fq9CXg==}
@@ -4671,6 +4679,10 @@ snapshots:
       sisteransi: 1.0.5
 
   '@cloudflare/kv-asset-handler@0.4.2': {}
+
+  '@cyhnkckali/vue3-color-picker@2.1.5(vue@3.5.27(typescript@5.9.3))':
+    dependencies:
+      vue: 3.5.27(typescript@5.9.3)
 
   '@dxup/nuxt@0.2.2(magicast@0.5.1)':
     dependencies:

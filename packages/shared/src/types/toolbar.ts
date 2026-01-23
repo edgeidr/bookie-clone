@@ -4,6 +4,7 @@ export interface ToolbarActionItem {
 	type: ToolbarItemType.ACTION;
 	icon: string;
 	label: string;
+	action?: (event?: any) => void;
 }
 
 export interface ToolbarDividerItem {
