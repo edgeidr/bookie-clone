@@ -20,6 +20,6 @@ export const Icons = {
 	remove: "hugeicons:remove-01",
 	instantBooking: "hugeicons:zap",
 	approvalRequired: "hugeicons:hourglass",
-	rectangle: "lucide:square",
-	circle: "lucide:circle",
+	rectangle: "material-symbols-light:rectangle-outline",
+	circle: "material-symbols-light:circle-outline",
 };
