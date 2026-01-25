@@ -2,7 +2,6 @@
 	<div class="bg-surface-200 flex flex-1 items-center justify-center">
 		<canvas ref="layoutCanvas" />
 	</div>
-	{{ activeToolName }}
 </template>
 
 <script setup lang="ts">
@@ -34,5 +33,9 @@
 
 	onMounted(() => {
 		initCanvas();
+	});
+
+	watch(activeToolName, (tool) => {
+		activeTool = tools[tool];
 	});
 </script>

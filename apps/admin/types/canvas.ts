@@ -8,4 +8,5 @@ export interface CanvasTool {
 
 export enum CanvasToolName {
 	RECT = "rect",
+	ELLIPSE = "ellipse",
 }

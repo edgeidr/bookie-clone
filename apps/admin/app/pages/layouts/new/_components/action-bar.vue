@@ -4,7 +4,7 @@
 			<template v-for="(item, index) in items" :key="index">
 				<Button
 					v-if="item.type === ToolbarItemType.ACTION"
-					v-tooltip.bottom="{ value: item.label, class: 'text-xs' }"
+					v-tooltip.bottom="{ value: item.label, showDelay: 500, class: 'text-xs' }"
 					class="mx-0.5"
 					severity="secondary"
 					variant="text"
@@ -18,7 +18,7 @@
 				<Divider v-else layout="vertical" />
 			</template>
 
-			<Popover ref="shapesRef"> <ShapesMenu /> </Popover>
+			<Popover ref="shapesRef"> <ShapesMenu @selectTool="shapesRef?.hide()" /> </Popover>
 			<Popover ref="componentsRef"> <ComponentsMenu /> </Popover>
 		</template>
 	</Toolbar>
@@ -31,8 +31,8 @@
 	import ComponentsMenu from "./components-menu.vue";
 
 	const { t } = useI18n();
-	const componentsRef = ref();
-	const shapesRef = ref();
+	const componentsRef = useTemplateRef("componentsRef");
+	const shapesRef = useTemplateRef("shapesRef");
 	const items = ref<ToolbarItem[]>([
 		{
 			type: ToolbarItemType.ACTION,

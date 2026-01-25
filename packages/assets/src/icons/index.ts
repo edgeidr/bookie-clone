@@ -21,4 +21,5 @@ export const Icons = {
 	instantBooking: "hugeicons:zap",
 	approvalRequired: "hugeicons:hourglass",
 	rectangle: "lucide:square",
+	circle: "lucide:circle",
 };

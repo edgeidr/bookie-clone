@@ -1,14 +1,15 @@
 <template>
-	<div class="min-w-72 space-y-4">
-		<div class="grid grid-cols-4 gap-2.5">
+	<div class="space-y-4">
+		<div class="grid grid-cols-4 gap-0">
 			<Button
 				v-for="(item, index) in shapes"
 				:key="index"
 				severity="secondary"
-				variant="text"
+				:variant="isActive(item.tool) ? undefined : 'text'"
 				size="large"
 				class="aspect-square"
-				@click="activeToolName = item.tool">
+				@click="selectTool(item.tool)"
+				v-tooltip.bottom="{ value: item.label, showDelay: '500', class: 'text-xs' }">
 				<template #icon="slotProps">
 					<div>
 						<Icon
@@ -27,6 +28,7 @@
 	import { Icons } from "@repo/assets";
 	import { CanvasToolName } from "~~/types/canvas";
 
+	const emit = defineEmits(["selectTool"]);
 	const activeToolName = useState<CanvasToolName>("activeToolName");
 	const shapes = [
 		{
@@ -34,5 +36,17 @@
 			icon: Icons.rectangle,
 			tool: CanvasToolName.RECT,
 		},
+		{
+			label: "Ellipse",
+			icon: Icons.circle,
+			tool: CanvasToolName.ELLIPSE,
+		},
 	];
+
+	const isActive = (tool: CanvasToolName) => tool === activeToolName.value;
+
+	const selectTool = (tool: CanvasToolName) => {
+		activeToolName.value = tool;
+		emit("selectTool");
+	};
 </script>
