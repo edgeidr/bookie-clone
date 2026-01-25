@@ -20,4 +20,5 @@ export const Icons = {
 	remove: "hugeicons:remove-01",
 	instantBooking: "hugeicons:zap",
 	approvalRequired: "hugeicons:hourglass",
+	rectangle: "lucide:square",
 };
