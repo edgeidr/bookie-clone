@@ -4,6 +4,7 @@ export interface ToolbarActionItem {
 	type: ToolbarItemType.ACTION;
 	icon: string;
 	label: string;
+	isActive?: boolean | ComputedRef<boolean>;
 	action?: (event?: any) => void;
 }
 

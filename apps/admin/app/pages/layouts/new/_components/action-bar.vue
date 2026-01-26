@@ -6,8 +6,8 @@
 					v-if="item.type === ToolbarItemType.ACTION"
 					v-tooltip.bottom="{ value: item.label, showDelay: 500, class: 'text-xs' }"
 					class="mx-0.5"
-					severity="secondary"
-					variant="text"
+					:severity="item.isActive ? 'primary' : 'secondary'"
+					:variant="item.isActive ? 'outlined' : 'text'"
 					size="small"
 					@click="item.action">
 					<template #icon="slotProps">
@@ -32,7 +32,7 @@
 	import { CanvasToolName } from "~~/types/canvas";
 
 	const { t } = useI18n();
-	const activeToolName = useState("activeToolName");
+	const activeToolName = useState<CanvasToolName>("activeToolName");
 	const componentsRef = useTemplateRef("componentsRef");
 	const shapesRef = useTemplateRef("shapesRef");
 	const items = ref<ToolbarItem[]>([
@@ -48,12 +48,14 @@
 			type: ToolbarItemType.ACTION,
 			icon: Icons.select,
 			label: t("common.actions.select"),
+			isActive: computed(() => isActive(CanvasToolName.SELECT)),
 			action: () => selectTool(CanvasToolName.SELECT),
 		},
 		{
 			type: ToolbarItemType.ACTION,
 			icon: Icons.penTool,
 			label: t("common.actions.penTool"),
+			isActive: computed(() => isActive(CanvasToolName.PENTOOL)),
 			action: () => selectTool(CanvasToolName.PENTOOL),
 		},
 		{
@@ -65,6 +67,7 @@
 			type: ToolbarItemType.ACTION,
 			icon: Icons.shapes,
 			label: t("common.actions.shapes"),
+			isActive: computed(() => isShapesAcive()),
 			action: (event) => shapesRef.value?.toggle(event),
 		},
 		{
@@ -115,5 +118,14 @@
 		activeToolName.value = tool;
 		shapesRef.value?.hide();
 		componentsRef.value?.hide();
+	};
+
+	const isActive = (tool: CanvasToolName) => {
+		return activeToolName.value === tool;
+	};
+
+	const isShapesAcive = () => {
+		const shapes = [CanvasToolName.LINE, CanvasToolName.RECT, CanvasToolName.ELLIPSE];
+		return shapes.includes(activeToolName.value);
 	};
 </script>
