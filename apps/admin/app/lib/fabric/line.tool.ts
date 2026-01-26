@@ -13,6 +13,7 @@ export const createLineTool = (canvas: Canvas): CanvasTool => {
 			stroke: "#000000ff",
 			strokeWidth,
 			objectCaching: strokeWidth > 1,
+			strokeUniform: true,
 		});
 
 		canvas.add(line);

@@ -16,6 +16,7 @@ export const createEllipseTool = (canvas: Canvas): CanvasTool => {
 			fill: "#ffffffff",
 			stroke: "#000000ff",
 			strokeWidth: 1,
+			strokeUniform: true,
 			originX: "left",
 			originY: "top",
 			objectCaching: false,
