@@ -17,18 +17,17 @@
 
 	const initCanvas = () => {
 		canvas = new Canvas(layoutCanvas.value!, { selection: false, backgroundColor: "#ffffff" });
-		canvas.setDimensions({
-			width: 800,
-			height: 600,
-		});
+		canvas.setDimensions({ width: 800, height: 600 });
 		canvas.requestRenderAll();
+
+		tools = createToolRegistry(canvas);
+		activeTool?.onDeactivate?.();
+		activeTool = tools[activeToolName.value];
+		activeTool.onActivate?.();
 
 		canvas.on("mouse:down", (e) => activeTool?.onMouseDown?.(e));
 		canvas.on("mouse:move", (e) => activeTool?.onMouseMove?.(e));
 		canvas.on("mouse:up", (e) => activeTool?.onMouseUp?.(e));
-
-		tools = createToolRegistry(canvas);
-		activeTool = tools[activeToolName.value];
 	};
 
 	onMounted(() => {
@@ -36,6 +35,8 @@
 	});
 
 	watch(activeToolName, (tool) => {
+		activeTool?.onDeactivate?.();
 		activeTool = tools[tool];
+		activeTool?.onActivate?.();
 	});
 </script>
