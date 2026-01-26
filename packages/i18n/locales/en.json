@@ -21,7 +21,8 @@
 			"text": "Text",
 			"draw": "Draw",
 			"brush": "Brush",
-			"shapes": "Shapes"
+			"shapes": "Shapes",
+			"select": "Select"
 		},
 		"layoutComponents": {
 			"seats": "Seats",

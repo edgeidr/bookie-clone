@@ -18,7 +18,7 @@
 				<Divider v-else layout="vertical" />
 			</template>
 
-			<Popover ref="shapesRef"> <ShapesMenu @selectTool="shapesRef?.hide()" /> </Popover>
+			<Popover ref="shapesRef"> <ShapesMenu @selectTool="selectTool" /> </Popover>
 			<Popover ref="componentsRef"> <ComponentsMenu /> </Popover>
 		</template>
 	</Toolbar>
@@ -29,8 +29,10 @@
 	import { ToolbarItemType, type ToolbarItem } from "@repo/shared";
 	import ShapesMenu from "./shapes-menu.vue";
 	import ComponentsMenu from "./components-menu.vue";
+	import { CanvasToolName } from "~~/types/canvas";
 
 	const { t } = useI18n();
+	const activeToolName = useState("activeToolName");
 	const componentsRef = useTemplateRef("componentsRef");
 	const shapesRef = useTemplateRef("shapesRef");
 	const items = ref<ToolbarItem[]>([
@@ -42,16 +44,16 @@
 		{
 			type: ToolbarItemType.DIVIDER,
 		},
-
+		{
+			type: ToolbarItemType.ACTION,
+			icon: Icons.select,
+			label: t("common.actions.select"),
+			action: (event) => selectTool(CanvasToolName.SELECT),
+		},
 		{
 			type: ToolbarItemType.ACTION,
 			icon: Icons.draw,
 			label: t("common.actions.draw"),
-		},
-		{
-			type: ToolbarItemType.ACTION,
-			icon: Icons.brush,
-			label: t("common.actions.brush"),
 		},
 		{
 			type: ToolbarItemType.ACTION,
@@ -107,4 +109,10 @@
 			label: t("common.actions.delete"),
 		},
 	]);
+
+	const selectTool = (tool: CanvasToolName) => {
+		activeToolName.value = tool;
+		shapesRef.value?.hide();
+		componentsRef.value?.hide();
+	};
 </script>

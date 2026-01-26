@@ -10,7 +10,7 @@
 	import { CanvasToolName, type CanvasTool } from "~~/types/canvas";
 
 	const layoutCanvas = useTemplateRef("layoutCanvas");
-	const activeToolName = useState<CanvasToolName>("activeToolName", () => CanvasToolName.RECT);
+	const activeToolName = useState<CanvasToolName>("activeToolName", () => CanvasToolName.SELECT);
 	let tools: ReturnType<typeof createToolRegistry>;
 	let canvas: Canvas;
 	let activeTool: CanvasTool | undefined;

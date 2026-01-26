@@ -54,6 +54,6 @@
 
 	const selectTool = (tool: CanvasToolName) => {
 		activeToolName.value = tool;
-		emit("selectTool");
+		emit("selectTool", tool);
 	};
 </script>
