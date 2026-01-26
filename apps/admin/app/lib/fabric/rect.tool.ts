@@ -20,6 +20,8 @@ export const createRectTool = (canvas: Canvas): CanvasTool => {
 			originX: "left",
 			originY: "top",
 			objectCaching: false,
+			selectable: true,
+			evented: true,
 		});
 
 		canvas.add(rect);

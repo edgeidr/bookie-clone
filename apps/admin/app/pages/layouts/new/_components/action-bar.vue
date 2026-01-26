@@ -48,12 +48,13 @@
 			type: ToolbarItemType.ACTION,
 			icon: Icons.select,
 			label: t("common.actions.select"),
-			action: (event) => selectTool(CanvasToolName.SELECT),
+			action: () => selectTool(CanvasToolName.SELECT),
 		},
 		{
 			type: ToolbarItemType.ACTION,
-			icon: Icons.draw,
-			label: t("common.actions.draw"),
+			icon: Icons.penTool,
+			label: t("common.actions.penTool"),
+			action: () => selectTool(CanvasToolName.PENTOOL),
 		},
 		{
 			type: ToolbarItemType.ACTION,

@@ -13,4 +13,5 @@ export enum CanvasToolName {
 	ELLIPSE = "ellipse",
 	LINE = "line",
 	SELECT = "select",
+	PENTOOL = "penTool",
 }

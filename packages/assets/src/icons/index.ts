@@ -12,7 +12,6 @@ export const Icons = {
 	noSelection: "hugeicons:add-circle-half-dot",
 	command: "hugeicons:command",
 	text: "hugeicons:text",
-	draw: "hugeicons:pencil",
 	brush: "hugeicons:brush",
 	components: "hugeicons:layers-01",
 	shapes: "hugeicons:square",
@@ -24,4 +23,5 @@ export const Icons = {
 	circle: "material-symbols-light:circle-outline",
 	line: "material-symbols-light:horizontal-rule",
 	select: "hugeicons:cursor-02",
+	penTool: "hugeicons:pen-tool-03",
 };

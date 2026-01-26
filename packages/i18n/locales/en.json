@@ -19,10 +19,10 @@
 			"paste": "Paste",
 			"delete": "Delete",
 			"text": "Text",
-			"draw": "Draw",
 			"brush": "Brush",
 			"shapes": "Shapes",
-			"select": "Select"
+			"select": "Select",
+			"penTool": "Pen Tool"
 		},
 		"layoutComponents": {
 			"seats": "Seats",
