@@ -4,16 +4,15 @@ import type { CanvasTool } from "~~/types/canvas";
 export const createLineTool = (canvas: Canvas): CanvasTool => {
 	let line: Line | null = null;
 	let start = { x: 0, y: 0 };
+	let strokeWidth = 1;
 
 	const onMouseDown = (event: TPointerEventInfo) => {
 		start = { ...event.scenePoint };
 
 		line = new Line([start.x, start.y, start.x, start.y], {
 			stroke: "#000000ff",
-			strokeWidth: 1,
-			selectable: false,
-			evented: false,
-			objectCaching: false,
+			strokeWidth,
+			objectCaching: strokeWidth > 1,
 		});
 
 		canvas.add(line);
@@ -33,7 +32,6 @@ export const createLineTool = (canvas: Canvas): CanvasTool => {
 	};
 
 	const onMouseUp = (event: TPointerEventInfo) => {
-		if (line) line.set({ objectCaching: true });
 		line = null;
 	};
 
