@@ -9,9 +9,29 @@ export interface CanvasTool {
 	onDeactivate?(): void;
 }
 
+export type CanvasToolOrComponent = CanvasToolName | CanvasComponentName;
+
 export enum CanvasToolName {
-	RECT = "rect",
-	ELLIPSE = "ellipse",
 	SELECT = "select",
 	PENTOOL = "penTool",
+}
+
+export enum CanvasComponentName {
+	SEAT_A = "seatA",
+	SEAT_B = "seatB",
+	SEAT_C = "seatC",
+	SEAT_D = "seatD",
+	TABLE_A = "tableA",
+	TABLE_B = "tableB",
+	TABLE_C = "tableC",
+	MISC_A = "miscA",
+	MISC_B = "miscB",
+	MISC_C = "miscC",
+	MISC_D = "miscD",
+	MISC_E = "miscE",
+	MISC_F = "miscF",
+	MISC_G = "miscG",
+	MISC_H = "miscH",
+	RECT = "rect",
+	ELLIPSE = "ellipse",
 }

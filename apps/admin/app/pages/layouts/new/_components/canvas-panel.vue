@@ -7,10 +7,13 @@
 <script setup lang="ts">
 	import { Canvas } from "fabric";
 	import { createToolRegistry } from "~/lib/fabric";
-	import { CanvasToolName, type CanvasTool } from "~~/types/canvas";
+	import { CanvasToolName, type CanvasTool, type CanvasToolOrComponent } from "~~/types/canvas";
 
 	const layoutCanvas = useTemplateRef("layoutCanvas");
-	const activeToolName = useState<CanvasToolName>("activeToolName", () => CanvasToolName.SELECT);
+	const activeToolName = useState<CanvasToolOrComponent>(
+		"activeToolName",
+		() => CanvasToolName.SELECT,
+	);
 	let tools: ReturnType<typeof createToolRegistry>;
 	let canvas: Canvas;
 	let activeTool: CanvasTool | undefined;
@@ -23,7 +26,7 @@
 		tools = createToolRegistry(canvas);
 		activeTool?.onDeactivate?.();
 		activeTool = tools[activeToolName.value];
-		activeTool.onActivate?.();
+		activeTool?.onActivate?.();
 
 		canvas.on("mouse:down", (e) => activeTool?.onMouseDown?.(e));
 		canvas.on("mouse:move", (e) => activeTool?.onMouseMove?.(e));

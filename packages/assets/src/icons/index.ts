@@ -14,7 +14,6 @@ export const Icons = {
 	text: "hugeicons:text",
 	brush: "hugeicons:brush",
 	components: "hugeicons:layers-01",
-	shapes: "hugeicons:square",
 	add: "hugeicons:add-01",
 	remove: "hugeicons:remove-01",
 	instantBooking: "hugeicons:zap",
@@ -23,4 +22,7 @@ export const Icons = {
 	circle: "material-symbols-light:circle-outline",
 	select: "hugeicons:cursor-02",
 	penTool: "hugeicons:pen-tool-03",
+	seat: "hugeicons:seat-selector",
+	table: "hugeicons:table-round",
+	misc: "hugeicons:layers-logo",
 };

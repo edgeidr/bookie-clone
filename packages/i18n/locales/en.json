@@ -20,15 +20,47 @@
 			"delete": "Delete",
 			"text": "Text",
 			"brush": "Brush",
-			"shapes": "Shapes",
 			"select": "Select",
 			"penTool": "Pen Tool"
 		},
 		"layoutComponents": {
-			"seats": "Seats",
-			"tables": "Tables",
-			"walls": "Walls",
-			"misc": "Misc."
+			"seats": {
+				"title": "Seats",
+				"items": {
+					"seatA": "Seat A",
+					"seatB": "Seat B",
+					"seatC": "Seat C",
+					"seatD": "Seat D"
+				}
+			},
+			"tables": {
+				"title": "Tables",
+				"items": {
+					"tableA": "Table A",
+					"tableB": "Table B",
+					"tableC": "Table C"
+				}
+			},
+			"misc": {
+				"title": "Misc.",
+				"items": {
+					"miscA": "Misc. A",
+					"miscB": "Misc. B",
+					"miscC": "Misc. C",
+					"miscD": "Misc. D",
+					"miscE": "Misc. E",
+					"miscF": "Misc. F",
+					"miscG": "Misc. G",
+					"miscH": "Misc. H"
+				}
+			},
+			"shapes": {
+				"title": "Shapes",
+				"items": {
+					"rectangle": "Rectangle",
+					"ellipse": "Ellipse"
+				}
+			}
 		},
 		"ui": {
 			"commandPalette": "Command Palette",

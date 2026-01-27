@@ -18,8 +18,7 @@
 				<Divider v-else layout="vertical" />
 			</template>
 
-			<Popover ref="shapesRef"> <ShapesMenu @selectTool="selectTool" /> </Popover>
-			<Popover ref="componentsRef"> <ComponentsMenu /> </Popover>
+			<Popover ref="componentsRef"> <ComponentsMenu @selectTool="selectTool" /> </Popover>
 		</template>
 	</Toolbar>
 </template>
@@ -27,14 +26,16 @@
 <script setup lang="ts">
 	import { Icons } from "@repo/assets";
 	import { ToolbarItemType, type ToolbarItem } from "@repo/shared";
-	import ShapesMenu from "./shapes-menu.vue";
 	import ComponentsMenu from "./components-menu.vue";
-	import { CanvasToolName } from "~~/types/canvas";
+	import {
+		CanvasComponentName,
+		CanvasToolName,
+		type CanvasToolOrComponent,
+	} from "~~/types/canvas";
 
 	const { t } = useI18n();
-	const activeToolName = useState<CanvasToolName>("activeToolName");
+	const activeToolName = useState<CanvasToolOrComponent>("activeToolName");
 	const componentsRef = useTemplateRef("componentsRef");
-	const shapesRef = useTemplateRef("shapesRef");
 	const items = ref<ToolbarItem[]>([
 		{
 			type: ToolbarItemType.ACTION,
@@ -65,15 +66,9 @@
 		},
 		{
 			type: ToolbarItemType.ACTION,
-			icon: Icons.shapes,
-			label: t("common.actions.shapes"),
-			isActive: computed(() => isShapesAcive()),
-			action: (event) => shapesRef.value?.toggle(event),
-		},
-		{
-			type: ToolbarItemType.ACTION,
 			icon: Icons.components,
 			label: t("common.ui.components"),
+			isActive: computed(() => isComponentsActive()),
 			action: (event) => componentsRef.value?.toggle(event),
 		},
 		{
@@ -114,18 +109,18 @@
 		},
 	]);
 
-	const selectTool = (tool: CanvasToolName) => {
+	const selectTool = (tool: CanvasToolOrComponent) => {
 		activeToolName.value = tool;
-		shapesRef.value?.hide();
 		componentsRef.value?.hide();
 	};
 
-	const isActive = (tool: CanvasToolName) => {
+	const isActive = (tool: CanvasToolOrComponent) => {
 		return activeToolName.value === tool;
 	};
 
-	const isShapesAcive = () => {
-		const shapes = [CanvasToolName.RECT, CanvasToolName.ELLIPSE];
-		return shapes.includes(activeToolName.value);
+	const isComponentsActive = () => {
+		return Object.values(CanvasComponentName).includes(
+			activeToolName.value as CanvasComponentName,
+		);
 	};
 </script>
