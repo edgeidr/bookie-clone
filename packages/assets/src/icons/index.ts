@@ -21,7 +21,6 @@ export const Icons = {
 	approvalRequired: "hugeicons:hourglass",
 	rectangle: "material-symbols-light:rectangle-outline",
 	circle: "material-symbols-light:circle-outline",
-	line: "material-symbols-light:horizontal-rule",
 	select: "hugeicons:cursor-02",
 	penTool: "hugeicons:pen-tool-03",
 };

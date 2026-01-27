@@ -16,7 +16,6 @@
 							:name="item.icon"
 							mode="svg"
 							class="size-8 *:stroke-1"
-							:class="item.iconClass"
 							v-bind="slotProps" />
 					</div>
 				</template>
@@ -32,12 +31,6 @@
 	const emit = defineEmits(["selectTool"]);
 	const activeToolName = useState<CanvasToolName>("activeToolName");
 	const shapes = [
-		{
-			label: "Line",
-			icon: Icons.line,
-			iconClass: "rotate-45",
-			tool: CanvasToolName.LINE,
-		},
 		{
 			label: "Rectangle",
 			icon: Icons.rectangle,

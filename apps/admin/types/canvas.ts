@@ -12,7 +12,6 @@ export interface CanvasTool {
 export enum CanvasToolName {
 	RECT = "rect",
 	ELLIPSE = "ellipse",
-	LINE = "line",
 	SELECT = "select",
 	PENTOOL = "penTool",
 }

@@ -125,7 +125,7 @@
 	};
 
 	const isShapesAcive = () => {
-		const shapes = [CanvasToolName.LINE, CanvasToolName.RECT, CanvasToolName.ELLIPSE];
+		const shapes = [CanvasToolName.RECT, CanvasToolName.ELLIPSE];
 		return shapes.includes(activeToolName.value);
 	};
 </script>
