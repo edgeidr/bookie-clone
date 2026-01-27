@@ -28,6 +28,7 @@
 		canvas.on("mouse:down", (e) => activeTool?.onMouseDown?.(e));
 		canvas.on("mouse:move", (e) => activeTool?.onMouseMove?.(e));
 		canvas.on("mouse:up", (e) => activeTool?.onMouseUp?.(e));
+		canvas.on("mouse:dblclick", (e) => activeTool?.onMouseDoubleClick?.(e));
 	};
 
 	onMounted(() => {

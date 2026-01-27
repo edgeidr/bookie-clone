@@ -1,5 +1,6 @@
 import { Point, Polygon, Polyline, type Canvas, type TPointerEventInfo } from "fabric";
 import type { CanvasTool } from "~~/types/canvas";
+import { applyObjectDefaults } from "./defaults/objectDefaults";
 
 export const createPolylineTool = (canvas: Canvas): CanvasTool => {
 	const CLOSE_DISTANCE = 8 * canvas.getZoom();
@@ -36,6 +37,7 @@ export const createPolylineTool = (canvas: Canvas): CanvasTool => {
 			strokeUniform: true,
 		});
 
+		applyObjectDefaults(polyline);
 		canvas.add(polyline);
 	};
 
@@ -64,6 +66,7 @@ export const createPolylineTool = (canvas: Canvas): CanvasTool => {
 			evented: false,
 		});
 
+		applyObjectDefaults(polygon);
 		canvas.remove(polyline);
 		canvas.add(polygon);
 	};

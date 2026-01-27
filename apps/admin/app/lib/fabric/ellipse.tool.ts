@@ -1,5 +1,6 @@
-import { Circle, Ellipse, type Canvas, type TPointerEventInfo } from "fabric";
+import { Ellipse, type Canvas, type TPointerEventInfo } from "fabric";
 import type { CanvasTool } from "~~/types/canvas";
+import { applyObjectDefaults } from "./defaults/objectDefaults";
 
 export const createEllipseTool = (canvas: Canvas): CanvasTool => {
 	let ellipse: Ellipse | null = null;
@@ -22,6 +23,7 @@ export const createEllipseTool = (canvas: Canvas): CanvasTool => {
 			objectCaching: false,
 		});
 
+		applyObjectDefaults(ellipse);
 		canvas.add(ellipse);
 	};
 

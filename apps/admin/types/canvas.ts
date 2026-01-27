@@ -4,6 +4,7 @@ export interface CanvasTool {
 	onMouseDown?(event: TPointerEventInfo): void;
 	onMouseMove?(event: TPointerEventInfo): void;
 	onMouseUp?(event: TPointerEventInfo): void;
+	onMouseDoubleClick?(event: TPointerEventInfo): void;
 	onActivate?(): void;
 	onDeactivate?(): void;
 }
