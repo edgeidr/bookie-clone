@@ -39,8 +39,21 @@ export const createEllipseTool = (canvas: Canvas): CanvasTool => {
 		canvas.requestRenderAll();
 	};
 
-	const onMouseUp = (event: TPointerEventInfo) => {
-		if (ellipse) ellipse.set({ objectCaching: true });
+	const onMouseUp = () => {
+		if (!ellipse || ellipse.rx === 0 || ellipse.ry === 0) {
+			if (ellipse) canvas.remove(ellipse);
+			ellipse = null;
+			return;
+		}
+
+		ellipse.set({
+			objectCaching: true,
+			left: ellipse.left + ellipse.rx,
+			top: ellipse.top + ellipse.ry,
+			originX: "center",
+			originY: "center",
+		});
+
 		ellipse = null;
 	};
 

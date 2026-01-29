@@ -1,5 +1,6 @@
-import type { FabricObject, Rect } from "fabric";
+import type { Ellipse, FabricObject, Rect } from "fabric";
 import { normalizeRect } from "./normalizeRect";
+import { normalizeEllipse } from "./normalizeEllipse";
 
 export const normalizeObject = (object: FabricObject) => {
 	if (!object || (object.scaleX === 1 && object.scaleY === 1)) return;
@@ -8,7 +9,9 @@ export const normalizeObject = (object: FabricObject) => {
 		case "rect":
 			normalizeRect(object as Rect);
 			break;
-	}
 
-	object.setCoords();
+		case "ellipse":
+			normalizeEllipse(object as Ellipse);
+			break;
+	}
 };

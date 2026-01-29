@@ -100,7 +100,7 @@
 						size="small"
 						:useGrouping="false"
 						:maxFractionDigits="2"
-						:min="0"
+						:min="1"
 						showButtons
 						fluid>
 					</InputNumber>
@@ -116,7 +116,7 @@
 						size="small"
 						:useGrouping="false"
 						:maxFractionDigits="2"
-						:min="0"
+						:min="1"
 						showButtons
 						fluid>
 					</InputNumber>

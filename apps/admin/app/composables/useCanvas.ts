@@ -21,7 +21,7 @@ const activeObject = reactive<{
 	width: 0,
 	height: 0,
 	angle: 0,
-	strokeWidth: 0,
+	strokeWidth: 1,
 	strokeColor: "",
 	fillColor: "",
 	rx: 0,
@@ -36,13 +36,32 @@ export const useCanvas = () => {
 		canvas.value.on("selection:updated", updateActiveObject);
 		canvas.value.on("selection:cleared", clearActiveObject);
 		canvas.value.on("object:moving", updateActiveObject);
-		canvas.value.on("object:scaling", updateActiveObject);
 		canvas.value.on("object:rotating", updateActiveObject);
 		canvas.value.on("object:modifyPoly", updateActiveObject);
-		canvas.value.on("object:skewing", updateActiveObject);
-		canvas.value.on("object:modified", (event) => {
-			normalizeObject(event.target);
+
+		canvas.value.on("object:scaling", (event) => {
+			const object = event.target;
+
+			setObjectCaching(object, false);
 			updateActiveObject();
+		});
+
+		canvas.value.on("object:skewing", (event) => {
+			const object = event.target;
+
+			setObjectCaching(object, false);
+			updateActiveObject();
+		});
+
+		canvas.value.on("object:modified", (event) => {
+			const object = event.target;
+
+			setObjectCaching(object, true);
+			normalizeObject(object);
+			updateActiveObject();
+
+			object.setCoords();
+			render();
 		});
 	};
 
@@ -68,7 +87,7 @@ export const useCanvas = () => {
 		activeObject.width = obj.width ?? 0;
 		activeObject.height = obj.height ?? 0;
 		activeObject.angle = obj.angle ?? 0;
-		activeObject.strokeWidth = obj.strokeWidth ?? 0;
+		activeObject.strokeWidth = obj.strokeWidth ?? 1;
 		activeObject.strokeColor = obj.stroke?.toString() ?? "";
 		activeObject.fillColor = obj.fill?.toString() ?? "";
 		activeObject.rx = "rx" in obj ? ((obj.rx as number) ?? 0) : 0;
@@ -119,6 +138,11 @@ export const useCanvas = () => {
 
 		activeObject.object.setCoords();
 		render();
+	};
+
+	const setObjectCaching = (object: FabricObject, caching: boolean) => {
+		if (!object) return;
+		object.objectCaching = caching;
 	};
 
 	return { getCanvas, setCanvas, render, activeObject, applyActiveObjectChanges };
