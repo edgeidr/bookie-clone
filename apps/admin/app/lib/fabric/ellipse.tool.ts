@@ -1,6 +1,7 @@
 import { Ellipse, type Canvas, type TPointerEventInfo } from "fabric";
 import type { CanvasTool } from "~~/types/canvas";
-import { applyObjectDefaults } from "./defaults/objectDefaults";
+import { fabricObjectDefaults } from "./defaults/objectDefaults";
+import { fabricObjectControlDefaults } from "./defaults/objectControlDefaults";
 
 export const createEllipseTool = (canvas: Canvas): CanvasTool => {
 	let ellipse: Ellipse | null = null;
@@ -14,16 +15,10 @@ export const createEllipseTool = (canvas: Canvas): CanvasTool => {
 			top: start.y,
 			rx: 0,
 			ry: 0,
-			fill: "#ffffffff",
-			stroke: "#000000ff",
-			strokeWidth: 1,
-			strokeUniform: true,
-			originX: "left",
-			originY: "top",
-			objectCaching: false,
+			...fabricObjectDefaults,
+			...fabricObjectControlDefaults,
 		});
 
-		applyObjectDefaults(ellipse);
 		canvas.add(ellipse);
 	};
 

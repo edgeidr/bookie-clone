@@ -1,6 +1,7 @@
 import { Canvas, Rect, type TPointerEventInfo } from "fabric";
 import type { CanvasTool } from "~~/types/canvas";
-import { applyObjectDefaults } from "./defaults/objectDefaults";
+import { fabricObjectDefaults } from "./defaults/objectDefaults";
+import { fabricObjectControlDefaults } from "./defaults/objectControlDefaults";
 
 export const createRectTool = (canvas: Canvas): CanvasTool => {
 	let rect: Rect | null = null;
@@ -14,18 +15,10 @@ export const createRectTool = (canvas: Canvas): CanvasTool => {
 			top: start.y,
 			width: 0,
 			height: 0,
-			fill: "#ffffffff",
-			stroke: "#000000ff",
-			strokeWidth: 1,
-			strokeUniform: true,
-			originX: "left",
-			originY: "top",
-			objectCaching: false,
-			selectable: true,
-			evented: true,
+			...fabricObjectDefaults,
+			...fabricObjectControlDefaults,
 		});
 
-		applyObjectDefaults(rect);
 		canvas.add(rect);
 	};
 
@@ -44,8 +37,21 @@ export const createRectTool = (canvas: Canvas): CanvasTool => {
 		canvas.requestRenderAll();
 	};
 
-	const onMouseUp = (event: TPointerEventInfo) => {
-		if (rect) rect.set({ objectCaching: true });
+	const onMouseUp = () => {
+		if (!rect || rect.width === 0 || rect.height === 0) {
+			if (rect) canvas.remove(rect);
+			rect = null;
+			return;
+		}
+
+		rect.set({
+			objectCaching: true,
+			left: rect.left + rect.width / 2,
+			top: rect.top + rect.height / 2,
+			originX: "center",
+			originY: "center",
+		});
+
 		rect = null;
 	};
 

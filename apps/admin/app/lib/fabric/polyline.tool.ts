@@ -1,6 +1,7 @@
 import { Point, Polygon, Polyline, type Canvas, type TPointerEventInfo } from "fabric";
 import type { CanvasTool } from "~~/types/canvas";
-import { applyObjectDefaults } from "./defaults/objectDefaults";
+import { fabricObjectDefaults } from "./defaults/objectDefaults";
+import { fabricObjectControlDefaults } from "./defaults/objectControlDefaults";
 
 export const createPolylineTool = (canvas: Canvas): CanvasTool => {
 	const CLOSE_DISTANCE = 8 * canvas.getZoom();
@@ -28,16 +29,10 @@ export const createPolylineTool = (canvas: Canvas): CanvasTool => {
 		isDrawing = true;
 
 		polyline = new Polyline(points, {
-			fill: "transparent",
-			stroke: "#000000ff",
-			strokeWidth: 1,
-			selectable: false,
-			evented: false,
-			objectCaching: false,
-			strokeUniform: true,
+			...fabricObjectDefaults,
+			...fabricObjectControlDefaults,
 		});
 
-		applyObjectDefaults(polyline);
 		canvas.add(polyline);
 	};
 
@@ -57,16 +52,10 @@ export const createPolylineTool = (canvas: Canvas): CanvasTool => {
 		if (!polyline || points.length < MIN_POLYGON_POINTS) return;
 
 		const polygon = new Polygon(points, {
-			fill: "#ffffffff",
-			stroke: "#000000ff",
-			strokeWidth: 1,
-			strokeUniform: true,
-			objectCaching: false,
-			selectable: false,
-			evented: false,
+			...fabricObjectDefaults,
+			...fabricObjectControlDefaults,
 		});
 
-		applyObjectDefaults(polygon);
 		canvas.remove(polyline);
 		canvas.add(polygon);
 	};

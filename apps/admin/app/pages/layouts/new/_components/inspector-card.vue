@@ -19,7 +19,6 @@
 	import PropertiesTab from "./properties-tab.vue";
 	import AttributesTab from "./attributes-tab.vue";
 
-	const { t } = useI18n();
 	const TABS = {
 		PROPERTIES: "Properties",
 		ATTRIBUTES: "Attributes",

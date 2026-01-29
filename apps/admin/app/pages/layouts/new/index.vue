@@ -9,8 +9,8 @@
 		</div>
 
 		<div class="mt-20 flex w-96 flex-col gap-8">
-			<!-- <InspectorCard /> -->
-			<CommandPaletteCard />
+			<InspectorCard v-if="activeObject.object" />
+			<CommandPaletteCard v-else />
 		</div>
 	</div>
 </template>
@@ -30,6 +30,7 @@
 	const el = ref();
 	const { top } = useElementBounding(el);
 	const padding = 28;
+	const { activeObject } = useCanvas();
 
 	const remainingHeight = computed(() => {
 		return windowHeight.value - top.value - padding;

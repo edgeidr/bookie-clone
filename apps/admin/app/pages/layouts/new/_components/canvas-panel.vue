@@ -9,22 +9,27 @@
 	import { createToolRegistry } from "~/lib/fabric";
 	import { CanvasToolName, type CanvasTool, type CanvasToolOrComponent } from "~~/types/canvas";
 
+	const { setCanvas, render } = useCanvas();
 	const layoutCanvas = useTemplateRef("layoutCanvas");
 	const activeToolName = useState<CanvasToolOrComponent>(
 		"activeToolName",
 		() => CanvasToolName.SELECT,
 	);
 	let tools: ReturnType<typeof createToolRegistry>;
-	let canvas: Canvas;
 	let activeTool: CanvasTool | undefined;
 
 	const initCanvas = () => {
-		canvas = new Canvas(layoutCanvas.value!, { selection: false, backgroundColor: "#ffffff" });
-		canvas.setDimensions({ width: 800, height: 600 });
-		canvas.requestRenderAll();
+		const canvas = new Canvas(layoutCanvas.value!, {
+			selection: false,
+			backgroundColor: "#ffffff",
+			width: 800,
+			height: 600,
+		});
+
+		setCanvas(canvas);
+		render();
 
 		tools = createToolRegistry(canvas);
-		activeTool?.onDeactivate?.();
 		activeTool = tools[activeToolName.value];
 		activeTool?.onActivate?.();
 

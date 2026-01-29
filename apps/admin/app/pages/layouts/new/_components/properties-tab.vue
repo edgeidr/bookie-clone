@@ -9,7 +9,8 @@
 			<div class="grid grid-cols-2 gap-4">
 				<IftaLabel>
 					<InputNumber
-						v-model.number="form.x"
+						v-model="activeObject.left"
+						@update:modelValue="applyActiveObjectChanges"
 						size="small"
 						:useGrouping="false"
 						:maxFractionDigits="2"
@@ -21,7 +22,8 @@
 
 				<IftaLabel>
 					<InputNumber
-						v-model.number="form.y"
+						v-model="activeObject.top"
+						@update:modelValue="applyActiveObjectChanges"
 						size="small"
 						:useGrouping="false"
 						:maxFractionDigits="2"
@@ -35,7 +37,8 @@
 			<div class="grid grid-cols-2 gap-4">
 				<IftaLabel>
 					<InputNumber
-						v-model.number="form.width"
+						v-model="activeObject.width"
+						@update:modelValue="applyActiveObjectChanges"
 						size="small"
 						:useGrouping="false"
 						:maxFractionDigits="2"
@@ -48,7 +51,8 @@
 
 				<IftaLabel>
 					<InputNumber
-						v-model.number="form.height"
+						v-model="activeObject.height"
+						@update:modelValue="applyActiveObjectChanges"
 						size="small"
 						:useGrouping="false"
 						:maxFractionDigits="2"
@@ -63,7 +67,8 @@
 			<div class="grid grid-cols-2 gap-4">
 				<IftaLabel>
 					<InputNumber
-						v-model.number="form.angle"
+						v-model="activeObject.angle"
+						@update:modelValue="applyActiveObjectChanges"
 						size="small"
 						:useGrouping="false"
 						:maxFractionDigits="2"
@@ -84,22 +89,25 @@
 
 		<div class="space-y-4">
 			<div class="grid grid-cols-2 gap-4">
-				<IftaLabel>
-					<InputNumber
-						v-model.number="form.borderRadius"
-						size="small"
-						:useGrouping="false"
-						:maxFractionDigits="2"
-						:min="0"
-						showButtons
-						fluid>
-					</InputNumber>
-					<label class="text-sm">Border Radius</label>
-				</IftaLabel>
+				<InputGroup>
+					<IftaLabel>
+						<InputText
+							v-model="activeObject.strokeColor"
+							@update:modelValue="applyActiveObjectChanges" />
+						<label class="text-sm">Stroke Color</label>
+					</IftaLabel>
+
+					<InputGroupAddon>
+						<VColorPicker
+							v-model="activeObject.strokeColor"
+							@update:modelValue="applyActiveObjectChanges" />
+					</InputGroupAddon>
+				</InputGroup>
 
 				<IftaLabel>
 					<InputNumber
-						v-model.number="form.strokeWidth"
+						v-model="activeObject.strokeWidth"
+						@update:modelValue="applyActiveObjectChanges"
 						size="small"
 						:min="1"
 						:useGrouping="false"
@@ -112,25 +120,32 @@
 			<div class="grid grid-cols-2 gap-4">
 				<InputGroup>
 					<IftaLabel>
-						<InputText v-model="form.fillColor" />
+						<InputText
+							v-model="activeObject.fillColor"
+							@update:modelValue="applyActiveObjectChanges" />
 						<label class="text-sm">Fill Color</label>
 					</IftaLabel>
 
 					<InputGroupAddon>
-						<VColorPicker v-model="form.fillColor" />
+						<VColorPicker
+							v-model="activeObject.fillColor"
+							@update:modelValue="applyActiveObjectChanges" />
 					</InputGroupAddon>
 				</InputGroup>
 
-				<InputGroup>
-					<IftaLabel>
-						<InputText v-model="form.strokeColor" />
-						<label class="text-sm">Stroke Color</label>
-					</IftaLabel>
-
-					<InputGroupAddon>
-						<VColorPicker v-model="form.strokeColor" />
-					</InputGroupAddon>
-				</InputGroup>
+				<IftaLabel v-if="activeObject.object && 'rx' in activeObject.object">
+					<InputNumber
+						v-model="activeObject.borderRadius"
+						@update:modelValue="applyActiveObjectChanges"
+						size="small"
+						:useGrouping="false"
+						:maxFractionDigits="2"
+						:min="0"
+						showButtons
+						fluid>
+					</InputNumber>
+					<label class="text-sm">Border Radius</label>
+				</IftaLabel>
 			</div>
 		</div>
 	</Panel>
@@ -140,6 +155,7 @@
 	import { Icons } from "@repo/assets";
 	import type { PanelPassThroughOptions } from "primevue";
 
+	const { activeObject, applyActiveObjectChanges } = useCanvas();
 	const panelPT: PanelPassThroughOptions = {
 		root: "border-0!",
 		header: "p-0!",
@@ -149,25 +165,4 @@
 		TRANSFORM: "Transform",
 		APPEARANCE: "Apperance",
 	};
-	const form = reactive<{
-		x: number | null;
-		y: number | null;
-		width: number | null;
-		height: number | null;
-		angle: number | null;
-		borderRadius: number | null;
-		strokeWidth: number | null;
-		fillColor: string | null;
-		strokeColor: string | null;
-	}>({
-		x: null,
-		y: null,
-		width: null,
-		height: null,
-		angle: null,
-		borderRadius: null,
-		strokeWidth: null,
-		fillColor: null,
-		strokeColor: null,
-	});
 </script>
