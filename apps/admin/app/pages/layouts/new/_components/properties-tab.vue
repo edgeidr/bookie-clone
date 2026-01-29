@@ -5,8 +5,8 @@
 			<Icon v-else :name="Icons.remove" />
 		</template>
 
-		<div class="space-y-4">
-			<div class="grid grid-cols-2 gap-4">
+		<div class="grid grid-cols-2 gap-4">
+			<div v-if="visibleProperties.includes(CanvasObjectProperty.left)">
 				<IftaLabel>
 					<InputNumber
 						v-model="activeObject.left"
@@ -19,7 +19,9 @@
 					</InputNumber>
 					<label class="text-sm">X</label>
 				</IftaLabel>
+			</div>
 
+			<div v-if="visibleProperties.includes(CanvasObjectProperty.top)">
 				<IftaLabel>
 					<InputNumber
 						v-model="activeObject.top"
@@ -34,7 +36,7 @@
 				</IftaLabel>
 			</div>
 
-			<div class="grid grid-cols-2 gap-4">
+			<div v-if="visibleProperties.includes(CanvasObjectProperty.width)">
 				<IftaLabel>
 					<InputNumber
 						v-model="activeObject.width"
@@ -42,13 +44,15 @@
 						size="small"
 						:useGrouping="false"
 						:maxFractionDigits="2"
-						:min="0"
+						:min="1"
 						showButtons
 						fluid>
 					</InputNumber>
 					<label class="text-sm">Width</label>
 				</IftaLabel>
+			</div>
 
+			<div v-if="visibleProperties.includes(CanvasObjectProperty.height)">
 				<IftaLabel>
 					<InputNumber
 						v-model="activeObject.height"
@@ -56,7 +60,7 @@
 						size="small"
 						:useGrouping="false"
 						:maxFractionDigits="2"
-						:min="0"
+						:min="1"
 						showButtons
 						fluid>
 					</InputNumber>
@@ -64,7 +68,7 @@
 				</IftaLabel>
 			</div>
 
-			<div class="grid grid-cols-2 gap-4">
+			<div v-if="visibleProperties.includes(CanvasObjectProperty.angle)">
 				<IftaLabel>
 					<InputNumber
 						v-model="activeObject.angle"
@@ -87,8 +91,40 @@
 			<Icon v-else :name="Icons.remove" />
 		</template>
 
-		<div class="space-y-4">
-			<div class="grid grid-cols-2 gap-4">
+		<div class="grid grid-cols-2 gap-4">
+			<div v-if="visibleProperties.includes(CanvasObjectProperty.rx)">
+				<IftaLabel>
+					<InputNumber
+						v-model="activeObject.rx"
+						@update:modelValue="applyActiveObjectChanges"
+						size="small"
+						:useGrouping="false"
+						:maxFractionDigits="2"
+						:min="0"
+						showButtons
+						fluid>
+					</InputNumber>
+					<label class="text-sm">Radius X</label>
+				</IftaLabel>
+			</div>
+
+			<div v-if="visibleProperties.includes(CanvasObjectProperty.ry)">
+				<IftaLabel>
+					<InputNumber
+						v-model="activeObject.ry"
+						@update:modelValue="applyActiveObjectChanges"
+						size="small"
+						:useGrouping="false"
+						:maxFractionDigits="2"
+						:min="0"
+						showButtons
+						fluid>
+					</InputNumber>
+					<label class="text-sm">Radius Y</label>
+				</IftaLabel>
+			</div>
+
+			<div v-if="visibleProperties.includes(CanvasObjectProperty.strokeColor)">
 				<InputGroup>
 					<IftaLabel>
 						<InputText
@@ -103,7 +139,9 @@
 							@update:modelValue="applyActiveObjectChanges" />
 					</InputGroupAddon>
 				</InputGroup>
+			</div>
 
+			<div v-if="visibleProperties.includes(CanvasObjectProperty.strokeWidth)">
 				<IftaLabel>
 					<InputNumber
 						v-model="activeObject.strokeWidth"
@@ -117,7 +155,7 @@
 				</IftaLabel>
 			</div>
 
-			<div class="grid grid-cols-2 gap-4">
+			<div v-if="visibleProperties.includes(CanvasObjectProperty.fillColor)">
 				<InputGroup>
 					<IftaLabel>
 						<InputText
@@ -132,10 +170,12 @@
 							@update:modelValue="applyActiveObjectChanges" />
 					</InputGroupAddon>
 				</InputGroup>
+			</div>
 
-				<IftaLabel v-if="activeObject.object && 'rx' in activeObject.object">
+			<div v-if="visibleProperties.includes(CanvasObjectProperty.borderRadius)">
+				<IftaLabel>
 					<InputNumber
-						v-model="activeObject.borderRadius"
+						v-model="activeObject.rx"
 						@update:modelValue="applyActiveObjectChanges"
 						size="small"
 						:useGrouping="false"
@@ -154,6 +194,7 @@
 <script setup lang="ts">
 	import { Icons } from "@repo/assets";
 	import type { PanelPassThroughOptions } from "primevue";
+	import { CanvasObjectProperty } from "~~/types/canvas";
 
 	const { activeObject, applyActiveObjectChanges } = useCanvas();
 	const panelPT: PanelPassThroughOptions = {
@@ -165,4 +206,38 @@
 		TRANSFORM: "Transform",
 		APPEARANCE: "Apperance",
 	};
+
+	const visibleProperties = computed(() => {
+		if (!activeObject.object) return [];
+
+		const objectType = activeObject.object.type;
+		const properties = [
+			CanvasObjectProperty.left,
+			CanvasObjectProperty.top,
+			CanvasObjectProperty.angle,
+			CanvasObjectProperty.strokeColor,
+			CanvasObjectProperty.strokeWidth,
+		];
+
+		switch (objectType) {
+			case "rect":
+				properties.push(
+					CanvasObjectProperty.width,
+					CanvasObjectProperty.height,
+					CanvasObjectProperty.fillColor,
+					CanvasObjectProperty.borderRadius,
+				);
+				break;
+
+			case "ellipse":
+				properties.push(
+					CanvasObjectProperty.fillColor,
+					CanvasObjectProperty.rx,
+					CanvasObjectProperty.ry,
+				);
+				break;
+		}
+
+		return properties;
+	});
 </script>

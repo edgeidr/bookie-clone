@@ -35,3 +35,17 @@ export enum CanvasComponentName {
 	RECT = "rect",
 	ELLIPSE = "ellipse",
 }
+
+export enum CanvasObjectProperty {
+	top = "top",
+	left = "left",
+	width = "width",
+	height = "height",
+	angle = "angle",
+	strokeColor = "strokeColor",
+	strokeWidth = "strokeWidth",
+	fillColor = "fillColor",
+	borderRadius = "borderRadius",
+	rx = "rx",
+	ry = "ry",
+}

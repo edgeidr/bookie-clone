@@ -1,4 +1,4 @@
-import type { Canvas, FabricObject } from "fabric";
+import { Rect, type Canvas, type FabricObject } from "fabric";
 import { normalizeObject } from "~/lib/fabric/normalize/normalizeObject";
 
 const canvas = shallowRef<Canvas | null>(null);
@@ -12,7 +12,8 @@ const activeObject = reactive<{
 	strokeWidth: number;
 	strokeColor: string;
 	fillColor: string;
-	borderRadius: number;
+	rx: number;
+	ry: number;
 }>({
 	object: null,
 	left: 0,
@@ -23,7 +24,8 @@ const activeObject = reactive<{
 	strokeWidth: 0,
 	strokeColor: "",
 	fillColor: "",
-	borderRadius: 0,
+	rx: 0,
+	ry: 0,
 });
 
 export const useCanvas = () => {
@@ -69,7 +71,8 @@ export const useCanvas = () => {
 		activeObject.strokeWidth = obj.strokeWidth ?? 0;
 		activeObject.strokeColor = obj.stroke?.toString() ?? "";
 		activeObject.fillColor = obj.fill?.toString() ?? "";
-		activeObject.borderRadius = "rx" in obj ? ((obj.rx as number) ?? 0) : 0;
+		activeObject.rx = "rx" in obj ? ((obj.rx as number) ?? 0) : 0;
+		activeObject.ry = "ry" in obj ? ((obj.ry as number) ?? 0) : 0;
 	};
 
 	const clearActiveObject = () => {
@@ -82,7 +85,8 @@ export const useCanvas = () => {
 		activeObject.strokeWidth = 0;
 		activeObject.strokeColor = "";
 		activeObject.fillColor = "";
-		activeObject.borderRadius = 0;
+		activeObject.rx = 0;
+		activeObject.ry = 0;
 	};
 
 	const applyActiveObjectChanges = () => {
@@ -99,10 +103,17 @@ export const useCanvas = () => {
 			fill: activeObject.fillColor,
 		});
 
-		if ("rx" in activeObject.object) {
+		if (activeObject.object.type === "rect") {
 			activeObject.object.set({
-				rx: activeObject.borderRadius,
-				ry: activeObject.borderRadius,
+				rx: activeObject.rx,
+				ry: activeObject.rx,
+			});
+		}
+
+		if (activeObject.object.type === "ellipse") {
+			activeObject.object.set({
+				rx: activeObject.rx,
+				ry: activeObject.ry,
 			});
 		}
 
