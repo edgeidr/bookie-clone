@@ -8,4 +8,6 @@ export const fabricObjectDefaults: Partial<FabricObject> = {
 	originX: "left",
 	originY: "top",
 	objectCaching: false,
+	selectable: false,
+	evented: false,
 };

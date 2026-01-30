@@ -236,6 +236,10 @@
 					CanvasObjectProperty.ry,
 				);
 				break;
+
+			case "polygon":
+				properties.push(CanvasObjectProperty.fillColor);
+				break;
 		}
 
 		return properties;

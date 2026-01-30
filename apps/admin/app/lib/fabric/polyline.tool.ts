@@ -4,7 +4,8 @@ import { fabricObjectDefaults } from "./defaults/objectDefaults";
 import { fabricObjectControlDefaults } from "./defaults/objectControlDefaults";
 
 export const createPolylineTool = (canvas: Canvas): CanvasTool => {
-	const CLOSE_DISTANCE = 8 * canvas.getZoom();
+	const CLOSE_DISTANCE = 8;
+	const MIN_POLYLINE_POINTS = 2;
 	const MIN_POLYGON_POINTS = 3;
 	let polyline: Polyline | null = null;
 	let points: Point[] = [];
@@ -15,92 +16,68 @@ export const createPolylineTool = (canvas: Canvas): CanvasTool => {
 		return new Point(x, y);
 	};
 
+	const getCloseDistance = () => {
+		return CLOSE_DISTANCE * canvas.getZoom();
+	};
+
+	const getRealPointsCount = () => {
+		return Math.max(0, points.length - 1);
+	};
+
+	const isNearPreviousPoint = (a: Point, b: Point) => {
+		return Math.hypot(a.x - b.x, a.y - b.y) < getCloseDistance();
+	};
+
 	const isNearFirstPoint = (point: Point) => {
-		if (points.length < 3) return false;
+		if (getRealPointsCount() < MIN_POLYGON_POINTS) return false;
 
 		const { x: startX, y: startY } = points[0]!;
 		const { x, y } = point;
 
-		return Math.hypot(x - startX, y - startY) < CLOSE_DISTANCE;
-	};
-
-	const start = (point: Point) => {
-		points = [point, point];
-		isDrawing = true;
-
-		polyline = new Polyline(points, {
-			...fabricObjectDefaults,
-			...fabricObjectControlDefaults,
-		});
-
-		canvas.add(polyline);
+		return Math.hypot(x - startX, y - startY) < getCloseDistance();
 	};
 
 	const updatePreviewPoint = (point: Point) => {
 		if (!polyline) return;
 
-		points[points.length - 1] = point;
+		points[getRealPointsCount()] = point;
 		polyline.set({ points });
 		canvas.requestRenderAll();
 	};
 
 	const addPoint = (point: Point) => {
-		points.splice(points.length - 1, 0, point);
-	};
-
-	const closePolyline = () => {
-		if (!polyline || points.length < MIN_POLYGON_POINTS) return;
-
-		const polygon = new Polygon(points, {
-			...fabricObjectDefaults,
-			...fabricObjectControlDefaults,
-		});
-
-		canvas.remove(polyline);
-		canvas.add(polygon);
-	};
-
-	const stop = (close = false) => {
-		if (!polyline || points.length < MIN_POLYGON_POINTS - 1) return;
-
-		points.pop();
-
-		if (close && points.length >= 3) {
-			closePolyline();
-		} else {
-			polyline.set({
-				selectable: false,
-				evented: false,
-			});
-		}
-
-		polyline = null;
-		points = [];
-		isDrawing = false;
-		canvas.requestRenderAll();
+		points.splice(getRealPointsCount(), 0, point);
 	};
 
 	const onMouseDown = (event: TPointerEventInfo) => {
-		const evt = event.e as MouseEvent;
-
-		if (evt.button === 2) {
-			stop(false);
-			return;
-		}
+		if (handleRightClick(event)) return;
 
 		const point = getPoint(event);
 
-		if (!isDrawing) {
-			start(point);
-			return;
-		}
-
-		if (isNearFirstPoint(point)) {
-			stop(true);
-			return;
-		}
+		if (tryStartDrawing(point)) return;
+		if (skipPointIfNearPrevious(point)) return;
+		if (closeIfNearFirstPoint(point)) return;
 
 		addPoint(point);
+	};
+
+	const tryStartDrawing = (point: Point) => {
+		if (isDrawing) return false;
+
+		points = [point, point];
+		isDrawing = true;
+
+		startPolyline();
+
+		return true;
+	};
+
+	const handleRightClick = (event: TPointerEventInfo) => {
+		const evt = event.e as MouseEvent;
+		if (evt.button !== 2) return false;
+
+		stopPolyline();
+		return true;
 	};
 
 	const onMouseMove = (event: TPointerEventInfo) => {
@@ -108,9 +85,62 @@ export const createPolylineTool = (canvas: Canvas): CanvasTool => {
 		updatePreviewPoint(getPoint(event));
 	};
 
-	const onDeactivate = () => {
-		stop(false);
+	const skipPointIfNearPrevious = (point: Point) => {
+		const lastRealPoint = points[getRealPointsCount() - 1];
+		return !!lastRealPoint && isNearPreviousPoint(point, lastRealPoint);
 	};
+
+	const closeIfNearFirstPoint = (point: Point) => {
+		if (!polyline) return false;
+		if (!isNearFirstPoint(point)) return false;
+
+		removePreviewPoint();
+
+		const polygon = new Polygon([...points], {
+			...fabricObjectDefaults,
+			...fabricObjectControlDefaults,
+			originX: "center",
+			originY: "center",
+		});
+
+		canvas.remove(polyline);
+		canvas.add(polygon);
+
+		stopDrawing();
+
+		return true;
+	};
+
+	const startPolyline = () => {
+		polyline = new Polyline(points, {
+			...fabricObjectDefaults,
+			...fabricObjectControlDefaults,
+			fill: "#ffffff00",
+		});
+
+		canvas.add(polyline);
+	};
+
+	const stopPolyline = () => {
+		if (!polyline) return;
+		if (getRealPointsCount() < MIN_POLYLINE_POINTS) canvas.remove(polyline);
+
+		removePreviewPoint();
+		stopDrawing();
+	};
+
+	const stopDrawing = () => {
+		polyline = null;
+		points = [];
+		isDrawing = false;
+		canvas.requestRenderAll();
+	};
+
+	const removePreviewPoint = () => {
+		if (points.length > 0) points.pop();
+	};
+
+	const onDeactivate = () => stopPolyline();
 
 	return {
 		onMouseDown,
