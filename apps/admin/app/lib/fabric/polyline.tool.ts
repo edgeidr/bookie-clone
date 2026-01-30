@@ -115,7 +115,7 @@ export const createPolylineTool = (canvas: Canvas): CanvasTool => {
 		polyline = new Polyline(points, {
 			...fabricObjectDefaults,
 			...fabricObjectControlDefaults,
-			fill: "#ffffff00",
+			fill: "transparent",
 		});
 
 		canvas.add(polyline);
@@ -126,6 +126,7 @@ export const createPolylineTool = (canvas: Canvas): CanvasTool => {
 		if (getRealPointsCount() < MIN_POLYLINE_POINTS) canvas.remove(polyline);
 
 		removePreviewPoint();
+		polyline.setBoundingBox(true);
 		stopDrawing();
 	};
 
