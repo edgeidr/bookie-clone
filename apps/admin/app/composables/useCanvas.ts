@@ -1,5 +1,6 @@
 import { Rect, type Canvas, type FabricObject } from "fabric";
 import { normalizeObject } from "~/lib/fabric/normalize/normalizeObject";
+import { handlePolyEditingForObject } from "~/lib/fabric/utils/polyEditing";
 
 const canvas = shallowRef<Canvas | null>(null);
 const activeObject = reactive<{
@@ -32,12 +33,20 @@ export const useCanvas = () => {
 	const setCanvas = (newCanvas: Canvas) => {
 		canvas.value = newCanvas;
 
-		canvas.value.on("selection:created", updateActiveObject);
-		canvas.value.on("selection:updated", updateActiveObject);
 		canvas.value.on("selection:cleared", clearActiveObject);
 		canvas.value.on("object:moving", updateActiveObject);
 		canvas.value.on("object:rotating", updateActiveObject);
 		canvas.value.on("object:modifyPoly", updateActiveObject);
+
+		canvas.value.on("selection:created", () => {
+			updateSelection();
+			updateActiveObject();
+		});
+
+		canvas.value.on("selection:updated", () => {
+			updateSelection();
+			updateActiveObject();
+		});
 
 		canvas.value.on("object:scaling", (event) => {
 			const object = event.target;
@@ -63,6 +72,11 @@ export const useCanvas = () => {
 			object.setCoords();
 			render();
 		});
+	};
+
+	const updateSelection = () => {
+		const object = canvas.value?.getActiveObject() ?? null;
+		if (object) handlePolyEditingForObject(canvas.value!, object);
 	};
 
 	const getCanvas = () => {
