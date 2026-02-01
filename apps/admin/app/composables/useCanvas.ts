@@ -1,4 +1,4 @@
-import { Rect, type Canvas, type FabricObject } from "fabric";
+import type { Canvas, FabricObject } from "fabric";
 import { normalizeObject } from "~/lib/fabric/normalize/normalizeObject";
 import { handlePolyEditingForObject } from "~/lib/fabric/utils/polyEditing";
 
@@ -32,7 +32,6 @@ const activeObject = reactive<{
 export const useCanvas = () => {
 	const setCanvas = (newCanvas: Canvas) => {
 		canvas.value = newCanvas;
-
 		canvas.value.on("selection:cleared", clearActiveObject);
 		canvas.value.on("object:moving", updateActiveObject);
 		canvas.value.on("object:rotating", updateActiveObject);
@@ -72,6 +71,8 @@ export const useCanvas = () => {
 			object.setCoords();
 			render();
 		});
+
+		setCanvasEventListeners(canvas.value);
 	};
 
 	const updateSelection = () => {
@@ -157,6 +158,14 @@ export const useCanvas = () => {
 	const setObjectCaching = (object: FabricObject, caching: boolean) => {
 		if (!object) return;
 		object.objectCaching = caching;
+	};
+
+	const setCanvasEventListeners = (canvas: Canvas) => {
+		if (!canvas) return;
+
+		const canvasElement = canvas.upperCanvasEl;
+		canvasElement.tabIndex = 0;
+		canvasElement.style.outline = "none";
 	};
 
 	return { getCanvas, setCanvas, render, activeObject, applyActiveObjectChanges };

@@ -18,6 +18,7 @@
 		"@repo/assets": "workspace:*",
 		"@repo/shared": "workspace:*",
 		"@tailwindcss/vite": "^4.1.18",
+		"@vueuse/core": "^14.2.0",
 		"@vueuse/nuxt": "14.1.0",
 		"fabric": "^7.1.0",
 		"nuxt": "^4.2.2",

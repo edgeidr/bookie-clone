@@ -34,6 +34,8 @@
 	} from "~~/types/canvas";
 
 	const { t } = useI18n();
+	const { getCanvas } = useCanvas();
+	const { copy, cut, paste } = useCanvasClipboard();
 	const activeToolName = useState<CanvasToolOrComponent>("activeToolName");
 	const componentsRef = useTemplateRef("componentsRef");
 	const items = ref<ToolbarItem[]>([
@@ -91,16 +93,19 @@
 			type: ToolbarItemType.ACTION,
 			icon: Icons.cut,
 			label: t("common.actions.cut"),
+			action: () => handleCut(),
 		},
 		{
 			type: ToolbarItemType.ACTION,
 			icon: Icons.copy,
 			label: t("common.actions.copy"),
+			action: () => handleCopy(),
 		},
 		{
 			type: ToolbarItemType.ACTION,
 			icon: Icons.paste,
 			label: t("common.actions.paste"),
+			action: () => handlePaste(),
 		},
 		{
 			type: ToolbarItemType.ACTION,
@@ -123,4 +128,31 @@
 			activeToolName.value as CanvasComponentName,
 		);
 	};
+
+	const handleCopy = () => {
+		const canvas = getCanvas();
+		if (!canvas) return;
+		copy(canvas);
+	};
+
+	const handleCut = () => {
+		const canvas = getCanvas();
+		if (!canvas) return;
+		cut(canvas);
+	};
+
+	const handlePaste = () => {
+		const canvas = getCanvas();
+		if (!canvas) return;
+		paste(canvas);
+	};
+
+	watch(
+		() => getCanvas(),
+		(canvas) => {
+			if (!canvas) return;
+			useCanvasShortcuts(canvas);
+		},
+		{ immediate: true },
+	);
 </script>
