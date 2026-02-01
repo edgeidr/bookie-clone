@@ -5,6 +5,7 @@ export interface ToolbarActionItem {
 	icon: string;
 	label: string;
 	isActive?: boolean | ComputedRef<boolean>;
+	isDisabled?: boolean | ComputedRef<boolean>;
 	action?: (event?: any) => void;
 }
 

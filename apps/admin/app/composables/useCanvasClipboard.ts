@@ -2,15 +2,15 @@ import { ActiveSelection, Canvas, FabricObject } from "fabric";
 import { fabricObjectControlDefaults } from "~/lib/fabric/defaults/objectControlDefaults";
 
 const PASTE_OFFSET = 10;
+const clipboard = ref<FabricObject | ActiveSelection | null>(null);
 let pasteCount = 0;
-let clipboard: FabricObject | ActiveSelection | null = null;
 
 export const useCanvasClipboard = () => {
 	const copy = async (canvas: Canvas) => {
 		const activeObject = canvas.getActiveObject();
 		if (!activeObject) return;
 
-		clipboard = await activeObject.clone();
+		clipboard.value = await activeObject.clone();
 		pasteCount = 0;
 	};
 
@@ -31,10 +31,10 @@ export const useCanvasClipboard = () => {
 	};
 
 	const paste = async (canvas: Canvas) => {
-		if (!clipboard) return;
+		if (!clipboard.value) return;
 		canvas.discardActiveObject();
 
-		const cloned = await clipboard.clone();
+		const cloned = await clipboard.value.clone();
 
 		if (cloned.isType("activeselection")) {
 			const selection = cloned as ActiveSelection;
@@ -67,5 +67,7 @@ export const useCanvasClipboard = () => {
 		object.setCoords();
 	};
 
-	return { copy, cut, paste };
+	const canPaste = computed(() => clipboard.value !== null);
+
+	return { copy, cut, paste, canPaste };
 };

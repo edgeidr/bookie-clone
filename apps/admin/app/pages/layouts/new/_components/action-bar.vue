@@ -9,6 +9,7 @@
 					:severity="item.isActive ? 'primary' : 'secondary'"
 					:variant="item.isActive ? 'outlined' : 'text'"
 					size="small"
+					:disabled="item.isDisabled"
 					@click="item.action">
 					<template #icon="slotProps">
 						<Icon :name="item.icon" size="large" v-bind="slotProps" />
@@ -35,7 +36,7 @@
 
 	const { t } = useI18n();
 	const { getCanvas } = useCanvas();
-	const { copy, cut, paste } = useCanvasClipboard();
+	const { copy, cut, paste, canPaste } = useCanvasClipboard();
 	const { removeSelection } = useCanvasEditing();
 	const activeToolName = useState<CanvasToolOrComponent>("activeToolName");
 	const componentsRef = useTemplateRef("componentsRef");
@@ -106,6 +107,7 @@
 			type: ToolbarItemType.ACTION,
 			icon: Icons.paste,
 			label: t("common.actions.paste"),
+			isDisabled: computed(() => !canPaste.value),
 			action: () => handlePaste(),
 		},
 		{
