@@ -36,6 +36,7 @@
 	const { t } = useI18n();
 	const { getCanvas } = useCanvas();
 	const { copy, cut, paste } = useCanvasClipboard();
+	const { removeSelection } = useCanvasEditing();
 	const activeToolName = useState<CanvasToolOrComponent>("activeToolName");
 	const componentsRef = useTemplateRef("componentsRef");
 	const items = ref<ToolbarItem[]>([
@@ -111,6 +112,7 @@
 			type: ToolbarItemType.ACTION,
 			icon: Icons.delete,
 			label: t("common.actions.delete"),
+			action: () => handleDelete(),
 		},
 	]);
 
@@ -145,6 +147,12 @@
 		const canvas = getCanvas();
 		if (!canvas) return;
 		paste(canvas);
+	};
+
+	const handleDelete = () => {
+		const canvas = getCanvas();
+		if (!canvas) return;
+		removeSelection(canvas);
 	};
 
 	watch(
