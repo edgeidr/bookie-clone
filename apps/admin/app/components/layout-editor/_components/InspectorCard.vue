@@ -16,12 +16,13 @@
 </template>
 
 <script setup lang="ts">
-	import PropertiesTab from "./properties-tab.vue";
-	import AttributesTab from "./attributes-tab.vue";
+	import PropertiesTab from "./PropertiesTab.vue";
+	import AttributesTab from "./AttributesTab.vue";
 
+	const { t } = useI18n();
 	const TABS = {
-		PROPERTIES: "Properties",
-		ATTRIBUTES: "Attributes",
+		PROPERTIES: t("common.ui.properties"),
+		ATTRIBUTES: t("common.ui.attributes"),
 	};
 	const activeTab = ref(TABS.PROPERTIES);
 </script>

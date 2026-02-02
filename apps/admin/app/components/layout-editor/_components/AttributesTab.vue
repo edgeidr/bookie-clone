@@ -1,6 +1,6 @@
 <template>
 	<div class="flex items-center justify-between gap-8">
-		<label for="isBookable">Bookable</label>
+		<label for="isBookable">{{ t("common.form.bookable") }}</label>
 		<ToggleSwitch inputId="isBookable" v-model="isBookable" />
 	</div>
 
@@ -9,7 +9,7 @@
 	<div class="mt-6 space-y-4">
 		<IftaLabel>
 			<InputText :disabled="!isBookable" fluid />
-			<label>ID</label>
+			<label>{{ t("common.form.bookableId") }}</label>
 		</IftaLabel>
 
 		<IftaLabel>
@@ -28,7 +28,7 @@
 					</div>
 				</template>
 			</Select>
-			<label>Booking Type</label>
+			<label>{{ t("common.form.bookingType") }}</label>
 		</IftaLabel>
 	</div>
 </template>
@@ -36,18 +36,19 @@
 <script setup lang="ts">
 	import { Icons } from "@repo/assets";
 
+	const { t } = useI18n();
 	const isBookable = ref(false);
 	const bookingTypeOptions = ref([
 		{
-			label: "Instant Booking",
+			label: t("common.bookingTypes.instant.label"),
 			value: "instant",
-			description: "Bookings are confirmed immediately",
+			description: t("common.bookingTypes.instant.description"),
 			icon: Icons.instantBooking,
 		},
 		{
-			label: "Requires Approval",
+			label: t("common.bookingTypes.approvalRequired.label"),
 			value: "approvalRequired",
-			description: "Bookings must be approved before confirmation",
+			description: t("common.bookingTypes.approvalRequired.description"),
 			icon: Icons.approvalRequired,
 		},
 	]);

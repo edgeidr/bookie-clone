@@ -1,37 +1,71 @@
-import type { Canvas, FabricObject } from "fabric";
+import { Canvas, type FabricObject } from "fabric";
+import type { InjectionKey } from "vue";
+import { createToolRegistry } from "~/lib/fabric";
 import { normalizeObject } from "~/lib/fabric/normalize/normalizeObject";
 import { handlePolyEditingForObject } from "~/lib/fabric/utils/polyEditing";
+import { CanvasToolName, type CanvasTool, type CanvasToolOrComponent } from "~~/types/canvas";
 
-const canvas = shallowRef<Canvas | null>(null);
-const activeObject = reactive<{
-	object: FabricObject | null;
-	left: number;
-	top: number;
-	width: number;
-	height: number;
-	angle: number;
-	strokeWidth: number;
-	strokeColor: string;
-	fillColor: string;
-	rx: number;
-	ry: number;
-}>({
-	object: null,
-	left: 0,
-	top: 0,
-	width: 0,
-	height: 0,
-	angle: 0,
-	strokeWidth: 1,
-	strokeColor: "",
-	fillColor: "",
-	rx: 0,
-	ry: 0,
-});
+export const canvasManagerKey: InjectionKey<ReturnType<typeof useCanvas>> = Symbol("canvasManager");
+
+export const useInjectedCanvas = () => {
+	const canvasManager = inject(canvasManagerKey);
+	if (!canvasManager) throw new Error("Canvas Manager was not provided.");
+
+	return canvasManager;
+};
 
 export const useCanvas = () => {
-	const setCanvas = (newCanvas: Canvas) => {
-		canvas.value = newCanvas;
+	const canvas = shallowRef<Canvas | null>(null);
+	const canvasClipboard = useCanvasClipboard(canvas);
+	const canvasEditing = useCanvasEditing(canvas);
+	const tools = ref<ReturnType<typeof createToolRegistry>>();
+	const activeTool = ref<CanvasTool | undefined>();
+	const activeToolName = ref<CanvasToolOrComponent>(CanvasToolName.SELECT);
+	const activeObject = reactive<{
+		object: FabricObject | null;
+		left: number;
+		top: number;
+		width: number;
+		height: number;
+		angle: number;
+		strokeWidth: number;
+		strokeColor: string;
+		fillColor: string;
+		rx: number;
+		ry: number;
+	}>({
+		object: null,
+		left: 0,
+		top: 0,
+		width: 0,
+		height: 0,
+		angle: 0,
+		strokeWidth: 1,
+		strokeColor: "",
+		fillColor: "",
+		rx: 0,
+		ry: 0,
+	});
+
+	const initCanvas = (element: HTMLCanvasElement) => {
+		canvas.value = new Canvas(element, {
+			selection: false,
+			backgroundColor: "#ffffff",
+			width: 800,
+			height: 600,
+		});
+
+		render();
+
+		tools.value = createToolRegistry(canvas.value);
+		activeTool.value = tools.value[activeToolName.value];
+		activeTool.value?.onActivate?.();
+
+		canvas.value.on("mouse:down", (event) => activeTool.value?.onMouseDown?.(event));
+		canvas.value.on("mouse:move", (event) => activeTool.value?.onMouseMove?.(event));
+		canvas.value.on("mouse:up", (event) => activeTool.value?.onMouseUp?.(event));
+		canvas.value.on("mouse:dblclick", (event) => activeTool.value?.onMouseDoubleClick?.(event));
+
 		canvas.value.on("selection:cleared", clearActiveObject);
 		canvas.value.on("object:moving", updateActiveObject);
 		canvas.value.on("object:rotating", updateActiveObject);
@@ -72,7 +106,7 @@ export const useCanvas = () => {
 			render();
 		});
 
-		setCanvasEventListeners(canvas.value);
+		setCanvasEventListeners();
 	};
 
 	const updateSelection = () => {
@@ -160,13 +194,43 @@ export const useCanvas = () => {
 		object.objectCaching = caching;
 	};
 
-	const setCanvasEventListeners = (canvas: Canvas) => {
-		if (!canvas) return;
+	const setCanvasEventListeners = () => {
+		if (!canvas.value) return;
 
-		const canvasElement = canvas.upperCanvasEl;
+		const canvasElement = canvas.value.upperCanvasEl;
 		canvasElement.tabIndex = 0;
 		canvasElement.style.outline = "none";
 	};
 
-	return { getCanvas, setCanvas, render, activeObject, applyActiveObjectChanges };
+	useCanvasShortcuts(
+		{
+			copy: canvasClipboard.copy,
+			cut: canvasClipboard.cut,
+			paste: canvasClipboard.paste,
+			removeSelection: canvasEditing.removeSelection,
+		},
+		canvas,
+	);
+
+	watch(
+		() => activeToolName.value,
+		(toolName = CanvasToolName.SELECT) => {
+			if (!tools.value) return;
+
+			activeTool.value?.onDeactivate?.();
+			activeTool.value = tools.value[toolName];
+			activeTool.value?.onActivate?.();
+		},
+	);
+
+	return {
+		canvas,
+		initCanvas,
+		render,
+		activeObject,
+		activeToolName,
+		applyActiveObjectChanges,
+		...canvasClipboard,
+		...canvasEditing,
+	};
 };

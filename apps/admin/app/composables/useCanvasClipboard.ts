@@ -1,38 +1,47 @@
 import { ActiveSelection, Canvas, FabricObject } from "fabric";
 import { fabricObjectControlDefaults } from "~/lib/fabric/defaults/objectControlDefaults";
 
-const PASTE_OFFSET = 10;
-const clipboard = ref<FabricObject | ActiveSelection | null>(null);
-let pasteCount = 0;
+export const useCanvasClipboard = (canvas: Ref<Canvas | null>) => {
+	const clipboard = ref<FabricObject | ActiveSelection | null>(null);
+	const PASTE_OFFSET = 10;
+	let pasteCount = 0;
 
-export const useCanvasClipboard = () => {
-	const copy = async (canvas: Canvas) => {
-		const activeObject = canvas.getActiveObject();
+	const copy = async () => {
+		if (!canvas.value) return;
+
+		const activeObject = canvas.value.getActiveObject();
 		if (!activeObject) return;
 
 		clipboard.value = await activeObject.clone();
 		pasteCount = 0;
 	};
 
-	const cut = async (canvas: Canvas) => {
-		const activeObject = canvas.getActiveObject();
+	const cut = async () => {
+		if (!canvas.value) return;
+
+		const activeObject = canvas.value.getActiveObject();
 		if (!activeObject) return;
 
-		await copy(canvas);
+		await copy();
 
 		if (activeObject.isType("activeselection")) {
-			(activeObject as ActiveSelection).forEachObject((object) => canvas.remove(object));
+			(activeObject as ActiveSelection).forEachObject((object) => {
+				if (!canvas.value) return;
+				canvas.value.remove(object);
+			});
 		} else {
-			canvas.remove(activeObject);
+			canvas.value.remove(activeObject);
 		}
 
-		canvas.discardActiveObject();
-		canvas.requestRenderAll();
+		canvas.value.discardActiveObject();
+		canvas.value.requestRenderAll();
 	};
 
-	const paste = async (canvas: Canvas) => {
+	const paste = async () => {
+		if (!canvas.value) return;
 		if (!clipboard.value) return;
-		canvas.discardActiveObject();
+
+		canvas.value.discardActiveObject();
 
 		const cloned = await clipboard.value.clone();
 
@@ -40,18 +49,22 @@ export const useCanvasClipboard = () => {
 			const selection = cloned as ActiveSelection;
 
 			selection.forEachObject((object) => {
+				if (!canvas.value) return;
+
 				applyPasteDefaults(object);
-				canvas.add(object);
+				canvas.value.add(object);
 			});
 
-			canvas.setActiveObject(new ActiveSelection(selection.getObjects(), { canvas }));
+			canvas.value.setActiveObject(
+				new ActiveSelection(selection.getObjects(), { canvas: canvas.value }),
+			);
 		} else {
 			applyPasteDefaults(cloned);
-			canvas.add(cloned);
-			canvas.setActiveObject(cloned);
+			canvas.value.add(cloned);
+			canvas.value.setActiveObject(cloned);
 		}
 
-		canvas.requestRenderAll();
+		canvas.value.requestRenderAll();
 		pasteCount++;
 	};
 

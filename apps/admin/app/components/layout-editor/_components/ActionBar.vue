@@ -27,7 +27,7 @@
 <script setup lang="ts">
 	import { Icons } from "@repo/assets";
 	import { ToolbarItemType, type ToolbarItem } from "@repo/shared";
-	import ComponentsMenu from "./components-menu.vue";
+	import ComponentsMenu from "./ComponentsMenu.vue";
 	import {
 		CanvasComponentName,
 		CanvasToolName,
@@ -35,10 +35,7 @@
 	} from "~~/types/canvas";
 
 	const { t } = useI18n();
-	const { getCanvas } = useCanvas();
-	const { copy, cut, paste, canPaste } = useCanvasClipboard();
-	const { removeSelection } = useCanvasEditing();
-	const activeToolName = useState<CanvasToolOrComponent>("activeToolName");
+	const { copy, cut, paste, canPaste, removeSelection, activeToolName } = useInjectedCanvas();
 	const componentsRef = useTemplateRef("componentsRef");
 	const items = ref<ToolbarItem[]>([
 		{
@@ -95,26 +92,26 @@
 			type: ToolbarItemType.ACTION,
 			icon: Icons.cut,
 			label: t("common.actions.cut"),
-			action: () => handleCut(),
+			action: () => cut(),
 		},
 		{
 			type: ToolbarItemType.ACTION,
 			icon: Icons.copy,
 			label: t("common.actions.copy"),
-			action: () => handleCopy(),
+			action: () => copy(),
 		},
 		{
 			type: ToolbarItemType.ACTION,
 			icon: Icons.paste,
 			label: t("common.actions.paste"),
 			isDisabled: computed(() => !canPaste.value),
-			action: () => handlePaste(),
+			action: () => paste(),
 		},
 		{
 			type: ToolbarItemType.ACTION,
 			icon: Icons.delete,
 			label: t("common.actions.delete"),
-			action: () => handleDelete(),
+			action: () => removeSelection(),
 		},
 	]);
 
@@ -132,37 +129,4 @@
 			activeToolName.value as CanvasComponentName,
 		);
 	};
-
-	const handleCopy = () => {
-		const canvas = getCanvas();
-		if (!canvas) return;
-		copy(canvas);
-	};
-
-	const handleCut = () => {
-		const canvas = getCanvas();
-		if (!canvas) return;
-		cut(canvas);
-	};
-
-	const handlePaste = () => {
-		const canvas = getCanvas();
-		if (!canvas) return;
-		paste(canvas);
-	};
-
-	const handleDelete = () => {
-		const canvas = getCanvas();
-		if (!canvas) return;
-		removeSelection(canvas);
-	};
-
-	watch(
-		() => getCanvas(),
-		(canvas) => {
-			if (!canvas) return;
-			useCanvasShortcuts(canvas);
-		},
-		{ immediate: true },
-	);
 </script>

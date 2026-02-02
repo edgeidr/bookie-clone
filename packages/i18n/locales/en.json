@@ -66,12 +66,39 @@
 			"commandPalette": "Command Palette",
 			"properties": "Properties",
 			"components": "Components",
+			"attributes": "Attributes",
 			"emptyState": {
 				"noSelection": {
 					"title": "No selection",
 					"description": "Select an element to edit its properties.",
 					"tip": "Tip: Drag components to add new items."
 				}
+			}
+		},
+		"form": {
+			"bookable": "Bookable",
+			"bookableId": "ID",
+			"bookingType": "Booking Type",
+			"positionX": "X",
+			"positionY": "Y",
+			"width": "Width",
+			"height": "Height",
+			"angle": "Angle",
+			"radiusX": "Radius X",
+			"radiusY": "Radius Y",
+			"strokeColor": "Stroke Color",
+			"strokeWidth": "Stroke Width",
+			"fillColor": "Fill Color",
+			"borderRadius": "Border Radius"
+		},
+		"bookingTypes": {
+			"instant": {
+				"label": "Instant Booking",
+				"description": "Bookings are confirmed immediately"
+			},
+			"approvalRequired": {
+				"label": "Requires Approval",
+				"description": "Bookings must be approved before confirmation"
 			}
 		}
 	},

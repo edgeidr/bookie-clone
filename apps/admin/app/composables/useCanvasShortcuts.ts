@@ -1,9 +1,16 @@
 import type { Shortcut } from "@repo/shared";
 import type { Canvas } from "fabric";
 
-export const useCanvasShortcuts = (canvas: Canvas) => {
-	const { copy, cut, paste } = useCanvasClipboard();
-	const { removeSelection } = useCanvasEditing();
+interface CanvasActions {
+	copy: () => void;
+	cut: () => void;
+	paste: () => void;
+	removeSelection: () => void;
+}
+
+export const useCanvasShortcuts = (actions: CanvasActions, canvas: Ref<Canvas | null>) => {
+	const { copy, cut, paste, removeSelection } = actions;
+	let attached = false;
 
 	const COPY_SHORTCUT: Shortcut = { key: "c", mod: true };
 	const CUT_SHORTCUT: Shortcut = { key: "x", mod: true };
@@ -18,12 +25,19 @@ export const useCanvasShortcuts = (canvas: Canvas) => {
 		return event.key.toLowerCase() === shortcut.key.toLocaleLowerCase();
 	};
 
-	onKeyStroke(matchShortcut(COPY_SHORTCUT), () => copy(canvas), { target: canvas.upperCanvasEl });
-	onKeyStroke(matchShortcut(CUT_SHORTCUT), () => cut(canvas), { target: canvas.upperCanvasEl });
-	onKeyStroke(matchShortcut(PASTE_SHORTCUT), () => paste(canvas), {
-		target: canvas.upperCanvasEl,
-	});
-	onKeyStroke(matchShortcut(DELETE_SHORTCUT), () => removeSelection(canvas), {
-		target: canvas.upperCanvasEl,
-	});
+	watch(
+		canvas,
+		(canvasValue) => {
+			if (!canvasValue || attached) return;
+
+			const target = canvasValue.upperCanvasEl;
+			attached = true;
+
+			onKeyStroke(matchShortcut(COPY_SHORTCUT), () => copy(), { target });
+			onKeyStroke(matchShortcut(CUT_SHORTCUT), () => cut(), { target });
+			onKeyStroke(matchShortcut(PASTE_SHORTCUT), () => paste(), { target });
+			onKeyStroke(matchShortcut(DELETE_SHORTCUT), () => removeSelection(), { target });
+		},
+		{ immediate: true },
+	);
 };

@@ -17,7 +17,7 @@
 						showButtons
 						fluid>
 					</InputNumber>
-					<label class="text-sm">X</label>
+					<label class="text-sm">{{ t("common.form.positionX") }}</label>
 				</IftaLabel>
 			</div>
 
@@ -32,7 +32,7 @@
 						showButtons
 						fluid>
 					</InputNumber>
-					<label class="text-sm">Y</label>
+					<label class="text-sm">{{ t("common.form.positionY") }}</label>
 				</IftaLabel>
 			</div>
 
@@ -48,7 +48,7 @@
 						showButtons
 						fluid>
 					</InputNumber>
-					<label class="text-sm">Width</label>
+					<label class="text-sm">{{ t("common.form.width") }}</label>
 				</IftaLabel>
 			</div>
 
@@ -64,7 +64,7 @@
 						showButtons
 						fluid>
 					</InputNumber>
-					<label class="text-sm">Height</label>
+					<label class="text-sm">{{ t("common.form.height") }}</label>
 				</IftaLabel>
 			</div>
 
@@ -79,7 +79,7 @@
 						showButtons
 						fluid>
 					</InputNumber>
-					<label class="text-sm">Angle</label>
+					<label class="text-sm">{{ t("common.form.angle") }}</label>
 				</IftaLabel>
 			</div>
 		</div>
@@ -104,7 +104,7 @@
 						showButtons
 						fluid>
 					</InputNumber>
-					<label class="text-sm">Radius X</label>
+					<label class="text-sm">{{ t("common.form.radiusX") }}</label>
 				</IftaLabel>
 			</div>
 
@@ -120,7 +120,7 @@
 						showButtons
 						fluid>
 					</InputNumber>
-					<label class="text-sm">Radius Y</label>
+					<label class="text-sm">{{ t("common.form.radiusY") }}</label>
 				</IftaLabel>
 			</div>
 
@@ -130,7 +130,7 @@
 						<InputText
 							v-model="activeObject.strokeColor"
 							@update:modelValue="applyActiveObjectChanges" />
-						<label class="text-sm">Stroke Color</label>
+						<label class="text-sm">{{ t("common.form.strokeColor") }}</label>
 					</IftaLabel>
 
 					<InputGroupAddon>
@@ -151,7 +151,7 @@
 						:useGrouping="false"
 						showButtons
 						fluid />
-					<label class="text-sm">Stroke Width</label>
+					<label class="text-sm">{{ t("common.form.strokeWidth") }}</label>
 				</IftaLabel>
 			</div>
 
@@ -161,7 +161,7 @@
 						<InputText
 							v-model="activeObject.fillColor"
 							@update:modelValue="applyActiveObjectChanges" />
-						<label class="text-sm">Fill Color</label>
+						<label class="text-sm">{{ t("common.form.fillColor") }}</label>
 					</IftaLabel>
 
 					<InputGroupAddon>
@@ -184,7 +184,7 @@
 						showButtons
 						fluid>
 					</InputNumber>
-					<label class="text-sm">Border Radius</label>
+					<label class="text-sm">{{ t("common.form.borderRadius") }}</label>
 				</IftaLabel>
 			</div>
 		</div>
@@ -196,7 +196,8 @@
 	import type { PanelPassThroughOptions } from "primevue";
 	import { CanvasObjectProperty } from "~~/types/canvas";
 
-	const { activeObject, applyActiveObjectChanges } = useCanvas();
+	const { t } = useI18n();
+	const { activeObject, applyActiveObjectChanges } = useInjectedCanvas();
 	const panelPT: PanelPassThroughOptions = {
 		root: "border-0!",
 		header: "p-0!",

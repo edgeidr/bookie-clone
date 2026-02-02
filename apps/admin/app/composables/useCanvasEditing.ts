@@ -1,13 +1,18 @@
 import type { Canvas } from "fabric";
 
-export const useCanvasEditing = () => {
-	const removeSelection = (canvas: Canvas) => {
-		const activeObjects = canvas.getActiveObjects();
+export const useCanvasEditing = (canvas: Ref<Canvas | null>) => {
+	const removeSelection = () => {
+		if (!canvas.value) return;
+
+		const activeObjects = canvas.value.getActiveObjects();
 		if (!activeObjects.length) return;
 
-		activeObjects.forEach((object) => canvas.remove(object));
-		canvas.discardActiveObject();
-		canvas.requestRenderAll();
+		activeObjects.forEach((object) => {
+			if (!canvas.value) return;
+			canvas.value.remove(object);
+		});
+		canvas.value.discardActiveObject();
+		canvas.value.requestRenderAll();
 	};
 
 	return { removeSelection };
