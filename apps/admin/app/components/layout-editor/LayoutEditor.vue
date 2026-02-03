@@ -10,7 +10,7 @@
 
 		<div class="mt-20 flex w-96 flex-col gap-8">
 			<InspectorCard v-if="activeObject.object" />
-			<CommandPaletteCard v-else />
+			<EmptySelectionCard v-else />
 		</div>
 	</div>
 </template>
@@ -18,7 +18,7 @@
 <script setup lang="ts">
 	import ActionBar from "./_components/ActionBar.vue";
 	import CanvasPanel from "./_components/CanvasPanel.vue";
-	import CommandPaletteCard from "./_components/CommandPaletteCard.vue";
+	import EmptySelectionCard from "./_components/EmptySelectionCard.vue";
 	import InspectorCard from "./_components/InspectorCard.vue";
 
 	const { canvasManager } = defineProps<{ canvasManager: ReturnType<typeof useCanvas> }>();

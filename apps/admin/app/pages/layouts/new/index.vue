@@ -8,5 +8,7 @@
 		titleKey: "pages.layoutsNew.title",
 	});
 
+	const isMac = navigator.platform.toUpperCase();
+
 	const canvasManager = useCanvas();
 </script>
