@@ -16,9 +16,9 @@ export const useInjectedCanvas = () => {
 
 export const useCanvas = () => {
 	const canvas = shallowRef<Canvas | null>(null);
-	const canvasClipboard = useCanvasClipboard(canvas);
-	const canvasEditing = useCanvasEditing(canvas);
 	const canvasHistory = useCanvasHistory(canvas);
+	const canvasEditing = useCanvasEditing(canvas);
+	const canvasClipboard = useCanvasClipboard(canvas, canvasHistory.pushCanvasState);
 	const tools = ref<ReturnType<typeof createToolRegistry>>();
 	const activeTool = ref<CanvasTool | undefined>();
 	const activeToolName = ref<CanvasToolOrComponent>(CanvasToolName.SELECT);
