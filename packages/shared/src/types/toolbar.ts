@@ -1,4 +1,5 @@
 import type { ToolbarItemType } from "../enums/toolbar";
+import type { Shortcut } from "./shortcut";
 
 export interface ToolbarActionItem {
 	type: ToolbarItemType.ACTION;
@@ -6,6 +7,7 @@ export interface ToolbarActionItem {
 	label: string;
 	isActive?: boolean | ComputedRef<boolean>;
 	isDisabled?: boolean | ComputedRef<boolean>;
+	shortcut?: Shortcut;
 	action?: (event?: any) => void;
 }
 
