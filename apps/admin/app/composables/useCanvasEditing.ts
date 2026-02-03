@@ -1,6 +1,6 @@
 import type { Canvas } from "fabric";
 
-export const useCanvasEditing = (canvas: Ref<Canvas | null>) => {
+export const useCanvasEditing = (canvas: Ref<Canvas | null>, pushCanvasState: () => void) => {
 	const removeSelection = () => {
 		if (!canvas.value) return;
 
@@ -13,6 +13,8 @@ export const useCanvasEditing = (canvas: Ref<Canvas | null>) => {
 		});
 		canvas.value.discardActiveObject();
 		canvas.value.requestRenderAll();
+
+		pushCanvasState();
 	};
 
 	return { removeSelection };
