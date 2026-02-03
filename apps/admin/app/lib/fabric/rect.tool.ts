@@ -3,11 +3,16 @@ import type { CanvasTool } from "~~/types/canvas";
 import { fabricObjectDefaults } from "./defaults/objectDefaults";
 import { fabricObjectControlDefaults } from "./defaults/objectControlDefaults";
 
-export const createRectTool = (canvas: Canvas): CanvasTool => {
+export const createRectTool = (
+	canvas: Ref<Canvas | null>,
+	pushCanvasState: () => void,
+): CanvasTool => {
 	let rect: Rect | null = null;
 	let start = { x: 0, y: 0 };
 
 	const onMouseDown = (event: TPointerEventInfo) => {
+		if (!canvas.value) return;
+
 		start = { ...event.scenePoint };
 
 		rect = new Rect({
@@ -19,10 +24,11 @@ export const createRectTool = (canvas: Canvas): CanvasTool => {
 			...fabricObjectControlDefaults,
 		});
 
-		canvas.add(rect);
+		canvas.value.add(rect);
 	};
 
 	const onMouseMove = (event: TPointerEventInfo) => {
+		if (!canvas.value) return;
 		if (!rect) return;
 
 		const { x, y } = event.scenePoint;
@@ -34,12 +40,14 @@ export const createRectTool = (canvas: Canvas): CanvasTool => {
 			top: Math.min(y, start.y),
 		});
 
-		canvas.requestRenderAll();
+		canvas.value.requestRenderAll();
 	};
 
 	const onMouseUp = () => {
+		if (!canvas.value) return;
+
 		if (!rect || rect.width === 0 || rect.height === 0) {
-			if (rect) canvas.remove(rect);
+			if (rect) canvas.value.remove(rect);
 			rect = null;
 			return;
 		}
@@ -53,6 +61,8 @@ export const createRectTool = (canvas: Canvas): CanvasTool => {
 		});
 
 		rect = null;
+
+		pushCanvasState();
 	};
 
 	return { onMouseDown, onMouseMove, onMouseUp };

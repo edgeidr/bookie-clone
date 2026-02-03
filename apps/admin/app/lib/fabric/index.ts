@@ -5,12 +5,12 @@ import { createEllipseTool } from "./ellipse.tool";
 import { createSelectTool } from "./select.tool";
 import { createPolylineTool } from "./polyline.tool";
 
-export const createToolRegistry = (canvas: Canvas) => {
+export const createToolRegistry = (canvas: Ref<Canvas | null>, pushCanvasState: () => void) => {
 	return {
 		[CanvasToolName.SELECT]: createSelectTool(canvas),
-		[CanvasToolName.PENTOOL]: createPolylineTool(canvas),
-		[CanvasComponentName.RECT]: createRectTool(canvas),
-		[CanvasComponentName.ELLIPSE]: createEllipseTool(canvas),
+		[CanvasToolName.PENTOOL]: createPolylineTool(canvas, pushCanvasState),
+		[CanvasComponentName.RECT]: createRectTool(canvas, pushCanvasState),
+		[CanvasComponentName.ELLIPSE]: createEllipseTool(canvas, pushCanvasState),
 		[CanvasComponentName.SEAT_A]: undefined,
 		[CanvasComponentName.SEAT_B]: undefined,
 		[CanvasComponentName.SEAT_C]: undefined,

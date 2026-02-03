@@ -1,33 +1,47 @@
 import type { Canvas } from "fabric";
 
-export const useCanvasHistory = () => {
+export const useCanvasHistory = (canvas: Ref<Canvas | null>) => {
 	const canvasSnapshot = ref<string | null>(null);
-	const { history, undo, redo, canUndo, canRedo, last, pause, resume } =
-		useRefHistory(canvasSnapshot);
+	const { undo, redo, canUndo, canRedo, pause, resume, last } = useThrottledRefHistory(
+		canvasSnapshot,
+		{ throttle: 500, capacity: 100 },
+	);
 
-	const pushCanvasState = (canvas: Canvas) => {
-		canvasSnapshot.value = JSON.stringify(canvas.toJSON());
+	const pushCanvasState = () => {
+		if (!canvas.value) return;
+		canvasSnapshot.value = JSON.stringify(canvas.value.toJSON());
 	};
 
-	const undoCanvas = (canvas: Canvas) => {
+	const undoCanvas = () => {
+		if (!canvas.value) return;
+
 		undo();
-		restore(canvas);
+		restore();
 	};
 
-	const redoCanvas = (canvas: Canvas) => {
+	const redoCanvas = () => {
+		if (!canvas.value) return;
+
 		redo();
-		restore(canvas);
+		restore();
 	};
 
-	const restore = async (canvas: Canvas) => {
+	const restore = async () => {
+		if (!canvas.value) return;
+
 		const snapshot = last.value.snapshot;
-		if (!snapshot) return;
 
 		pause();
-		await canvas.loadFromJSON(snapshot);
-		canvas.requestRenderAll();
+
+		if (!snapshot) {
+			canvas.value.getObjects().forEach((object) => canvas.value!.remove(object));
+		} else {
+			await canvas.value.loadFromJSON(snapshot);
+		}
+
+		canvas.value.requestRenderAll();
 		resume();
 	};
 
-	return { pushCanvasState, undoCanvas, redoCanvas, canRedo, canUndo, history };
+	return { pushCanvasState, undoCanvas, redoCanvas, canRedo, canUndo, last };
 };

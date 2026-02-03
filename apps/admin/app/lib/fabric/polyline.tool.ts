@@ -3,7 +3,10 @@ import type { CanvasTool } from "~~/types/canvas";
 import { fabricObjectDefaults } from "./defaults/objectDefaults";
 import { fabricObjectControlDefaults } from "./defaults/objectControlDefaults";
 
-export const createPolylineTool = (canvas: Canvas): CanvasTool => {
+export const createPolylineTool = (
+	canvas: Ref<Canvas | null>,
+	pushCanvasState: () => void,
+): CanvasTool => {
 	const CLOSE_DISTANCE = 8;
 	const MIN_POLYLINE_POINTS = 2;
 	const MIN_POLYGON_POINTS = 3;
@@ -17,7 +20,8 @@ export const createPolylineTool = (canvas: Canvas): CanvasTool => {
 	};
 
 	const getCloseDistance = () => {
-		return CLOSE_DISTANCE * canvas.getZoom();
+		if (!canvas.value) return 0;
+		return CLOSE_DISTANCE * canvas.value.getZoom();
 	};
 
 	const getRealPointsCount = () => {
@@ -38,11 +42,12 @@ export const createPolylineTool = (canvas: Canvas): CanvasTool => {
 	};
 
 	const updatePreviewPoint = (point: Point) => {
+		if (!canvas.value) return;
 		if (!polyline) return;
 
 		points[getRealPointsCount()] = point;
 		polyline.set({ points });
-		canvas.requestRenderAll();
+		canvas.value.requestRenderAll();
 	};
 
 	const addPoint = (point: Point) => {
@@ -91,6 +96,7 @@ export const createPolylineTool = (canvas: Canvas): CanvasTool => {
 	};
 
 	const closeIfNearFirstPoint = (point: Point) => {
+		if (!canvas.value) return false;
 		if (!polyline) return false;
 		if (!isNearFirstPoint(point)) return false;
 
@@ -103,8 +109,8 @@ export const createPolylineTool = (canvas: Canvas): CanvasTool => {
 			originY: "center",
 		});
 
-		canvas.remove(polyline);
-		canvas.add(polygon);
+		canvas.value.remove(polyline);
+		canvas.value.add(polygon);
 
 		stopDrawing();
 
@@ -112,18 +118,21 @@ export const createPolylineTool = (canvas: Canvas): CanvasTool => {
 	};
 
 	const startPolyline = () => {
+		if (!canvas.value) return;
+
 		polyline = new Polyline(points, {
 			...fabricObjectDefaults,
 			...fabricObjectControlDefaults,
 			fill: "transparent",
 		});
 
-		canvas.add(polyline);
+		canvas.value.add(polyline);
 	};
 
 	const stopPolyline = () => {
+		if (!canvas.value) return;
 		if (!polyline) return;
-		if (getRealPointsCount() < MIN_POLYLINE_POINTS) canvas.remove(polyline);
+		if (getRealPointsCount() < MIN_POLYLINE_POINTS) canvas.value.remove(polyline);
 
 		removePreviewPoint();
 		polyline.setBoundingBox(true);
@@ -131,10 +140,14 @@ export const createPolylineTool = (canvas: Canvas): CanvasTool => {
 	};
 
 	const stopDrawing = () => {
+		if (!canvas.value) return;
+
 		polyline = null;
 		points = [];
 		isDrawing = false;
-		canvas.requestRenderAll();
+		canvas.value.requestRenderAll();
+
+		pushCanvasState();
 	};
 
 	const removePreviewPoint = () => {

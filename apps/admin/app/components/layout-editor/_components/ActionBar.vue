@@ -35,7 +35,18 @@
 	} from "~~/types/canvas";
 
 	const { t } = useI18n();
-	const { copy, cut, paste, canPaste, removeSelection, activeToolName } = useInjectedCanvas();
+	const {
+		copy,
+		cut,
+		paste,
+		canPaste,
+		removeSelection,
+		undoCanvas,
+		redoCanvas,
+		canUndo,
+		canRedo,
+		activeToolName,
+	} = useInjectedCanvas();
 	const componentsRef = useTemplateRef("componentsRef");
 	const items = ref<ToolbarItem[]>([
 		{
@@ -79,11 +90,15 @@
 			type: ToolbarItemType.ACTION,
 			icon: Icons.undo,
 			label: t("common.actions.undo"),
+			isDisabled: computed(() => !canUndo.value),
+			action: () => undoCanvas(),
 		},
 		{
 			type: ToolbarItemType.ACTION,
 			icon: Icons.redo,
 			label: t("common.actions.redo"),
+			isDisabled: computed(() => !canRedo.value),
+			action: () => redoCanvas(),
 		},
 		{
 			type: ToolbarItemType.DIVIDER,

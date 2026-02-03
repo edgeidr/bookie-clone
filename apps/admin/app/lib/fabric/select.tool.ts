@@ -2,11 +2,13 @@ import type { Canvas, TPointerEventInfo } from "fabric";
 import type { CanvasTool } from "~~/types/canvas";
 import { isPolyEditable, togglePolyEditing } from "./utils/polyEditing";
 
-export const createSelectTool = (canvas: Canvas): CanvasTool => {
+export const createSelectTool = (canvas: Ref<Canvas | null>): CanvasTool => {
 	const onActivate = () => {
-		canvas.selection = true;
-		canvas.hoverCursor = "pointer";
-		canvas.forEachObject((object) => {
+		if (!canvas.value) return;
+
+		canvas.value.selection = true;
+		canvas.value.hoverCursor = "pointer";
+		canvas.value.forEachObject((object) => {
 			object.selectable = true;
 			object.evented = true;
 			object.setCoords();
@@ -14,26 +16,30 @@ export const createSelectTool = (canvas: Canvas): CanvasTool => {
 	};
 
 	const onDeactivate = () => {
-		canvas.selection = false;
-		canvas.discardActiveObject();
-		canvas.forEachObject((object) => {
+		if (!canvas.value) return;
+
+		canvas.value.selection = false;
+		canvas.value.discardActiveObject();
+		canvas.value.forEachObject((object) => {
 			object.selectable = false;
 			object.evented = false;
 			object.objectCaching = true;
 		});
 
-		canvas.requestRenderAll();
+		canvas.value.requestRenderAll();
 	};
 
 	const onMouseDoubleClick = (event: TPointerEventInfo) => {
+		if (!canvas.value) return;
+
 		const { target } = event;
 
 		if (!target) return;
 		if (!isPolyEditable(target)) return;
 
 		togglePolyEditing(target);
-		canvas.setActiveObject(target);
-		canvas.requestRenderAll();
+		canvas.value.setActiveObject(target);
+		canvas.value.requestRenderAll();
 	};
 
 	return {

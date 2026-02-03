@@ -3,11 +3,16 @@ import type { CanvasTool } from "~~/types/canvas";
 import { fabricObjectDefaults } from "./defaults/objectDefaults";
 import { fabricObjectControlDefaults } from "./defaults/objectControlDefaults";
 
-export const createEllipseTool = (canvas: Canvas): CanvasTool => {
+export const createEllipseTool = (
+	canvas: Ref<Canvas | null>,
+	pushCanvasState: () => void,
+): CanvasTool => {
 	let ellipse: Ellipse | null = null;
 	let start = { x: 0, y: 0 };
 
 	const onMouseDown = (event: TPointerEventInfo) => {
+		if (!canvas.value) return;
+
 		start = { ...event.scenePoint };
 
 		ellipse = new Ellipse({
@@ -19,10 +24,11 @@ export const createEllipseTool = (canvas: Canvas): CanvasTool => {
 			...fabricObjectControlDefaults,
 		});
 
-		canvas.add(ellipse);
+		canvas.value.add(ellipse);
 	};
 
 	const onMouseMove = (event: TPointerEventInfo) => {
+		if (!canvas.value) return;
 		if (!ellipse) return;
 
 		const { x, y } = event.scenePoint;
@@ -36,12 +42,14 @@ export const createEllipseTool = (canvas: Canvas): CanvasTool => {
 			top: Math.min(y, start.y),
 		});
 
-		canvas.requestRenderAll();
+		canvas.value.requestRenderAll();
 	};
 
 	const onMouseUp = () => {
+		if (!canvas.value) return;
+
 		if (!ellipse || ellipse.rx === 0 || ellipse.ry === 0) {
-			if (ellipse) canvas.remove(ellipse);
+			if (ellipse) canvas.value.remove(ellipse);
 			ellipse = null;
 			return;
 		}
@@ -55,6 +63,8 @@ export const createEllipseTool = (canvas: Canvas): CanvasTool => {
 		});
 
 		ellipse = null;
+
+		pushCanvasState();
 	};
 
 	return {

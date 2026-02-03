@@ -18,6 +18,7 @@ export const useCanvas = () => {
 	const canvas = shallowRef<Canvas | null>(null);
 	const canvasClipboard = useCanvasClipboard(canvas);
 	const canvasEditing = useCanvasEditing(canvas);
+	const canvasHistory = useCanvasHistory(canvas);
 	const tools = ref<ReturnType<typeof createToolRegistry>>();
 	const activeTool = ref<CanvasTool | undefined>();
 	const activeToolName = ref<CanvasToolOrComponent>(CanvasToolName.SELECT);
@@ -57,7 +58,7 @@ export const useCanvas = () => {
 
 		render();
 
-		tools.value = createToolRegistry(canvas.value);
+		tools.value = createToolRegistry(canvas, canvasHistory.pushCanvasState);
 		activeTool.value = tools.value[activeToolName.value];
 		activeTool.value?.onActivate?.();
 
@@ -104,6 +105,8 @@ export const useCanvas = () => {
 
 			object.setCoords();
 			render();
+
+			canvasHistory.pushCanvasState();
 		});
 
 		setCanvasEventListeners();
@@ -112,10 +115,6 @@ export const useCanvas = () => {
 	const updateSelection = () => {
 		const object = canvas.value?.getActiveObject() ?? null;
 		if (object) handlePolyEditingForObject(canvas.value!, object);
-	};
-
-	const getCanvas = () => {
-		return canvas.value;
 	};
 
 	const render = () => {
@@ -158,6 +157,7 @@ export const useCanvas = () => {
 	};
 
 	const applyActiveObjectChanges = () => {
+		if (!canvas.value) return;
 		if (!activeObject.object) return;
 
 		activeObject.object.set({
@@ -187,6 +187,8 @@ export const useCanvas = () => {
 
 		activeObject.object.setCoords();
 		render();
+
+		canvas.value.fire("object:modified", { target: activeObject.object });
 	};
 
 	const setObjectCaching = (object: FabricObject, caching: boolean) => {
@@ -208,6 +210,8 @@ export const useCanvas = () => {
 			cut: canvasClipboard.cut,
 			paste: canvasClipboard.paste,
 			removeSelection: canvasEditing.removeSelection,
+			undoCanvas: canvasHistory.undoCanvas,
+			redoCanvas: canvasHistory.redoCanvas,
 		},
 		canvas,
 	);
@@ -232,5 +236,6 @@ export const useCanvas = () => {
 		applyActiveObjectChanges,
 		...canvasClipboard,
 		...canvasEditing,
+		...canvasHistory,
 	};
 };
