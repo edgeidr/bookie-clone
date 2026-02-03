@@ -18,7 +18,11 @@ export const useCanvas = () => {
 	const canvas = shallowRef<Canvas | null>(null);
 	const canvasHistory = useCanvasHistory(canvas);
 	const canvasEditing = useCanvasEditing(canvas, canvasHistory.pushCanvasState);
-	const canvasClipboard = useCanvasClipboard(canvas, canvasHistory.pushCanvasState);
+	const canvasClipboard = useCanvasClipboard(
+		canvas,
+		canvasHistory.pushCanvasState,
+		canvasEditing.removeSelection,
+	);
 	const tools = ref<ReturnType<typeof createToolRegistry>>();
 	const activeTool = ref<CanvasTool | undefined>();
 	const activeToolName = ref<CanvasToolOrComponent>(CanvasToolName.SELECT);

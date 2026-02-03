@@ -1,7 +1,11 @@
 import { ActiveSelection, Canvas, FabricObject } from "fabric";
 import { fabricObjectControlDefaults } from "~/lib/fabric/defaults/objectControlDefaults";
 
-export const useCanvasClipboard = (canvas: Ref<Canvas | null>, pushCanvasState: () => void) => {
+export const useCanvasClipboard = (
+	canvas: Ref<Canvas | null>,
+	pushCanvasState: () => void,
+	removeSelection: () => void,
+) => {
 	const clipboard = ref<FabricObject | ActiveSelection | null>(null);
 	const PASTE_OFFSET = 10;
 	let pasteCount = 0;
@@ -23,20 +27,7 @@ export const useCanvasClipboard = (canvas: Ref<Canvas | null>, pushCanvasState: 
 		if (!activeObject) return;
 
 		await copy();
-
-		if (activeObject.isType("activeselection")) {
-			(activeObject as ActiveSelection).forEachObject((object) => {
-				if (!canvas.value) return;
-				canvas.value.remove(object);
-			});
-		} else {
-			canvas.value.remove(activeObject);
-		}
-
-		canvas.value.discardActiveObject();
-		canvas.value.requestRenderAll();
-
-		pushCanvasState();
+		removeSelection();
 	};
 
 	const paste = async () => {
