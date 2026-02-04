@@ -63,15 +63,13 @@ export const useCanvas = () => {
 
 		render();
 		setObjectControlDefaults();
+		initCanvasTools();
+		bindCanvasObjectEvents();
+		enableCanvasFocus();
+	};
 
-		tools.value = createToolRegistry(canvas, canvasHistory.pushCanvasState);
-		activeTool.value = tools.value[activeToolName.value];
-		activeTool.value?.onActivate?.();
-
-		canvas.value.on("mouse:down", (event) => activeTool.value?.onMouseDown?.(event));
-		canvas.value.on("mouse:move", (event) => activeTool.value?.onMouseMove?.(event));
-		canvas.value.on("mouse:up", (event) => activeTool.value?.onMouseUp?.(event));
-		canvas.value.on("mouse:dblclick", (event) => activeTool.value?.onMouseDoubleClick?.(event));
+	const bindCanvasObjectEvents = () => {
+		if (!canvas.value) return;
 
 		canvas.value.on("selection:cleared", clearActiveObject);
 		canvas.value.on("object:moving", updateActiveObject);
@@ -114,8 +112,19 @@ export const useCanvas = () => {
 
 			canvasHistory.pushCanvasState();
 		});
+	};
 
-		setCanvasEventListeners();
+	const initCanvasTools = () => {
+		if (!canvas.value) return;
+
+		tools.value = createToolRegistry(canvas, canvasHistory.pushCanvasState);
+		activeTool.value = tools.value[activeToolName.value];
+		activeTool.value?.onActivate?.();
+
+		canvas.value.on("mouse:down", (event) => activeTool.value?.onMouseDown?.(event));
+		canvas.value.on("mouse:move", (event) => activeTool.value?.onMouseMove?.(event));
+		canvas.value.on("mouse:up", (event) => activeTool.value?.onMouseUp?.(event));
+		canvas.value.on("mouse:dblclick", (event) => activeTool.value?.onMouseDoubleClick?.(event));
 	};
 
 	const updateSelection = () => {
@@ -202,7 +211,7 @@ export const useCanvas = () => {
 		object.objectCaching = caching;
 	};
 
-	const setCanvasEventListeners = () => {
+	const enableCanvasFocus = () => {
 		if (!canvas.value) return;
 
 		const canvasElement = canvas.value.upperCanvasEl;
