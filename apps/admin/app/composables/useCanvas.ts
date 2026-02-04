@@ -15,9 +15,10 @@ export const useInjectedCanvas = () => {
 };
 
 export const useCanvas = () => {
+	const activeToolName = ref<CanvasToolOrComponent>(CanvasToolName.SELECT);
 	const canvas = shallowRef<Canvas | null>(null);
 	const canvasHistory = useCanvasHistory(canvas);
-	const canvasEditing = useCanvasEditing(canvas, canvasHistory.pushCanvasState);
+	const canvasEditing = useCanvasEditing(canvas, canvasHistory.pushCanvasState, activeToolName);
 	const canvasClipboard = useCanvasClipboard(
 		canvas,
 		canvasHistory.pushCanvasState,
@@ -25,7 +26,6 @@ export const useCanvas = () => {
 	);
 	const tools = ref<ReturnType<typeof createToolRegistry>>();
 	const activeTool = ref<CanvasTool | undefined>();
-	const activeToolName = ref<CanvasToolOrComponent>(CanvasToolName.SELECT);
 	const activeObject = reactive<{
 		object: FabricObject | null;
 		left: number;
@@ -216,6 +216,7 @@ export const useCanvas = () => {
 			removeSelection: canvasEditing.removeSelection,
 			undoCanvas: canvasHistory.undoCanvas,
 			redoCanvas: canvasHistory.redoCanvas,
+			canvasEditing: canvasEditing,
 		},
 		canvas,
 	);

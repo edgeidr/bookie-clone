@@ -62,6 +62,7 @@
 		canUndo,
 		canRedo,
 		activeToolName,
+		selectTool,
 	} = useInjectedCanvas();
 	const tooltipRef = useTemplateRef("tooltipRef");
 	const componentsRef = useTemplateRef("componentsRef");
@@ -161,11 +162,6 @@
 		},
 	]);
 
-	const selectTool = (tool: CanvasToolOrComponent) => {
-		activeToolName.value = tool;
-		componentsRef.value?.hide();
-	};
-
 	const isActive = (tool: CanvasToolOrComponent) => {
 		return activeToolName.value === tool;
 	};
@@ -188,6 +184,14 @@
 		tooltipItem.value = null;
 		tooltipRef.value?.hide();
 	};
+
+	watch(
+		() => activeToolName.value,
+		() => {
+			tooltipRef.value?.hide();
+			componentsRef.value?.hide();
+		},
+	);
 </script>
 
 <style>

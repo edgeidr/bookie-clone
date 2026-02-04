@@ -1,6 +1,11 @@
 import type { Canvas } from "fabric";
+import type { CanvasToolOrComponent } from "~~/types/canvas";
 
-export const useCanvasEditing = (canvas: Ref<Canvas | null>, pushCanvasState: () => void) => {
+export const useCanvasEditing = (
+	canvas: Ref<Canvas | null>,
+	pushCanvasState: () => void,
+	activeToolName: Ref<CanvasToolOrComponent>,
+) => {
 	const removeSelection = () => {
 		if (!canvas.value) return;
 
@@ -17,5 +22,9 @@ export const useCanvasEditing = (canvas: Ref<Canvas | null>, pushCanvasState: ()
 		pushCanvasState();
 	};
 
-	return { removeSelection };
+	const selectTool = (tool: CanvasToolOrComponent) => {
+		activeToolName.value = tool;
+	};
+
+	return { removeSelection, selectTool };
 };

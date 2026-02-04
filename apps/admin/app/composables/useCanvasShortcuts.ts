@@ -1,5 +1,6 @@
 import type { Shortcut } from "@repo/shared";
 import type { Canvas } from "fabric";
+import { CanvasToolName, type CanvasToolOrComponent } from "~~/types/canvas";
 
 interface CanvasActions {
 	copy: () => void;
@@ -8,10 +9,11 @@ interface CanvasActions {
 	removeSelection: () => void;
 	undoCanvas: () => void;
 	redoCanvas: () => void;
+	canvasEditing: ReturnType<typeof useCanvasEditing>;
 }
 
 export const useCanvasShortcuts = (actions: CanvasActions, canvas: Ref<Canvas | null>) => {
-	const { copy, cut, paste, removeSelection, undoCanvas, redoCanvas } = actions;
+	const { copy, cut, paste, removeSelection, undoCanvas, redoCanvas, canvasEditing } = actions;
 	let attached = false;
 
 	const COPY_SHORTCUT: Shortcut = { key: "c", mod: true };
@@ -20,6 +22,8 @@ export const useCanvasShortcuts = (actions: CanvasActions, canvas: Ref<Canvas | 
 	const DELETE_SHORTCUT: Shortcut = { key: "Delete" };
 	const UNDO_SHORTCUT: Shortcut = { key: "z" };
 	const REDO_SHORTCUT: Shortcut = { key: "y" };
+	const PEN_TOOL_SHORTCUT: Shortcut = { key: "p", alt: true };
+	const SELECT_SHORTCUT: Shortcut = { key: "s", alt: true };
 
 	const matchShortcut = (shortcut: Shortcut) => (event: KeyboardEvent) => {
 		if (shortcut.mod && !(event.ctrlKey || event.metaKey)) return false;
@@ -43,6 +47,18 @@ export const useCanvasShortcuts = (actions: CanvasActions, canvas: Ref<Canvas | 
 			onKeyStroke(matchShortcut(DELETE_SHORTCUT), () => removeSelection(), { target });
 			onKeyStroke(matchShortcut(UNDO_SHORTCUT), () => undoCanvas(), { target });
 			onKeyStroke(matchShortcut(REDO_SHORTCUT), () => redoCanvas(), { target });
+			onKeyStroke(
+				matchShortcut(PEN_TOOL_SHORTCUT),
+				() => canvasEditing.selectTool(CanvasToolName.PENTOOL),
+				{ target: document },
+			);
+			onKeyStroke(
+				matchShortcut(SELECT_SHORTCUT),
+				() => canvasEditing.selectTool(CanvasToolName.SELECT),
+				{
+					target: document,
+				},
+			);
 		},
 		{ immediate: true },
 	);
