@@ -30,12 +30,8 @@ export const useCanvas = () => {
 	const tools = ref<ReturnType<typeof createToolRegistry>>();
 	const activeTool = ref<CanvasTool | undefined>();
 	const canvasProperties = reactive<{
-		width: number;
-		height: number;
 		backgroundColor: string;
 	}>({
-		width: 800,
-		height: 600,
 		backgroundColor: "#ffffffff",
 	});
 	const activeObject = reactive<{
@@ -68,8 +64,6 @@ export const useCanvas = () => {
 		canvas.value = new Canvas(element, {
 			selection: false,
 			backgroundColor: canvasProperties.backgroundColor,
-			width: canvasProperties.width,
-			height: canvasProperties.height,
 		});
 
 		render();
@@ -154,10 +148,6 @@ export const useCanvas = () => {
 		if (!canvas.value) return;
 
 		canvas.value.set({ backgroundColor: canvasProperties.backgroundColor });
-		canvas.value.setDimensions({
-			width: canvasProperties.width,
-			height: canvasProperties.height,
-		});
 
 		render();
 	};

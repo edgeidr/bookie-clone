@@ -1,35 +1,5 @@
 <template>
-	<Panel :header="GROUPS.TRANSFORM" :pt="panelPT">
-		<div class="grid grid-cols-2 gap-4">
-			<IftaLabel>
-				<InputNumber
-					v-model="canvasProperties.width"
-					size="small"
-					:useGrouping="false"
-					:maxFractionDigits="2"
-					:min="1"
-					showButtons
-					fluid>
-				</InputNumber>
-				<label class="text-sm">{{ t("common.form.width") }}</label>
-			</IftaLabel>
-
-			<IftaLabel>
-				<InputNumber
-					v-model="canvasProperties.height"
-					size="small"
-					:useGrouping="false"
-					:maxFractionDigits="2"
-					:min="1"
-					showButtons
-					fluid>
-				</InputNumber>
-				<label class="text-sm">{{ t("common.form.height") }}</label>
-			</IftaLabel>
-		</div>
-	</Panel>
-
-	<Panel :header="GROUPS.APPEARANCE" :pt="panelPT" class="pt-2">
+	<Panel :header="GROUPS.APPEARANCE" :pt="panelPT">
 		<div class="grid grid-cols-2 gap-4">
 			<InputGroup>
 				<IftaLabel>
