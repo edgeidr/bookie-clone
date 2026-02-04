@@ -1,6 +1,7 @@
-import { Canvas, type FabricObject } from "fabric";
+import { Canvas, InteractiveFabricObject, type FabricObject } from "fabric";
 import type { InjectionKey } from "vue";
 import { createToolRegistry } from "~/lib/fabric";
+import { fabricObjectControlDefaults } from "~/lib/fabric/defaults/objectControlDefaults";
 import { normalizeObject } from "~/lib/fabric/normalize/normalizeObject";
 import { handlePolyEditingForObject } from "~/lib/fabric/utils/polyEditing";
 import { CanvasToolName, type CanvasTool, type CanvasToolOrComponent } from "~~/types/canvas";
@@ -61,6 +62,7 @@ export const useCanvas = () => {
 		});
 
 		render();
+		setObjectControlDefaults();
 
 		tools.value = createToolRegistry(canvas, canvasHistory.pushCanvasState);
 		activeTool.value = tools.value[activeToolName.value];
@@ -206,6 +208,13 @@ export const useCanvas = () => {
 		const canvasElement = canvas.value.upperCanvasEl;
 		canvasElement.tabIndex = 0;
 		canvasElement.style.outline = "none";
+	};
+
+	const setObjectControlDefaults = () => {
+		InteractiveFabricObject.ownDefaults = {
+			...InteractiveFabricObject.ownDefaults,
+			...fabricObjectControlDefaults,
+		};
 	};
 
 	useCanvasShortcuts(

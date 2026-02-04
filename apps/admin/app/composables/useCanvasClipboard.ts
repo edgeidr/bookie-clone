@@ -1,5 +1,4 @@
 import { ActiveSelection, Canvas, FabricObject } from "fabric";
-import { fabricObjectControlDefaults } from "~/lib/fabric/defaults/objectControlDefaults";
 
 export const useCanvasClipboard = (
 	canvas: Ref<Canvas | null>,
@@ -69,7 +68,6 @@ export const useCanvasClipboard = (
 		object.set({
 			left: (object.left ?? 0) + offset,
 			top: (object.top ?? 0) + offset,
-			...fabricObjectControlDefaults,
 		});
 
 		object.setCoords();

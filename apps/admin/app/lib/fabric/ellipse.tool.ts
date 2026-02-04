@@ -1,7 +1,6 @@
 import { Ellipse, type Canvas, type TPointerEventInfo } from "fabric";
 import type { CanvasTool } from "~~/types/canvas";
 import { fabricObjectDefaults } from "./defaults/objectDefaults";
-import { fabricObjectControlDefaults } from "./defaults/objectControlDefaults";
 
 export const createEllipseTool = (
 	canvas: Ref<Canvas | null>,
@@ -21,7 +20,6 @@ export const createEllipseTool = (
 			rx: 0,
 			ry: 0,
 			...fabricObjectDefaults,
-			...fabricObjectControlDefaults,
 		});
 
 		canvas.value.add(ellipse);

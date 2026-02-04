@@ -1,7 +1,6 @@
 import { Canvas, Rect, type TPointerEventInfo } from "fabric";
 import type { CanvasTool } from "~~/types/canvas";
 import { fabricObjectDefaults } from "./defaults/objectDefaults";
-import { fabricObjectControlDefaults } from "./defaults/objectControlDefaults";
 
 export const createRectTool = (
 	canvas: Ref<Canvas | null>,
@@ -21,7 +20,6 @@ export const createRectTool = (
 			width: 0,
 			height: 0,
 			...fabricObjectDefaults,
-			...fabricObjectControlDefaults,
 		});
 
 		canvas.value.add(rect);

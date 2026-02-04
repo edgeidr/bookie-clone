@@ -1,7 +1,6 @@
 import { Point, Polygon, Polyline, type Canvas, type TPointerEventInfo } from "fabric";
 import type { CanvasTool } from "~~/types/canvas";
 import { fabricObjectDefaults } from "./defaults/objectDefaults";
-import { fabricObjectControlDefaults } from "./defaults/objectControlDefaults";
 
 export const createPolylineTool = (
 	canvas: Ref<Canvas | null>,
@@ -104,7 +103,6 @@ export const createPolylineTool = (
 
 		const polygon = new Polygon([...points], {
 			...fabricObjectDefaults,
-			...fabricObjectControlDefaults,
 			originX: "center",
 			originY: "center",
 		});
@@ -122,7 +120,6 @@ export const createPolylineTool = (
 
 		polyline = new Polyline(points, {
 			...fabricObjectDefaults,
-			...fabricObjectControlDefaults,
 			fill: "transparent",
 		});
 
