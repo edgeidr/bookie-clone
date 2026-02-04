@@ -1,14 +1,16 @@
 <template>
-	<div class="bg-surface-200 flex flex-1 items-center justify-center overflow-hidden rounded-xl">
+	<div ref="canvasWrapper" class="flex-1 overflow-hidden rounded-xl">
 		<canvas ref="layoutCanvasRef" />
 	</div>
 </template>
 
 <script setup lang="ts">
-	const { initCanvas } = useInjectedCanvas();
+	const { initCanvas, resizeCanvas } = useInjectedCanvas();
 	const layoutCanvasRef = useTemplateRef("layoutCanvasRef");
+	const canvasWrapper = useTemplateRef("canvasWrapper");
 
 	onMounted(() => {
 		initCanvas(layoutCanvasRef.value!);
+		useResizeObserver(canvasWrapper, resizeCanvas);
 	});
 </script>

@@ -1,10 +1,11 @@
-import { Canvas, InteractiveFabricObject, type FabricObject } from "fabric";
+import { Canvas, InteractiveFabricObject, Point, type FabricObject } from "fabric";
 import type { InjectionKey } from "vue";
 import { createToolRegistry } from "~/lib/fabric";
 import { fabricObjectControlDefaults } from "~/lib/fabric/defaults/objectControlDefaults";
 import { normalizeObject } from "~/lib/fabric/normalize/normalizeObject";
 import { handlePolyEditingForObject } from "~/lib/fabric/utils/polyEditing";
 import { CanvasToolName, type CanvasTool, type CanvasToolOrComponent } from "~~/types/canvas";
+import { useCanvasViewport } from "./useCanvasViewport";
 
 export const canvasManagerKey: InjectionKey<ReturnType<typeof useCanvas>> = Symbol("canvasManager");
 
@@ -25,6 +26,7 @@ export const useCanvas = () => {
 		canvasHistory.pushCanvasState,
 		canvasEditing.removeSelection,
 	);
+	const canvasViewport = useCanvasViewport(canvas, canvasEditing);
 	const tools = ref<ReturnType<typeof createToolRegistry>>();
 	const activeTool = ref<CanvasTool | undefined>();
 	const canvasProperties = reactive<{
@@ -75,7 +77,10 @@ export const useCanvas = () => {
 		initCanvasTools();
 		bindCanvasObjectEvents();
 		enableCanvasFocus();
+		makeCanvasResponsive();
 	};
+
+	const makeCanvasResponsive = () => {};
 
 	const bindCanvasObjectEvents = () => {
 		if (!canvas.value) return;
@@ -287,5 +292,6 @@ export const useCanvas = () => {
 		...canvasClipboard,
 		...canvasEditing,
 		...canvasHistory,
+		...canvasViewport,
 	};
 };
