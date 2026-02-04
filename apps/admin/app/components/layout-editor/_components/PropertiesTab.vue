@@ -204,8 +204,8 @@
 		content: "p-0!",
 	};
 	const GROUPS = {
-		TRANSFORM: "Transform",
-		APPEARANCE: "Apperance",
+		TRANSFORM: t("common.ui.transform"),
+		APPEARANCE: t("common.ui.appearance"),
 	};
 
 	const visibleProperties = computed(() => {

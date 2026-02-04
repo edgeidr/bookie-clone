@@ -64,16 +64,13 @@
 		},
 		"ui": {
 			"commandPalette": "Command Palette",
-			"properties": "Properties",
 			"components": "Components",
+			"properties": "Properties",
 			"attributes": "Attributes",
-			"emptyState": {
-				"noSelection": {
-					"title": "No selection",
-					"description": "Select an element to edit its properties.",
-					"tip": "Tip: Drag components to add new items."
-				}
-			}
+			"canvasProperties": "Canvas",
+			"layoutProperties": "Layout",
+			"transform": "Transform",
+			"appearance": "Appearance"
 		},
 		"form": {
 			"bookable": "Bookable",
@@ -89,7 +86,12 @@
 			"strokeColor": "Stroke Color",
 			"strokeWidth": "Stroke Width",
 			"fillColor": "Fill Color",
-			"borderRadius": "Border Radius"
+			"borderRadius": "Border Radius",
+			"backgroundColor": "Background Color",
+			"layoutName": "Name",
+			"layoutLocation": "Location",
+			"layoutDescription": "Description",
+			"layoutStatus": "Status"
 		},
 		"bookingTypes": {
 			"instant": {

@@ -27,6 +27,15 @@ export const useCanvas = () => {
 	);
 	const tools = ref<ReturnType<typeof createToolRegistry>>();
 	const activeTool = ref<CanvasTool | undefined>();
+	const canvasProperties = reactive<{
+		width: number;
+		height: number;
+		backgroundColor: string;
+	}>({
+		width: 800,
+		height: 600,
+		backgroundColor: "#ffffffff",
+	});
 	const activeObject = reactive<{
 		object: FabricObject | null;
 		left: number;
@@ -56,9 +65,9 @@ export const useCanvas = () => {
 	const initCanvas = (element: HTMLCanvasElement) => {
 		canvas.value = new Canvas(element, {
 			selection: false,
-			backgroundColor: "#ffffff",
-			width: 800,
-			height: 600,
+			backgroundColor: canvasProperties.backgroundColor,
+			width: canvasProperties.width,
+			height: canvasProperties.height,
 		});
 
 		render();
@@ -134,6 +143,18 @@ export const useCanvas = () => {
 
 	const render = () => {
 		canvas.value?.requestRenderAll();
+	};
+
+	const applyCanvasPropertyChanges = () => {
+		if (!canvas.value) return;
+
+		canvas.value.set({ backgroundColor: canvasProperties.backgroundColor });
+		canvas.value.setDimensions({
+			width: canvasProperties.width,
+			height: canvasProperties.height,
+		});
+
+		render();
 	};
 
 	const updateActiveObject = () => {
@@ -250,6 +271,10 @@ export const useCanvas = () => {
 		},
 	);
 
+	watch(canvasProperties, () => {
+		applyCanvasPropertyChanges();
+	});
+
 	return {
 		canvas,
 		initCanvas,
@@ -257,6 +282,8 @@ export const useCanvas = () => {
 		activeObject,
 		activeToolName,
 		applyActiveObjectChanges,
+		canvasProperties,
+		applyCanvasPropertyChanges,
 		...canvasClipboard,
 		...canvasEditing,
 		...canvasHistory,

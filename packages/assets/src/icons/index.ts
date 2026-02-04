@@ -25,4 +25,9 @@ export const Icons = {
 	seat: "hugeicons:seat-selector",
 	table: "hugeicons:table-round",
 	misc: "hugeicons:layers-logo",
+	flagPH: "flagpack:ph",
+	flagMX: "flagpack:mx",
+	flagZA: "flagpack:za",
+	flagCA: "flagpack:ca",
+	flagUS: "flagpack:us",
 };

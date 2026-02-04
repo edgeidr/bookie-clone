@@ -3,14 +3,14 @@
 		ref="layoutEditorRef"
 		class="flex w-full gap-8 overflow-hidden"
 		:style="`height: ${remainingHeight}px;`">
-		<div class="flex flex-1 flex-col">
+		<div class="flex flex-1 flex-col overflow-hidden">
 			<ActionBar />
 			<CanvasPanel />
 		</div>
 
-		<div class="mt-20 flex w-96 flex-col gap-8">
+		<div class="mt-20 w-96">
 			<InspectorCard v-if="activeObject.object" />
-			<EmptySelectionCard v-else />
+			<CanvasInspectorCard v-else />
 		</div>
 	</div>
 </template>
@@ -18,7 +18,7 @@
 <script setup lang="ts">
 	import ActionBar from "./_components/ActionBar.vue";
 	import CanvasPanel from "./_components/CanvasPanel.vue";
-	import EmptySelectionCard from "./_components/EmptySelectionCard.vue";
+	import CanvasInspectorCard from "./_components/CanvasInspectorCard.vue";
 	import InspectorCard from "./_components/InspectorCard.vue";
 
 	const { canvasManager } = defineProps<{ canvasManager: ReturnType<typeof useCanvas> }>();

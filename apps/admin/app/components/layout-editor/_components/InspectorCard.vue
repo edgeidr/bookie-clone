@@ -1,5 +1,5 @@
 <template>
-	<Card :pt="{ body: 'p-1!' }">
+	<Card class="w-96" :pt="{ body: 'p-1!' }">
 		<template #content>
 			<Tabs v-model:value="activeTab">
 				<TabList>
