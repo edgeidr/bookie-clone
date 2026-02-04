@@ -106,7 +106,6 @@
 			icon: Icons.components,
 			label: t("common.ui.components"),
 			isActive: computed(() => isComponentsActive()),
-			shortcut: { alt: true, key: "c" },
 			action: (event) => componentsRef.value?.toggle(event),
 		},
 		{
