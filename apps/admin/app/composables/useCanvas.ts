@@ -6,6 +6,7 @@ import { normalizeObject } from "~/lib/fabric/normalize/normalizeObject";
 import { handlePolyEditingForObject } from "~/lib/fabric/utils/polyEditing";
 import { CanvasToolName, type CanvasTool, type CanvasToolOrComponent } from "~~/types/canvas";
 import { useCanvasViewport } from "./useCanvasViewport";
+import { preloadAllSVGs } from "~/lib/fabric/utils/svgPreload";
 
 export const canvasManagerKey: InjectionKey<ReturnType<typeof useCanvas>> = Symbol("canvasManager");
 
@@ -67,6 +68,7 @@ export const useCanvas = () => {
 		});
 
 		render();
+		preloadAllSVGs();
 		setObjectControlDefaults();
 		initCanvasTools();
 		bindCanvasObjectEvents();
@@ -126,9 +128,9 @@ export const useCanvas = () => {
 		if (!canvas.value) return;
 
 		tools.value = createToolRegistry(canvas, canvasHistory.pushCanvasState);
-		activeTool.value = tools.value[activeToolName.value];
-		activeTool.value?.onActivate?.();
 
+		canvas.value.on("mouse:over", (event) => activeTool.value?.onMouseOver?.(event));
+		canvas.value.on("mouse:out", (event) => activeTool.value?.onMouseOut?.(event));
 		canvas.value.on("mouse:down", (event) => activeTool.value?.onMouseDown?.(event));
 		canvas.value.on("mouse:move", (event) => activeTool.value?.onMouseMove?.(event));
 		canvas.value.on("mouse:up", (event) => activeTool.value?.onMouseUp?.(event));
@@ -264,6 +266,7 @@ export const useCanvas = () => {
 			activeTool.value = tools.value[toolName];
 			activeTool.value?.onActivate?.();
 		},
+		{ immediate: true },
 	);
 
 	watch(canvasProperties, () => {

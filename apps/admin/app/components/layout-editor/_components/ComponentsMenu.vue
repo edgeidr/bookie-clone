@@ -31,7 +31,6 @@
 
 <script setup lang="ts">
 	import { Icons } from "@repo/assets";
-	import type { isatty } from "node:tty";
 	import { CanvasComponentName, type CanvasToolOrComponent } from "~~/types/canvas";
 
 	const emit = defineEmits(["selectTool"]);
@@ -57,18 +56,13 @@
 				},
 				{
 					label: t("common.layoutComponents.seats.items.seatB"),
-					icon: Icons.seat,
+					icon: Icons.seatb,
 					tool: CanvasComponentName.SEAT_B,
 				},
 				{
 					label: t("common.layoutComponents.seats.items.seatC"),
-					icon: Icons.seat,
+					icon: Icons.seatc,
 					tool: CanvasComponentName.SEAT_C,
-				},
-				{
-					label: t("common.layoutComponents.seats.items.seatD"),
-					icon: Icons.seat,
-					tool: CanvasComponentName.SEAT_D,
 				},
 			],
 		},

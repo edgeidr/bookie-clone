@@ -1,6 +1,8 @@
 import type { TPointerEventInfo } from "fabric";
 
 export interface CanvasTool {
+	onMouseOver?(event: TPointerEventInfo): void;
+	onMouseOut?(event: TPointerEventInfo): void;
 	onMouseDown?(event: TPointerEventInfo): void;
 	onMouseMove?(event: TPointerEventInfo): void;
 	onMouseUp?(event: TPointerEventInfo): void;
@@ -20,7 +22,6 @@ export enum CanvasComponentName {
 	SEAT_A = "seatA",
 	SEAT_B = "seatB",
 	SEAT_C = "seatC",
-	SEAT_D = "seatD",
 	TABLE_A = "tableA",
 	TABLE_B = "tableB",
 	TABLE_C = "tableC",
@@ -35,6 +36,22 @@ export enum CanvasComponentName {
 	RECT = "rect",
 	ELLIPSE = "ellipse",
 }
+
+export type PlaceableComponent =
+	| CanvasComponentName.SEAT_A
+	| CanvasComponentName.SEAT_B
+	| CanvasComponentName.SEAT_C
+	| CanvasComponentName.TABLE_A
+	| CanvasComponentName.TABLE_B
+	| CanvasComponentName.TABLE_C
+	| CanvasComponentName.MISC_A
+	| CanvasComponentName.MISC_B
+	| CanvasComponentName.MISC_C
+	| CanvasComponentName.MISC_D
+	| CanvasComponentName.MISC_E
+	| CanvasComponentName.MISC_F
+	| CanvasComponentName.MISC_G
+	| CanvasComponentName.MISC_H;
 
 export enum CanvasObjectProperty {
 	top = "top",
