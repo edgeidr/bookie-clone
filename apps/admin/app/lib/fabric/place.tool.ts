@@ -45,13 +45,13 @@ export const createPlaceTool = (
 				objectCaching: false,
 				selectable: false,
 				evented: false,
-				opacity: 0.5,
 			});
 
 			canvasValue.add(ghost);
 		}
 
 		ghost.set({ left: x, top: y });
+		ghost.setCoords();
 		canvasValue.requestRenderAll();
 	};
 
