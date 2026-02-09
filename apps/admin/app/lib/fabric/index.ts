@@ -26,7 +26,7 @@ export const createToolRegistry = (canvas: Ref<Canvas | null>, pushCanvasState: 
 	] as const;
 
 	const placeableTools = Object.fromEntries(
-		placeableComponents.map((name) => [name, createPlaceTool(canvas, name)]),
+		placeableComponents.map((name) => [name, createPlaceTool(canvas, name, pushCanvasState)]),
 	) as Record<PlaceableComponent, CanvasTool>;
 
 	return {

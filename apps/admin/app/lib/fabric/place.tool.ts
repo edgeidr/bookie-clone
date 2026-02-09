@@ -2,7 +2,11 @@ import { Group, type Canvas, type TPointerEventInfo } from "fabric";
 import type { CanvasTool } from "~~/types/canvas";
 import { cloneSVG } from "./utils/svgPreload";
 
-export const createPlaceTool = (canvas: Ref<Canvas | null>, toolName: string): CanvasTool => {
+export const createPlaceTool = (
+	canvas: Ref<Canvas | null>,
+	toolName: string,
+	pushCanvasState: () => void,
+): CanvasTool => {
 	let ghost: Group | null = null;
 
 	const onMouseDown = async (event: TPointerEventInfo) => {
@@ -24,6 +28,7 @@ export const createPlaceTool = (canvas: Ref<Canvas | null>, toolName: string): C
 
 		canvasValue.add(object);
 		canvasValue.requestRenderAll();
+		pushCanvasState();
 	};
 
 	const onMouseMove = async (event: TPointerEventInfo) => {
@@ -37,7 +42,7 @@ export const createPlaceTool = (canvas: Ref<Canvas | null>, toolName: string): C
 			ghost.set({
 				originX: "center",
 				originY: "center",
-				objectCaching: true,
+				objectCaching: false,
 				selectable: false,
 				evented: false,
 				opacity: 0.5,
