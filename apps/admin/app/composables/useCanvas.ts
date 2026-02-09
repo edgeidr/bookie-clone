@@ -1,4 +1,4 @@
-import { Canvas, InteractiveFabricObject, Point, type FabricObject } from "fabric";
+import { Canvas, InteractiveFabricObject, type FabricObject } from "fabric";
 import type { InjectionKey } from "vue";
 import { createToolRegistry } from "~/lib/fabric";
 import { fabricObjectControlDefaults } from "~/lib/fabric/defaults/objectControlDefaults";
@@ -73,10 +73,7 @@ export const useCanvas = () => {
 		initCanvasTools();
 		bindCanvasObjectEvents();
 		enableCanvasFocus();
-		makeCanvasResponsive();
 	};
-
-	const makeCanvasResponsive = () => {};
 
 	const bindCanvasObjectEvents = () => {
 		if (!canvas.value) return;

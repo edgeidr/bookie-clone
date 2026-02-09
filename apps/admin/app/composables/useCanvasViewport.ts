@@ -1,4 +1,4 @@
-import { Point, type Canvas } from "fabric";
+import { Pattern, Point, type Canvas } from "fabric";
 import { CanvasToolName } from "~~/types/canvas";
 
 export const useCanvasViewport = (
@@ -86,7 +86,37 @@ export const useCanvasViewport = (
 		canvasValue.requestRenderAll();
 	};
 
+	const setCheckeredBackground = () => {
+		const canvasValue = canvas.value;
+		if (!canvasValue) return;
+
+		const size = 40;
+		const patternCanvas = document.createElement("canvas");
+
+		patternCanvas.width = size * 2;
+		patternCanvas.height = size * 2;
+
+		const ctx = patternCanvas.getContext("2d");
+		if (!ctx) return;
+
+		ctx.fillStyle = "#f8f8f8";
+		ctx.fillRect(0, 0, patternCanvas.width, patternCanvas.height);
+
+		ctx.fillStyle = "#d9d9d9";
+		ctx.fillRect(0, 0, size, size);
+		ctx.fillRect(size, size, size, size);
+
+		const pattern = new Pattern({
+			source: patternCanvas,
+			repeat: "repeat",
+		});
+
+		canvasValue.backgroundColor = pattern;
+		canvasValue.requestRenderAll();
+	};
+
 	onMounted(() => {
+		setCheckeredBackground();
 		bindCanvasZoomEvent();
 		bindCanvasPanEvent();
 		resizeCanvas();
