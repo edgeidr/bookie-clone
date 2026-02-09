@@ -11,7 +11,9 @@ export const createPlaceTool = (
 
 	const onMouseDown = async (event: TPointerEventInfo) => {
 		const canvasValue = canvas.value;
+		const evt = event.e as MouseEvent;
 		if (!canvasValue) return;
+		if (evt.button !== 0) return;
 
 		const { x, y } = event.scenePoint;
 		const object = await cloneSVG(toolName);
