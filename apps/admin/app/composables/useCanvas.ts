@@ -252,6 +252,7 @@ export const useCanvas = () => {
 			copy: canvasClipboard.copy,
 			cut: canvasClipboard.cut,
 			paste: canvasClipboard.paste,
+			moveSelection: canvasEditing.moveSelection,
 			removeSelection: canvasEditing.removeSelection,
 			undoCanvas: canvasHistory.undoCanvas,
 			redoCanvas: canvasHistory.redoCanvas,

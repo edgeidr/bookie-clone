@@ -6,6 +6,23 @@ export const useCanvasEditing = (
 	pushCanvasState: () => void,
 	activeToolName: Ref<CanvasToolOrComponent>,
 ) => {
+	const moveSelection = (deltaX: number, deltaY: number) => {
+		const canvasValue = canvas.value;
+		if (!canvasValue) return;
+
+		const activeObject = canvasValue.getActiveObject();
+		if (!activeObject) return;
+
+		activeObject.left += deltaX;
+		activeObject.top += deltaY;
+		activeObject.setCoords();
+
+		canvasValue.requestRenderAll();
+		canvasValue.fire("object:modified", { target: activeObject });
+
+		pushCanvasState();
+	};
+
 	const removeSelection = () => {
 		if (!canvas.value) return;
 
@@ -26,5 +43,5 @@ export const useCanvasEditing = (
 		activeToolName.value = tool;
 	};
 
-	return { removeSelection, selectTool };
+	return { moveSelection, removeSelection, selectTool };
 };

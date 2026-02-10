@@ -7,13 +7,23 @@ interface CanvasActions {
 	cut: () => void;
 	paste: () => void;
 	removeSelection: () => void;
+	moveSelection: (deltaX: number, deltaY: number) => void;
 	undoCanvas: () => void;
 	redoCanvas: () => void;
 	canvasEditing: ReturnType<typeof useCanvasEditing>;
 }
 
 export const useCanvasShortcuts = (actions: CanvasActions, canvas: Ref<Canvas | null>) => {
-	const { copy, cut, paste, removeSelection, undoCanvas, redoCanvas, canvasEditing } = actions;
+	const {
+		copy,
+		cut,
+		paste,
+		moveSelection,
+		removeSelection,
+		undoCanvas,
+		redoCanvas,
+		canvasEditing,
+	} = actions;
 	let attached = false;
 
 	const COPY_SHORTCUT: Shortcut = { key: "c", mod: true };
@@ -24,6 +34,10 @@ export const useCanvasShortcuts = (actions: CanvasActions, canvas: Ref<Canvas | 
 	const REDO_SHORTCUT: Shortcut = { key: "y" };
 	const PEN_TOOL_SHORTCUT: Shortcut = { key: "p", alt: true };
 	const SELECT_SHORTCUT: Shortcut = { key: "s", alt: true };
+	const MOVE_LEFT_SHORTCUT: Shortcut = { key: "ArrowLeft" };
+	const MOVE_RIGHT_SHORTCUT: Shortcut = { key: "ArrowRight" };
+	const MOVE_UP_SHORTCUT: Shortcut = { key: "ArrowUp" };
+	const MOVE_DOWN_SHORTCUT: Shortcut = { key: "ArrowDown" };
 
 	const matchShortcut = (shortcut: Shortcut) => (event: KeyboardEvent) => {
 		if (shortcut.mod && !(event.ctrlKey || event.metaKey)) return false;
@@ -59,6 +73,10 @@ export const useCanvasShortcuts = (actions: CanvasActions, canvas: Ref<Canvas | 
 					target: document,
 				},
 			);
+			onKeyStroke(matchShortcut(MOVE_LEFT_SHORTCUT), () => moveSelection(-1, 0), { target });
+			onKeyStroke(matchShortcut(MOVE_RIGHT_SHORTCUT), () => moveSelection(1, 0), { target });
+			onKeyStroke(matchShortcut(MOVE_UP_SHORTCUT), () => moveSelection(0, -1), { target });
+			onKeyStroke(matchShortcut(MOVE_DOWN_SHORTCUT), () => moveSelection(0, 1), { target });
 		},
 		{ immediate: true },
 	);
