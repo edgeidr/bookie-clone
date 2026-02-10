@@ -123,7 +123,7 @@ export const useCanvas = () => {
 
 		canvas.value.on("object:moving", (event) => {
 			updateActiveObject();
-			canvasSnapping.moveObject(event.target);
+			canvasSnapping.moveObject();
 		});
 	};
 

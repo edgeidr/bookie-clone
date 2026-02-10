@@ -1,4 +1,4 @@
-import { Point, Polyline, type Canvas, type FabricObject } from "fabric";
+import { ActiveSelection, Point, Polyline, type Canvas, type FabricObject } from "fabric";
 
 interface ObjectSides {
 	left: number;
@@ -9,10 +9,7 @@ interface ObjectSides {
 	centerY: number;
 }
 
-type SnapCandidate = {
-	value: number;
-	delta: number;
-} | null;
+type SnapCandidate = { delta: number } | null;
 
 export const useCanvasSnapping = (canvas: Ref<Canvas | null>) => {
 	const snappingEnabled = ref(true);
@@ -33,181 +30,96 @@ export const useCanvasSnapping = (canvas: Ref<Canvas | null>) => {
 		return { left, top, right, bottom, centerX, centerY };
 	};
 
-	const snapLeftToLeft = (
-		objectSides: ObjectSides,
-		otherSides: ObjectSides,
-		objectPosX: number,
-	): SnapCandidate => {
+	const snapLeftToLeft = (objectSides: ObjectSides, otherSides: ObjectSides): SnapCandidate => {
 		const { left: objectLeft } = objectSides;
 		const { left: otherLeft } = otherSides;
 
 		if (!isClose(objectLeft, otherLeft)) return null;
 
-		const deltaX = otherLeft - objectLeft;
-		const snappedX = objectPosX + deltaX;
-
-		return {
-			value: snappedX,
-			delta: Math.abs(deltaX),
-		};
+		return { delta: otherLeft - objectLeft };
 	};
 
-	const snapRightToRight = (
-		objectSides: ObjectSides,
-		otherSides: ObjectSides,
-		objectPosX: number,
-	): SnapCandidate => {
+	const snapRightToRight = (objectSides: ObjectSides, otherSides: ObjectSides): SnapCandidate => {
 		const { right: objectRight } = objectSides;
 		const { right: otherRight } = otherSides;
 
 		if (!isClose(objectRight, otherRight)) return null;
 
-		const deltaX = otherRight - objectRight;
-		const snappedX = objectPosX + deltaX;
-
-		return {
-			value: snappedX,
-			delta: Math.abs(deltaX),
-		};
+		return { delta: otherRight - objectRight };
 	};
 
-	const snapLeftToRight = (
-		objectSides: ObjectSides,
-		otherSides: ObjectSides,
-		objectPosX: number,
-	): SnapCandidate => {
+	const snapLeftToRight = (objectSides: ObjectSides, otherSides: ObjectSides): SnapCandidate => {
 		const { left: objectLeft } = objectSides;
 		const { right: otherRight } = otherSides;
 
 		if (!isClose(objectLeft, otherRight)) return null;
 
-		const deltaX = otherRight - objectLeft;
-		const snappedX = objectPosX + deltaX;
-
-		return {
-			value: snappedX,
-			delta: Math.abs(deltaX),
-		};
+		return { delta: otherRight - objectLeft };
 	};
 
-	const snapRightToLeft = (
-		objectSides: ObjectSides,
-		otherSides: ObjectSides,
-		objectPosX: number,
-	): SnapCandidate => {
+	const snapRightToLeft = (objectSides: ObjectSides, otherSides: ObjectSides): SnapCandidate => {
 		const { right: objectRight } = objectSides;
 		const { left: otherLeft } = otherSides;
 
 		if (!isClose(objectRight, otherLeft)) return null;
 
-		const deltaX = otherLeft - objectRight;
-		const snappedX = objectPosX + deltaX;
-
-		return {
-			value: snappedX,
-			delta: Math.abs(deltaX),
-		};
+		return { delta: otherLeft - objectRight };
 	};
 
 	const snapCenterXToCenterX = (
 		objectSides: ObjectSides,
 		otherSides: ObjectSides,
-		objectPosX: number,
 	): SnapCandidate => {
 		const { centerX: objectCenterX } = objectSides;
 		const { centerX: otherCenterX } = otherSides;
 
 		if (!isClose(objectCenterX, otherCenterX)) return null;
 
-		const deltaX = otherCenterX - objectCenterX;
-		const snappedX = objectPosX + deltaX;
-
-		return {
-			value: snappedX,
-			delta: Math.abs(deltaX),
-		};
+		return { delta: otherCenterX - objectCenterX };
 	};
 
-	const snapTopToTop = (
-		objectSides: ObjectSides,
-		otherSides: ObjectSides,
-		objectPosY: number,
-	): SnapCandidate => {
+	const snapTopToTop = (objectSides: ObjectSides, otherSides: ObjectSides): SnapCandidate => {
 		const { top: objectTop } = objectSides;
 		const { top: otherTop } = otherSides;
 
 		if (!isClose(objectTop, otherTop)) return null;
 
-		const deltaY = otherTop - objectTop;
-		const snappedY = objectPosY + deltaY;
-
-		return {
-			value: snappedY,
-			delta: Math.abs(deltaY),
-		};
+		return { delta: otherTop - objectTop };
 	};
 
 	const snapBottomToBottom = (
 		objectSides: ObjectSides,
 		otherSides: ObjectSides,
-		objectPosY: number,
 	): SnapCandidate => {
 		const { bottom: objectBottom } = objectSides;
 		const { bottom: otherBottom } = otherSides;
 
 		if (!isClose(objectBottom, otherBottom)) return null;
 
-		const deltaY = otherBottom - objectBottom;
-		const snappedY = objectPosY + deltaY;
-
-		return {
-			value: snappedY,
-			delta: Math.abs(deltaY),
-		};
+		return { delta: otherBottom - objectBottom };
 	};
 
-	const snapTopToBottom = (
-		objectSides: ObjectSides,
-		otherSides: ObjectSides,
-		objectPosY: number,
-	): SnapCandidate => {
+	const snapTopToBottom = (objectSides: ObjectSides, otherSides: ObjectSides): SnapCandidate => {
 		const { top: objectTop } = objectSides;
 		const { bottom: otherBottom } = otherSides;
 
 		if (!isClose(objectTop, otherBottom)) return null;
 
-		const deltaY = otherBottom - objectTop;
-		const snappedY = objectPosY + deltaY;
-
-		return {
-			value: snappedY,
-			delta: Math.abs(deltaY),
-		};
+		return { delta: otherBottom - objectTop };
 	};
 
-	const snapBottomToTop = (
-		objectSides: ObjectSides,
-		otherSides: ObjectSides,
-		objectPosY: number,
-	): SnapCandidate => {
+	const snapBottomToTop = (objectSides: ObjectSides, otherSides: ObjectSides): SnapCandidate => {
 		const { bottom: objectBottom } = objectSides;
 		const { top: otherTop } = otherSides;
 
 		if (!isClose(objectBottom, otherTop)) return null;
 
-		const deltaY = otherTop - objectBottom;
-		const snappedY = objectPosY + deltaY;
-
-		return {
-			value: snappedY,
-			delta: Math.abs(deltaY),
-		};
+		return { delta: otherTop - objectBottom };
 	};
 
 	const snapCenterYToCenterY = (
 		objectSides: ObjectSides,
 		otherSides: ObjectSides,
-		objectPosY: number,
 	): SnapCandidate => {
 		const { centerY: objectCenterY } = objectSides;
 		const { centerY: otherCenterY } = otherSides;
@@ -215,12 +127,8 @@ export const useCanvasSnapping = (canvas: Ref<Canvas | null>) => {
 		if (!isClose(objectCenterY, otherCenterY)) return null;
 
 		const deltaY = otherCenterY - objectCenterY;
-		const snappedY = objectPosY + deltaY;
 
-		return {
-			value: snappedY,
-			delta: Math.abs(deltaY),
-		};
+		return { delta: deltaY };
 	};
 
 	const snapToObjects = (object: FabricObject) => {
@@ -232,35 +140,42 @@ export const useCanvasSnapping = (canvas: Ref<Canvas | null>) => {
 		const snapYCandidates: SnapCandidate[] = [];
 
 		canvasValue.getObjects().forEach((other) => {
-			if (other === object) return;
-			if ((other as any).excludeFromSnap) return;
+			if (!isSnapCandidate(object, other)) return;
 
 			const otherSides = getObjectSides(other);
 
-			snapXCandidates.push(snapLeftToLeft(objectSides, otherSides, object.left));
-			snapXCandidates.push(snapRightToRight(objectSides, otherSides, object.left));
-			snapXCandidates.push(snapLeftToRight(objectSides, otherSides, object.left));
-			snapXCandidates.push(snapRightToLeft(objectSides, otherSides, object.left));
-			snapXCandidates.push(snapCenterXToCenterX(objectSides, otherSides, object.left));
+			snapXCandidates.push(snapLeftToLeft(objectSides, otherSides));
+			snapXCandidates.push(snapRightToRight(objectSides, otherSides));
+			snapXCandidates.push(snapLeftToRight(objectSides, otherSides));
+			snapXCandidates.push(snapRightToLeft(objectSides, otherSides));
+			snapXCandidates.push(snapCenterXToCenterX(objectSides, otherSides));
 
-			snapYCandidates.push(snapTopToTop(objectSides, otherSides, object.top));
-			snapYCandidates.push(snapBottomToBottom(objectSides, otherSides, object.top));
-			snapYCandidates.push(snapTopToBottom(objectSides, otherSides, object.top));
-			snapYCandidates.push(snapBottomToTop(objectSides, otherSides, object.top));
-			snapYCandidates.push(snapCenterYToCenterY(objectSides, otherSides, object.top));
+			snapYCandidates.push(snapTopToTop(objectSides, otherSides));
+			snapYCandidates.push(snapBottomToBottom(objectSides, otherSides));
+			snapYCandidates.push(snapTopToBottom(objectSides, otherSides));
+			snapYCandidates.push(snapBottomToTop(objectSides, otherSides));
+			snapYCandidates.push(snapCenterYToCenterY(objectSides, otherSides));
 		});
 
-		const snappedX = getBestSnapCandidate(snapXCandidates)?.value ?? object.left;
-		const snappedY = getBestSnapCandidate(snapYCandidates)?.value ?? object.top;
+		const deltaX = getBestSnapCandidate(snapXCandidates)?.delta ?? 0;
+		const deltaY = getBestSnapCandidate(snapYCandidates)?.delta ?? 0;
 
-		return { x: snappedX, y: snappedY };
+		return {
+			x: object.left + deltaX,
+			y: object.top + deltaY,
+		};
 	};
 
 	const getBestSnapCandidate = (candidates: SnapCandidate[]) => {
 		const filtered = candidates.filter((v) => v !== null);
 		if (!filtered.length) return null;
 
-		return filtered.reduce((best, current) => (current.delta < best.delta ? current : best));
+		return filtered.reduce((best, current) => {
+			const currentDelta = Math.abs(current.delta);
+			const bestDelta = Math.abs(best.delta);
+
+			return currentDelta < bestDelta ? current : best;
+		});
 	};
 
 	const drawGuides = (object: FabricObject) => {
@@ -270,8 +185,7 @@ export const useCanvasSnapping = (canvas: Ref<Canvas | null>) => {
 		const objectSides = getObjectSides(object);
 
 		canvasValue.getObjects().forEach((other) => {
-			if (other === object) return;
-			if ((other as any).excludeFromSnap) return;
+			if (!isSnapCandidate(object, other)) return;
 
 			const otherSides = getObjectSides(other);
 			const xSnaps: [keyof ObjectSides, keyof ObjectSides][] = [
@@ -303,23 +217,39 @@ export const useCanvasSnapping = (canvas: Ref<Canvas | null>) => {
 		});
 	};
 
+	const isSnapCandidate = (object: FabricObject, other: FabricObject) => {
+		if (other === object) return false;
+		if ((other as any).excludeFromSnap) return false;
+		if (
+			object.isType("activeselection") &&
+			(object as ActiveSelection).getObjects().includes(other)
+		) {
+			return false;
+		}
+
+		return true;
+	};
+
 	const isAligned = (a: number, b: number) => Math.abs(a - b) <= alignTolerance;
 
 	const isClose = (a: number, b: number) => Math.abs(a - b) <= snapTolerance;
 
-	const moveObject = (object: FabricObject) => {
+	const moveObject = () => {
 		const canvasValue = canvas.value;
 		if (!canvasValue) return;
 
+		const activeObject = canvasValue.getActiveObject();
+		if (!activeObject) return;
+
 		removeGuidesLines();
-		object.setCoords();
+		activeObject.setCoords();
 
-		const { x: snappedX, y: snappedY } = snapToObjects(object);
+		const { x: snappedX, y: snappedY } = snapToObjects(activeObject);
 
-		object.left = snappedX;
-		object.top = snappedY;
-		object.setCoords();
-		drawGuides(object);
+		activeObject.left = snappedX;
+		activeObject.top = snappedY;
+		activeObject.setCoords();
+		drawGuides(activeObject);
 
 		canvasValue.requestRenderAll();
 	};
