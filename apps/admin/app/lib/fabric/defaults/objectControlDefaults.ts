@@ -9,4 +9,5 @@ export const fabricObjectControlDefaults: Partial<FabricObject> = {
 	borderDashArray: [5, 2],
 	padding: 1,
 	perPixelTargetFind: true,
+	borderOpacityWhenMoving: 0,
 };
