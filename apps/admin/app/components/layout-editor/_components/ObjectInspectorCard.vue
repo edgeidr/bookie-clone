@@ -7,8 +7,8 @@
 				</TabList>
 
 				<TabPanels>
-					<TabPanel :value="TABS.PROPERTIES"> <PropertiesTab /> </TabPanel>
-					<TabPanel :value="TABS.ATTRIBUTES"> <AttributesTab /> </TabPanel>
+					<TabPanel :value="TABS.PROPERTIES"> <ObjectPropertiesTab /> </TabPanel>
+					<TabPanel :value="TABS.ATTRIBUTES"> <ObjectAttributesTab /> </TabPanel>
 				</TabPanels>
 			</Tabs>
 		</template>
@@ -16,8 +16,8 @@
 </template>
 
 <script setup lang="ts">
-	import PropertiesTab from "./PropertiesTab.vue";
-	import AttributesTab from "./AttributesTab.vue";
+	import ObjectPropertiesTab from "./ObjectPropertiesTab.vue";
+	import ObjectAttributesTab from "./ObjectAttributesTab.vue";
 
 	const { t } = useI18n();
 	const TABS = {

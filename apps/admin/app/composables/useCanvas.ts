@@ -4,7 +4,12 @@ import { createToolRegistry } from "~/lib/fabric";
 import { fabricObjectControlDefaults } from "~/lib/fabric/defaults/objectControlDefaults";
 import { normalizeObject } from "~/lib/fabric/normalize/normalizeObject";
 import { handlePolyEditingForObject } from "~/lib/fabric/utils/polyEditing";
-import { CanvasToolName, type CanvasTool, type CanvasToolOrComponent } from "~~/types/canvas";
+import {
+	CanvasToolName,
+	type CanvasProperties,
+	type CanvasTool,
+	type CanvasToolOrComponent,
+} from "~~/types/canvas";
 import { useCanvasViewport } from "./useCanvasViewport";
 import { preloadAllSVGs } from "~/lib/fabric/utils/svgPreload";
 
@@ -18,6 +23,10 @@ export const useInjectedCanvas = () => {
 };
 
 export const useCanvas = () => {
+	const canvasProperties = reactive<CanvasProperties>({
+		isSnappingEnabled: true,
+	});
+
 	const activeToolName = ref<CanvasToolOrComponent>(CanvasToolName.SELECT);
 	const canvas = shallowRef<Canvas | null>(null);
 	const canvasHistory = useCanvasHistory(canvas);
@@ -28,14 +37,10 @@ export const useCanvas = () => {
 		canvasEditing.removeSelection,
 	);
 	const canvasViewport = useCanvasViewport(canvas, canvasEditing);
-	const canvasSnapping = useCanvasSnapping(canvas);
+	const canvasSnapping = useCanvasSnapping(canvas, canvasProperties);
 	const tools = ref<ReturnType<typeof createToolRegistry>>();
 	const activeTool = ref<CanvasTool | undefined>();
-	const canvasProperties = reactive<{
-		backgroundColor: string;
-	}>({
-		backgroundColor: "#ffffffff",
-	});
+
 	const activeObject = reactive<{
 		object: FabricObject | null;
 		left: number;
@@ -63,10 +68,7 @@ export const useCanvas = () => {
 	});
 
 	const initCanvas = (element: HTMLCanvasElement) => {
-		canvas.value = new Canvas(element, {
-			selection: false,
-			backgroundColor: canvasProperties.backgroundColor,
-		});
+		canvas.value = new Canvas(element, { selection: false });
 
 		render();
 		preloadAllSVGs();
@@ -151,8 +153,6 @@ export const useCanvas = () => {
 
 	const applyCanvasPropertyChanges = () => {
 		if (!canvas.value) return;
-
-		canvas.value.set({ backgroundColor: canvasProperties.backgroundColor });
 
 		render();
 	};

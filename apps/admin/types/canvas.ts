@@ -66,3 +66,7 @@ export enum CanvasObjectProperty {
 	rx = "rx",
 	ry = "ry",
 }
+
+export interface CanvasProperties {
+	isSnappingEnabled: boolean;
+}

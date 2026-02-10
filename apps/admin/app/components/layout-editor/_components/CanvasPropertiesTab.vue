@@ -1,18 +1,14 @@
 <template>
-	<Panel :header="GROUPS.APPEARANCE" :pt="panelPT">
-		<div class="grid grid-cols-2 gap-4">
-			<InputGroup>
-				<IftaLabel>
-					<InputText v-model="canvasProperties.backgroundColor" />
-					<label class="text-sm">{{ t("common.form.backgroundColor") }}</label>
-				</IftaLabel>
+	<div class="flex items-center justify-between gap-8">
+		<label for="isSnappingEnabled">{{ t("common.form.enableSnapping") }}</label>
+		<ToggleSwitch inputId="isSnappingEnabled" v-model="canvasProperties.isSnappingEnabled" />
+	</div>
 
-				<InputGroupAddon>
-					<VColorPicker v-model="canvasProperties.backgroundColor" />
-				</InputGroupAddon>
-			</InputGroup>
-		</div>
-	</Panel>
+	<!-- <Divider />
+
+	<Panel :header="GROUPS.APPEARANCE" :pt="panelPT">
+		<div class="grid grid-cols-2 gap-4"></div>
+	</Panel> -->
 </template>
 
 <script setup lang="ts">

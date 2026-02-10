@@ -91,7 +91,8 @@
 			"layoutName": "Name",
 			"layoutLocation": "Location",
 			"layoutDescription": "Description",
-			"layoutStatus": "Status"
+			"layoutStatus": "Status",
+			"enableSnapping": "Enable Snapping"
 		},
 		"bookingTypes": {
 			"instant": {

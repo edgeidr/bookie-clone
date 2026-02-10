@@ -1,4 +1,5 @@
 import { ActiveSelection, Point, Polyline, type Canvas, type FabricObject } from "fabric";
+import type { CanvasProperties } from "~~/types/canvas";
 
 interface ObjectSides {
 	left: number;
@@ -11,8 +12,10 @@ interface ObjectSides {
 
 type SnapCandidate = { delta: number } | null;
 
-export const useCanvasSnapping = (canvas: Ref<Canvas | null>) => {
-	const snappingEnabled = ref(true);
+export const useCanvasSnapping = (
+	canvas: Ref<Canvas | null>,
+	canvasProperties: CanvasProperties,
+) => {
 	const snapTolerance = 5;
 	const alignTolerance = 0.5;
 
@@ -133,7 +136,8 @@ export const useCanvasSnapping = (canvas: Ref<Canvas | null>) => {
 
 	const snapToObjects = (object: FabricObject) => {
 		const canvasValue = canvas.value;
-		if (!canvasValue || !snappingEnabled.value) return { x: object.left, y: object.top };
+		if (!canvasValue) return { x: object.left, y: object.top };
+		if (!canvasProperties.isSnappingEnabled) return { x: object.left, y: object.top };
 
 		const objectSides = getObjectSides(object);
 		const snapXCandidates: SnapCandidate[] = [];
@@ -181,6 +185,7 @@ export const useCanvasSnapping = (canvas: Ref<Canvas | null>) => {
 	const drawGuides = (object: FabricObject) => {
 		const canvasValue = canvas.value;
 		if (!canvasValue) return;
+		if (!canvasProperties.isSnappingEnabled) return;
 
 		const objectSides = getObjectSides(object);
 

@@ -9,7 +9,7 @@
 		</div>
 
 		<div class="mt-20 w-96">
-			<InspectorCard v-if="activeObject.object" />
+			<ObjectInspectorCard v-if="activeObject.object" />
 			<CanvasInspectorCard v-else />
 		</div>
 	</div>
@@ -19,7 +19,7 @@
 	import ActionBar from "./_components/ActionBar.vue";
 	import CanvasPanel from "./_components/CanvasPanel.vue";
 	import CanvasInspectorCard from "./_components/CanvasInspectorCard.vue";
-	import InspectorCard from "./_components/InspectorCard.vue";
+	import ObjectInspectorCard from "./_components/ObjectInspectorCard.vue";
 
 	const { canvasManager } = defineProps<{ canvasManager: ReturnType<typeof useCanvas> }>();
 	const layoutEditorRef = useTemplateRef("layoutEditorRef");
