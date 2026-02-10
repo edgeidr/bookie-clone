@@ -52,14 +52,7 @@ export const createEllipseTool = (
 			return;
 		}
 
-		ellipse.set({
-			objectCaching: true,
-			left: ellipse.left + ellipse.rx,
-			top: ellipse.top + ellipse.ry,
-			originX: "center",
-			originY: "center",
-		});
-
+		ellipse.set({ objectCaching: true });
 		ellipse = null;
 
 		pushCanvasState();

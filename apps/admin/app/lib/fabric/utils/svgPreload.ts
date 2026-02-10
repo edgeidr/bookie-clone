@@ -8,7 +8,11 @@ export const preloadSVG = async (id: string, svgString: string) => {
 	if (svgTemplates.has(id)) return;
 
 	const loaded = await loadSVGFromString(svgString);
-	const group = new Group(loaded.objects as FabricObject[], loaded.options);
+	const group = new Group(loaded.objects as FabricObject[], {
+		...loaded.options,
+		originX: "left",
+		originY: "top",
+	});
 
 	group.getObjects().forEach((child) =>
 		child.set({

@@ -10,4 +10,6 @@ export const fabricObjectDefaults: Partial<FabricObject> = {
 	objectCaching: false,
 	selectable: false,
 	evented: false,
+	snapAngle: 45,
+	snapThreshold: 5,
 };

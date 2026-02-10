@@ -103,8 +103,6 @@ export const createPolylineTool = (
 
 		const polygon = new Polygon([...points], {
 			...fabricObjectDefaults,
-			originX: "center",
-			originY: "center",
 		});
 
 		canvas.value.remove(polyline);

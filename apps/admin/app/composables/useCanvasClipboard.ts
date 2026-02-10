@@ -68,6 +68,8 @@ export const useCanvasClipboard = (
 		object.set({
 			left: (object.left ?? 0) + offset,
 			top: (object.top ?? 0) + offset,
+			snapAngle: 45,
+			snapThreshold: 5,
 		});
 
 		object.setCoords();

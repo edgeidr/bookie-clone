@@ -28,6 +28,7 @@ export const useCanvas = () => {
 		canvasEditing.removeSelection,
 	);
 	const canvasViewport = useCanvasViewport(canvas, canvasEditing);
+	const canvasSnapping = useCanvasSnapping(canvas);
 	const tools = ref<ReturnType<typeof createToolRegistry>>();
 	const activeTool = ref<CanvasTool | undefined>();
 	const canvasProperties = reactive<{
@@ -79,7 +80,6 @@ export const useCanvas = () => {
 		if (!canvas.value) return;
 
 		canvas.value.on("selection:cleared", clearActiveObject);
-		canvas.value.on("object:moving", updateActiveObject);
 		canvas.value.on("object:rotating", updateActiveObject);
 		canvas.value.on("object:modifyPoly", updateActiveObject);
 
@@ -110,6 +110,7 @@ export const useCanvas = () => {
 		canvas.value.on("object:modified", (event) => {
 			const object = event.target;
 
+			canvasSnapping.removeGuidesLines();
 			setObjectCaching(object, true);
 			normalizeObject(object);
 			updateActiveObject();
@@ -118,6 +119,11 @@ export const useCanvas = () => {
 			render();
 
 			canvasHistory.pushCanvasState();
+		});
+
+		canvas.value.on("object:moving", (event) => {
+			updateActiveObject();
+			canvasSnapping.moveObject(event.target);
 		});
 	};
 

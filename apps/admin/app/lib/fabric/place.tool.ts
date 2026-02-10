@@ -21,11 +21,11 @@ export const createPlaceTool = (
 		object.set({
 			left: x,
 			top: y,
-			originX: "center",
-			originY: "center",
 			objectCaching: true,
 			selectable: false,
 			evented: false,
+			snapAngle: 45,
+			snapThreshold: 5,
 		});
 
 		canvasValue.add(object);
@@ -42,8 +42,6 @@ export const createPlaceTool = (
 		if (!ghost) {
 			ghost = await cloneSVG(toolName);
 			ghost.set({
-				originX: "center",
-				originY: "center",
 				objectCaching: false,
 				selectable: false,
 				evented: false,

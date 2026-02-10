@@ -50,14 +50,7 @@ export const createRectTool = (
 			return;
 		}
 
-		rect.set({
-			objectCaching: true,
-			left: rect.left + rect.width / 2,
-			top: rect.top + rect.height / 2,
-			originX: "center",
-			originY: "center",
-		});
-
+		rect.set({ objectCaching: true });
 		rect = null;
 
 		pushCanvasState();
