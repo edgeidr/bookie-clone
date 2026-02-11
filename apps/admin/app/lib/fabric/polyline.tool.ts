@@ -56,6 +56,11 @@ export const createPolylineTool = (
 	const onMouseDown = (event: TPointerEventInfo) => {
 		if (handleRightClick(event)) return;
 
+		const canvasValue = canvas.value;
+		const evt = event.e as MouseEvent;
+		if (!canvasValue) return;
+		if (evt.button !== 0) return;
+
 		const point = getPoint(event);
 
 		if (tryStartDrawing(point)) return;

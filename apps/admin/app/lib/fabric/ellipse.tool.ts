@@ -10,7 +10,10 @@ export const createEllipseTool = (
 	let start = { x: 0, y: 0 };
 
 	const onMouseDown = (event: TPointerEventInfo) => {
-		if (!canvas.value) return;
+		const canvasValue = canvas.value;
+		const evt = event.e as MouseEvent;
+		if (!canvasValue) return;
+		if (evt.button !== 0) return;
 
 		start = { ...event.scenePoint };
 
@@ -22,7 +25,7 @@ export const createEllipseTool = (
 			...fabricObjectDefaults,
 		});
 
-		canvas.value.add(ellipse);
+		canvasValue.add(ellipse);
 	};
 
 	const onMouseMove = (event: TPointerEventInfo) => {
@@ -43,12 +46,14 @@ export const createEllipseTool = (
 		canvas.value.requestRenderAll();
 	};
 
-	const onMouseUp = () => {
-		if (!canvas.value) return;
+	const onMouseUp = (event: TPointerEventInfo) => {
+		const canvasValue = canvas.value;
+		const evt = event.e as MouseEvent;
+		if (!canvasValue) return;
+		if (evt.button !== 0) return;
 
 		if (!ellipse || ellipse.rx === 0 || ellipse.ry === 0) {
-			if (ellipse) canvas.value.remove(ellipse);
-			ellipse = null;
+			cancel();
 			return;
 		}
 
@@ -58,9 +63,22 @@ export const createEllipseTool = (
 		pushCanvasState();
 	};
 
+	const cancel = () => {
+		const canvasValue = canvas.value;
+		if (!canvasValue) return;
+
+		if (ellipse) canvasValue.remove(ellipse);
+		ellipse = null;
+	};
+
+	const onDeactivate = () => {
+		cancel();
+	};
+
 	return {
 		onMouseDown,
 		onMouseMove,
 		onMouseUp,
+		onDeactivate,
 	};
 };

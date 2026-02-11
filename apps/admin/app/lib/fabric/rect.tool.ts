@@ -10,7 +10,10 @@ export const createRectTool = (
 	let start = { x: 0, y: 0 };
 
 	const onMouseDown = (event: TPointerEventInfo) => {
-		if (!canvas.value) return;
+		const canvasValue = canvas.value;
+		const evt = event.e as MouseEvent;
+		if (!canvasValue) return;
+		if (evt.button !== 0) return;
 
 		start = { ...event.scenePoint };
 
@@ -22,7 +25,7 @@ export const createRectTool = (
 			...fabricObjectDefaults,
 		});
 
-		canvas.value.add(rect);
+		canvasValue.add(rect);
 	};
 
 	const onMouseMove = (event: TPointerEventInfo) => {
@@ -41,12 +44,14 @@ export const createRectTool = (
 		canvas.value.requestRenderAll();
 	};
 
-	const onMouseUp = () => {
-		if (!canvas.value) return;
+	const onMouseUp = (event: TPointerEventInfo) => {
+		const canvasValue = canvas.value;
+		const evt = event.e as MouseEvent;
+		if (!canvasValue) return;
+		if (evt.button !== 0) return;
 
 		if (!rect || rect.width === 0 || rect.height === 0) {
-			if (rect) canvas.value.remove(rect);
-			rect = null;
+			cancel();
 			return;
 		}
 
@@ -56,5 +61,17 @@ export const createRectTool = (
 		pushCanvasState();
 	};
 
-	return { onMouseDown, onMouseMove, onMouseUp };
+	const cancel = () => {
+		const canvasValue = canvas.value;
+		if (!canvasValue) return;
+
+		if (rect) canvasValue.remove(rect);
+		rect = null;
+	};
+
+	const onDeactivate = () => {
+		cancel();
+	};
+
+	return { onMouseDown, onMouseMove, onMouseUp, onDeactivate };
 };
