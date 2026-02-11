@@ -201,9 +201,17 @@ export const useCanvas = () => {
 		if (!canvas.value) return;
 		if (!activeObject.object) return;
 
+		const before = activeObject.object.getCenterPoint();
+
 		activeObject.object.set({
-			left: activeObject.left,
-			top: activeObject.top,
+			angle: activeObject.angle,
+		});
+
+		const after = activeObject.object.getCenterPoint();
+
+		activeObject.object.set({
+			left: activeObject.left + before.x - after.x,
+			top: activeObject.top + before.y - after.y,
 			width: activeObject.width,
 			height: activeObject.height,
 			angle: activeObject.angle,
