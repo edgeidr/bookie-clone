@@ -21,6 +21,7 @@
         "@vueuse/core": "^14.2.0",
         "@vueuse/nuxt": "14.1.0",
         "fabric": "^7.1.0",
+        "chart.js": "^4.4.1",
         "nuxt": "^4.2.2",
         "primevue": "^4.5.4",
         "tailwindcss": "^4.1.18",
@@ -29,7 +30,6 @@
         "vue-router": "^4.6.4"
     },
     "devDependencies": {
-        "@primevue/nuxt-module": "^4.5.4",
-        "quill": "^2.0.2"
+        "@primevue/nuxt-module": "^4.5.4"
     }
 }
