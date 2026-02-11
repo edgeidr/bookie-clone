@@ -45,6 +45,7 @@ export const useCanvasViewport = (
 			lastPos.y = event.clientY;
 
 			canvasEditing.selectTool(CanvasToolName.SELECT);
+			canvasValue.setCursor("move");
 			canvasValue.discardActiveObject();
 			canvasValue.requestRenderAll();
 		});
@@ -56,6 +57,7 @@ export const useCanvasViewport = (
 			const dx = event.clientX - lastPos.x;
 			const dy = event.clientY - lastPos.y;
 
+			canvasValue.setCursor("move");
 			canvasValue.relativePan(new Point(dx, dy));
 
 			lastPos.x = event.clientX;
@@ -68,6 +70,7 @@ export const useCanvasViewport = (
 			const event = options.e as MouseEvent;
 			if (event.button !== 1) return;
 
+			canvasValue.setCursor("default");
 			isDragging.value = false;
 		});
 	};
