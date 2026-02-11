@@ -12,6 +12,7 @@ import {
 } from "~~/types/canvas";
 import { useCanvasViewport } from "./useCanvasViewport";
 import { preloadAllSVGs } from "~/lib/fabric/utils/svgPreload";
+import { fabricObjectSnapDefaults } from "~/lib/fabric/defaults/objectSnapDefaults";
 
 export const canvasManagerKey: InjectionKey<ReturnType<typeof useCanvas>> = Symbol("canvasManager");
 
@@ -248,6 +249,7 @@ export const useCanvas = () => {
 		InteractiveFabricObject.ownDefaults = {
 			...InteractiveFabricObject.ownDefaults,
 			...fabricObjectControlDefaults,
+			...fabricObjectSnapDefaults,
 		};
 	};
 

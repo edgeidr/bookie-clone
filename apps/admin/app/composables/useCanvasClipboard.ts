@@ -1,4 +1,5 @@
 import { ActiveSelection, Canvas, FabricObject } from "fabric";
+import { fabricObjectSnapDefaults } from "~/lib/fabric/defaults/objectSnapDefaults";
 
 export const useCanvasClipboard = (
 	canvas: Ref<Canvas | null>,
@@ -68,8 +69,7 @@ export const useCanvasClipboard = (
 		object.set({
 			left: (object.left ?? 0) + offset,
 			top: (object.top ?? 0) + offset,
-			snapAngle: 45,
-			snapThreshold: 5,
+			...fabricObjectSnapDefaults,
 		});
 
 		object.setCoords();

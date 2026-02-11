@@ -1,4 +1,5 @@
 import type { FabricObject } from "fabric";
+import { fabricObjectSnapDefaults } from "./objectSnapDefaults";
 
 export const fabricObjectDefaults: Partial<FabricObject> = {
 	fill: "#ffffffff",
@@ -12,4 +13,5 @@ export const fabricObjectDefaults: Partial<FabricObject> = {
 	evented: false,
 	snapAngle: 45,
 	snapThreshold: 5,
+	...fabricObjectSnapDefaults,
 };

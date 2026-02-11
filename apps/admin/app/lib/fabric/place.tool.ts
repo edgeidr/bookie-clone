@@ -1,6 +1,7 @@
 import { Group, type Canvas, type TPointerEventInfo } from "fabric";
 import type { CanvasTool } from "~~/types/canvas";
 import { cloneSVG } from "./utils/svgPreload";
+import { fabricObjectSnapDefaults } from "./defaults/objectSnapDefaults";
 
 export const createPlaceTool = (
 	canvas: Ref<Canvas | null>,
@@ -24,8 +25,7 @@ export const createPlaceTool = (
 			objectCaching: true,
 			selectable: false,
 			evented: false,
-			snapAngle: 45,
-			snapThreshold: 5,
+			...fabricObjectSnapDefaults,
 		});
 
 		canvasValue.add(object);
