@@ -82,7 +82,6 @@ export const useCanvas = () => {
 		if (!canvas.value) return;
 
 		canvas.value.on("selection:cleared", clearActiveObject);
-		canvas.value.on("object:rotating", updateActiveObject);
 		canvas.value.on("object:modifyPoly", updateActiveObject);
 
 		canvas.value.on("selection:created", () => {
@@ -126,6 +125,11 @@ export const useCanvas = () => {
 		canvas.value.on("object:moving", (event) => {
 			updateActiveObject();
 			canvasSnapping.moveObject();
+		});
+
+		canvas.value.on("object:rotating", () => {
+			updateActiveObject();
+			canvas.value?.setCursor("grabbing");
 		});
 	};
 

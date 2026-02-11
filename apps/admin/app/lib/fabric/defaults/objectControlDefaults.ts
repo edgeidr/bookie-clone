@@ -1,4 +1,4 @@
-import type { FabricObject } from "fabric";
+import { Control, controlsUtils, type FabricObject } from "fabric";
 
 export const fabricObjectControlDefaults: Partial<FabricObject> = {
 	cornerStrokeColor: "#000000",
@@ -10,4 +10,17 @@ export const fabricObjectControlDefaults: Partial<FabricObject> = {
 	padding: 1,
 	perPixelTargetFind: true,
 	borderOpacityWhenMoving: 0,
+	controls: {
+		...controlsUtils.createObjectDefaultControls(),
+		mtr: new Control({
+			x: 0,
+			y: -0.5,
+			actionHandler: controlsUtils.rotationWithSnapping,
+			cursorStyleHandler: controlsUtils.rotationStyleHandler,
+			cursorStyle: "grab",
+			offsetY: -40,
+			withConnection: true,
+			actionName: "rotate",
+		}),
+	},
 };

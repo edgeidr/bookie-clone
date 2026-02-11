@@ -1,4 +1,4 @@
-import { Canvas, controlsUtils, type FabricObject, type Polygon } from "fabric";
+import { Canvas, Control, controlsUtils, type FabricObject, type Polygon } from "fabric";
 
 export const togglePolyEditing = (object: FabricObject, enable?: boolean) => {
 	if (!isPolyEditable(object)) return;
@@ -13,7 +13,19 @@ export const togglePolyEditing = (object: FabricObject, enable?: boolean) => {
 	} else {
 		poly.cornerStyle = "rect";
 		poly.hasBorders = true;
-		poly.controls = controlsUtils.createObjectDefaultControls();
+		poly.controls = {
+			...controlsUtils.createObjectDefaultControls(),
+			mtr: new Control({
+				x: 0,
+				y: -0.5,
+				actionHandler: controlsUtils.rotationWithSnapping,
+				cursorStyleHandler: controlsUtils.rotationStyleHandler,
+				cursorStyle: "grab",
+				offsetY: -40,
+				withConnection: true,
+				actionName: "rotate",
+			}),
+		};
 	}
 
 	poly.objectCaching = false;

@@ -1,4 +1,4 @@
-import { Canvas, Rect, type TPointerEventInfo } from "fabric";
+import { Canvas, FabricObject, Rect, type TPointerEventInfo } from "fabric";
 import type { CanvasTool } from "~~/types/canvas";
 import { fabricObjectDefaults } from "./defaults/objectDefaults";
 
