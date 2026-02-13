@@ -5,7 +5,9 @@ import { fabricObjectDefaults } from "./defaults/objectDefaults";
 export const createPolylineTool = (
 	canvas: Ref<Canvas | null>,
 	pushCanvasState: () => void,
+	updateLayers: () => void,
 ): CanvasTool => {
+	const { t } = useI18n();
 	const CLOSE_DISTANCE = 8;
 	const MIN_POLYLINE_POINTS = 2;
 	const MIN_POLYGON_POINTS = 3;
@@ -110,6 +112,7 @@ export const createPolylineTool = (
 			...fabricObjectDefaults,
 		});
 
+		polygon.set({ label: t("common.ui.polygon") });
 		canvas.value.remove(polyline);
 		canvas.value.add(polygon);
 
@@ -126,6 +129,7 @@ export const createPolylineTool = (
 			fill: "transparent",
 		});
 
+		polyline.set({ label: t("common.ui.polyline") });
 		canvas.value.add(polyline);
 	};
 
@@ -147,6 +151,7 @@ export const createPolylineTool = (
 		isDrawing = false;
 		canvas.value.requestRenderAll();
 
+		updateLayers();
 		pushCanvasState();
 	};
 

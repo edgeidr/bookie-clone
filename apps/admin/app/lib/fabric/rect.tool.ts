@@ -5,7 +5,9 @@ import { fabricObjectDefaults } from "./defaults/objectDefaults";
 export const createRectTool = (
 	canvas: Ref<Canvas | null>,
 	pushCanvasState: () => void,
+	updateLayers: () => void,
 ): CanvasTool => {
+	const { t } = useI18n();
 	let rect: Rect | null = null;
 	let start = { x: 0, y: 0 };
 
@@ -55,9 +57,10 @@ export const createRectTool = (
 			return;
 		}
 
-		rect.set({ objectCaching: true });
+		rect.set({ objectCaching: true, label: t("common.ui.rectangle") });
 		rect = null;
 
+		updateLayers();
 		pushCanvasState();
 	};
 

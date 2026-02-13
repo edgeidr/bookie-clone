@@ -1,17 +1,14 @@
 <template>
 	<div
 		ref="layoutEditorRef"
-		class="flex w-full gap-8 overflow-hidden"
+		class="relative flex overflow-clip"
 		:style="`height: ${remainingHeight}px;`">
-		<div class="flex flex-1 flex-col overflow-hidden">
-			<ActionBar />
-			<CanvasPanel />
-		</div>
+		<CanvasPanel />
 
-		<div class="mt-20 w-96">
-			<ObjectInspectorCard v-if="activeObject.object" />
-			<CanvasInspectorCard v-else />
-		</div>
+		<ActionBar />
+		<CanvasLayerCard />
+		<ObjectInspectorCard v-if="activeObject.object" />
+		<CanvasInspectorCard v-else />
 	</div>
 </template>
 
@@ -20,10 +17,11 @@
 	import CanvasPanel from "./_components/CanvasPanel.vue";
 	import CanvasInspectorCard from "./_components/CanvasInspectorCard.vue";
 	import ObjectInspectorCard from "./_components/ObjectInspectorCard.vue";
+	import CanvasLayerCard from "./_components/CanvasLayerCard.vue";
 
 	const { canvasManager } = defineProps<{ canvasManager: ReturnType<typeof useCanvas> }>();
 	const layoutEditorRef = useTemplateRef("layoutEditorRef");
-	const PADDING = 28;
+	const PADDING = 40;
 	const { height: windowHeight } = useWindowSize();
 	const { top } = useElementBounding(layoutEditorRef);
 	const { activeObject } = canvasManager;

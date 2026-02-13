@@ -19,7 +19,14 @@ const MyPreset = definePreset(Aura, <Preset>{
 			950: "{orange.950}",
 		},
 	},
-	components: {},
+	components: {
+		tree: {
+			node: {
+				selectedBackground: "{surface.700}",
+				selectedColor: "{surface.0}",
+			},
+		},
+	},
 });
 
 export default {

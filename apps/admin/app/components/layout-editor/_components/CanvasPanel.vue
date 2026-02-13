@@ -1,5 +1,5 @@
 <template>
-	<div ref="canvasWrapper" class="border-surface-400 flex-1 overflow-hidden rounded-xl border">
+	<div ref="canvasWrapper" class="border-surface-400 flex-1 overflow-clip rounded-xl border">
 		<canvas ref="layoutCanvasRef" />
 	</div>
 </template>

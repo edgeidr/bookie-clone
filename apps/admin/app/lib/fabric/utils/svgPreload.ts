@@ -27,15 +27,16 @@ export const preloadSVG = async (id: string, svgString: string) => {
 	svgTemplates.set(id, group);
 };
 
-export const cloneSVG = (id: string) => {
+export const cloneSVG = async (id: string) => {
 	const template = svgTemplates.get(id);
+
 	if (!template) throw new Error(`SVG template ${id} not preloaded`);
 
 	return template.clone();
 };
 
 export const preloadAllSVGs = async () => {
-	await Promise.all([preloadSVG("seatA", Svg.SeatA)]);
-	await Promise.all([preloadSVG("seatB", Svg.SeatB)]);
-	await Promise.all([preloadSVG("seatC", Svg.SeatC)]);
+	await Promise.all([preloadSVG("Seat A", Svg.SeatA)]);
+	await Promise.all([preloadSVG("Seat B", Svg.SeatB)]);
+	await Promise.all([preloadSVG("Seat C", Svg.SeatC)]);
 };

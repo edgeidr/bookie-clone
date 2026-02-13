@@ -7,7 +7,9 @@ export const createPlaceTool = (
 	canvas: Ref<Canvas | null>,
 	toolName: string,
 	pushCanvasState: () => void,
+	updateLayers: () => void,
 ): CanvasTool => {
+	const { t } = useI18n();
 	let ghost: Group | null = null;
 
 	const onMouseDown = async (event: TPointerEventInfo) => {
@@ -20,16 +22,18 @@ export const createPlaceTool = (
 		const object = await cloneSVG(toolName);
 
 		object.set({
+			...fabricObjectSnapDefaults,
 			left: x,
 			top: y,
 			objectCaching: true,
 			selectable: false,
 			evented: false,
-			...fabricObjectSnapDefaults,
+			label: toolName,
 		});
 
 		canvasValue.add(object);
 		canvasValue.requestRenderAll();
+		updateLayers();
 		pushCanvasState();
 	};
 
@@ -45,6 +49,7 @@ export const createPlaceTool = (
 				objectCaching: false,
 				selectable: false,
 				evented: false,
+				excludeFromLayers: true,
 			});
 
 			canvasValue.add(ghost);

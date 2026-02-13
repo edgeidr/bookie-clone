@@ -70,7 +70,12 @@
 			"canvasProperties": "Canvas",
 			"layoutProperties": "Layout",
 			"transform": "Transform",
-			"appearance": "Appearance"
+			"appearance": "Appearance",
+			"layers": "Layers",
+			"rectangle": "Rectangle",
+			"ellipse": "Ellipse",
+			"polygon": "Polygon",
+			"polyline": "Polyline"
 		},
 		"form": {
 			"bookable": "Bookable",

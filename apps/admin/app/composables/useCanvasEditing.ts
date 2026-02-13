@@ -4,6 +4,7 @@ import type { CanvasToolOrComponent } from "~~/types/canvas";
 export const useCanvasEditing = (
 	canvas: Ref<Canvas | null>,
 	pushCanvasState: () => void,
+	updateLayers: () => void,
 	activeToolName: Ref<CanvasToolOrComponent>,
 ) => {
 	const moveSelection = (deltaX: number, deltaY: number) => {
@@ -36,6 +37,7 @@ export const useCanvasEditing = (
 		canvas.value.discardActiveObject();
 		canvas.value.requestRenderAll();
 
+		updateLayers();
 		pushCanvasState();
 	};
 

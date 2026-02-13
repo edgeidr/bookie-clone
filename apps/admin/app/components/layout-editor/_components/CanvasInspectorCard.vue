@@ -1,5 +1,9 @@
 <template>
-	<Card :pt="{ body: 'p-1!' }">
+	<Card
+		:pt="{
+			root: 'absolute right-0 w-96 right-5 top-5 border border-surface-400',
+			body: 'p-1!',
+		}">
 		<template #content>
 			<Tabs v-model:value="activeTab">
 				<TabList>

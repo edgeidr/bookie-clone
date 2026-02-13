@@ -1,4 +1,4 @@
-import type { TPointerEventInfo } from "fabric";
+import type { FabricObject, TPointerEventInfo } from "fabric";
 
 export interface CanvasTool {
 	onMouseOver?(event: TPointerEventInfo): void;
@@ -19,20 +19,20 @@ export enum CanvasToolName {
 }
 
 export enum CanvasComponentName {
-	SEAT_A = "seatA",
-	SEAT_B = "seatB",
-	SEAT_C = "seatC",
-	TABLE_A = "tableA",
-	TABLE_B = "tableB",
-	TABLE_C = "tableC",
-	MISC_A = "miscA",
-	MISC_B = "miscB",
-	MISC_C = "miscC",
-	MISC_D = "miscD",
-	MISC_E = "miscE",
-	MISC_F = "miscF",
-	MISC_G = "miscG",
-	MISC_H = "miscH",
+	SEAT_A = "Seat A",
+	SEAT_B = "Seat B",
+	SEAT_C = "Seat C",
+	TABLE_A = "Table A",
+	TABLE_B = "Table B",
+	TABLE_C = "Table C",
+	MISC_A = "Misc A",
+	MISC_B = "Misc B",
+	MISC_C = "Misc C",
+	MISC_D = "Misc D",
+	MISC_E = "Misc E",
+	MISC_F = "Misc F",
+	MISC_G = "Misc G",
+	MISC_H = "Misc H",
 	RECT = "rect",
 	ELLIPSE = "ellipse",
 }
@@ -69,4 +69,13 @@ export enum CanvasObjectProperty {
 
 export interface CanvasProperties {
 	isSnappingEnabled: boolean;
+}
+
+export interface FabricObjectExtended extends FabricObject {
+	id?: string;
+	label?: string;
+	zIndex?: number;
+	locked?: boolean;
+	excludeFromSnap?: boolean;
+	excludeFromLayers?: boolean;
 }

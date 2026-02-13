@@ -11,7 +11,11 @@ import { createSelectTool } from "./select.tool";
 import { createPolylineTool } from "./polyline.tool";
 import { createPlaceTool } from "./place.tool";
 
-export const createToolRegistry = (canvas: Ref<Canvas | null>, pushCanvasState: () => void) => {
+export const createToolRegistry = (
+	canvas: Ref<Canvas | null>,
+	pushCanvasState: () => void,
+	updateLayers: () => void,
+) => {
 	const placeableComponents: CanvasComponentName[] = [
 		CanvasComponentName.SEAT_A,
 		CanvasComponentName.SEAT_B,
@@ -26,14 +30,17 @@ export const createToolRegistry = (canvas: Ref<Canvas | null>, pushCanvasState: 
 	] as const;
 
 	const placeableTools = Object.fromEntries(
-		placeableComponents.map((name) => [name, createPlaceTool(canvas, name, pushCanvasState)]),
+		placeableComponents.map((name) => [
+			name,
+			createPlaceTool(canvas, name, pushCanvasState, updateLayers),
+		]),
 	) as Record<PlaceableComponent, CanvasTool>;
 
 	return {
 		[CanvasToolName.SELECT]: createSelectTool(canvas),
-		[CanvasToolName.PENTOOL]: createPolylineTool(canvas, pushCanvasState),
-		[CanvasComponentName.RECT]: createRectTool(canvas, pushCanvasState),
-		[CanvasComponentName.ELLIPSE]: createEllipseTool(canvas, pushCanvasState),
+		[CanvasToolName.PENTOOL]: createPolylineTool(canvas, pushCanvasState, updateLayers),
+		[CanvasComponentName.RECT]: createRectTool(canvas, pushCanvasState, updateLayers),
+		[CanvasComponentName.ELLIPSE]: createEllipseTool(canvas, pushCanvasState, updateLayers),
 		...placeableTools,
 	};
 };

@@ -1,6 +1,6 @@
 import type { Canvas } from "fabric";
 
-export const useCanvasHistory = (canvas: Ref<Canvas | null>) => {
+export const useCanvasHistory = (canvas: Ref<Canvas | null>, updateLayers: () => void) => {
 	const canvasSnapshot = ref<string | null>(null);
 	const { undo, redo, canUndo, canRedo, pause, resume, last } = useThrottledRefHistory(
 		canvasSnapshot,
@@ -39,6 +39,7 @@ export const useCanvasHistory = (canvas: Ref<Canvas | null>) => {
 			await canvas.value.loadFromJSON(snapshot);
 		}
 
+		updateLayers();
 		canvas.value.requestRenderAll();
 		resume();
 	};

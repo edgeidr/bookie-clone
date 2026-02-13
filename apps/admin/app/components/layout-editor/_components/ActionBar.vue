@@ -1,5 +1,5 @@
 <template>
-	<Toolbar class="mx-auto mb-8 w-fit py-1!">
+	<Toolbar class="border-surface-400! absolute inset-x-0 top-5 mx-auto w-fit py-1!">
 		<template #center>
 			<template v-for="(item, index) in items" :key="index">
 				<Button

@@ -5,6 +5,7 @@ export const useCanvasClipboard = (
 	canvas: Ref<Canvas | null>,
 	pushCanvasState: () => void,
 	removeSelection: () => void,
+	updateLayers: () => void,
 ) => {
 	const clipboard = ref<FabricObject | ActiveSelection | null>(null);
 	const PASTE_OFFSET = 10;
@@ -60,6 +61,7 @@ export const useCanvasClipboard = (
 		canvas.value.requestRenderAll();
 		pasteCount++;
 
+		updateLayers();
 		pushCanvasState();
 	};
 

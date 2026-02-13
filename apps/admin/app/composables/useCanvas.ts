@@ -30,12 +30,19 @@ export const useCanvas = () => {
 
 	const activeToolName = ref<CanvasToolOrComponent>(CanvasToolName.SELECT);
 	const canvas = shallowRef<Canvas | null>(null);
-	const canvasHistory = useCanvasHistory(canvas);
-	const canvasEditing = useCanvasEditing(canvas, canvasHistory.pushCanvasState, activeToolName);
+	const canvasLayers = useCanvasLayers(canvas);
+	const canvasHistory = useCanvasHistory(canvas, canvasLayers.updateLayers);
+	const canvasEditing = useCanvasEditing(
+		canvas,
+		canvasHistory.pushCanvasState,
+		canvasLayers.updateLayers,
+		activeToolName,
+	);
 	const canvasClipboard = useCanvasClipboard(
 		canvas,
 		canvasHistory.pushCanvasState,
 		canvasEditing.removeSelection,
+		canvasLayers.updateLayers,
 	);
 	const canvasViewport = useCanvasViewport(canvas, canvasEditing);
 	const canvasSnapping = useCanvasSnapping(canvas, canvasProperties);
@@ -82,17 +89,23 @@ export const useCanvas = () => {
 	const bindCanvasObjectEvents = () => {
 		if (!canvas.value) return;
 
-		canvas.value.on("selection:cleared", clearActiveObject);
+		canvas.value.on("selection:cleared", () => {
+			clearActiveObject();
+			canvasLayers.updateSelectedLayer();
+		});
+
 		canvas.value.on("object:modifyPoly", updateActiveObject);
 
 		canvas.value.on("selection:created", () => {
 			updateSelection();
 			updateActiveObject();
+			canvasLayers.updateSelectedLayer();
 		});
 
 		canvas.value.on("selection:updated", () => {
 			updateSelection();
 			updateActiveObject();
+			canvasLayers.updateSelectedLayer();
 		});
 
 		canvas.value.on("object:scaling", (event) => {
@@ -137,7 +150,11 @@ export const useCanvas = () => {
 	const initCanvasTools = () => {
 		if (!canvas.value) return;
 
-		tools.value = createToolRegistry(canvas, canvasHistory.pushCanvasState);
+		tools.value = createToolRegistry(
+			canvas,
+			canvasHistory.pushCanvasState,
+			canvasLayers.updateLayers,
+		);
 
 		canvas.value.on("mouse:over", (event) => activeTool.value?.onMouseOver?.(event));
 		canvas.value.on("mouse:out", (event) => activeTool.value?.onMouseOut?.(event));
@@ -304,5 +321,6 @@ export const useCanvas = () => {
 		...canvasEditing,
 		...canvasHistory,
 		...canvasViewport,
+		...canvasLayers,
 	};
 };

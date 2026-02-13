@@ -5,7 +5,9 @@ import { fabricObjectDefaults } from "./defaults/objectDefaults";
 export const createEllipseTool = (
 	canvas: Ref<Canvas | null>,
 	pushCanvasState: () => void,
+	updateLayers: () => void,
 ): CanvasTool => {
+	const { t } = useI18n();
 	let ellipse: Ellipse | null = null;
 	let start = { x: 0, y: 0 };
 
@@ -57,9 +59,10 @@ export const createEllipseTool = (
 			return;
 		}
 
-		ellipse.set({ objectCaching: true });
+		ellipse.set({ objectCaching: true, label: t("common.ui.ellipse") });
 		ellipse = null;
 
+		updateLayers();
 		pushCanvasState();
 	};
 
