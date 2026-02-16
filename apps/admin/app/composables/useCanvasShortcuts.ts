@@ -52,7 +52,7 @@ export const useCanvasShortcuts = (actions: CanvasActions, canvas: Ref<Canvas | 
 		(canvasValue) => {
 			if (!canvasValue || attached) return;
 
-			const target = canvasValue.upperCanvasEl;
+			const target = document;
 			attached = true;
 
 			onKeyStroke(matchShortcut(COPY_SHORTCUT), () => copy(), { target });
@@ -64,14 +64,12 @@ export const useCanvasShortcuts = (actions: CanvasActions, canvas: Ref<Canvas | 
 			onKeyStroke(
 				matchShortcut(PEN_TOOL_SHORTCUT),
 				() => canvasEditing.selectTool(CanvasToolName.PENTOOL),
-				{ target: document },
+				{ target },
 			);
 			onKeyStroke(
 				matchShortcut(SELECT_SHORTCUT),
 				() => canvasEditing.selectTool(CanvasToolName.SELECT),
-				{
-					target: document,
-				},
+				{ target },
 			);
 			onKeyStroke(matchShortcut(MOVE_LEFT_SHORTCUT), () => moveSelection(-1, 0), { target });
 			onKeyStroke(matchShortcut(MOVE_RIGHT_SHORTCUT), () => moveSelection(1, 0), { target });
