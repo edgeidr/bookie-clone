@@ -95,12 +95,12 @@
 			shortcut: { alt: true, key: "p" },
 			action: () => selectTool(CanvasToolName.PENTOOL),
 		},
-		{
-			type: ToolbarItemType.ACTION,
-			icon: Icons.text,
-			label: t("common.actions.text"),
-			shortcut: { alt: true, key: "t" },
-		},
+		// {
+		// 	type: ToolbarItemType.ACTION,
+		// 	icon: Icons.text,
+		// 	label: t("common.actions.text"),
+		// 	shortcut: { alt: true, key: "t" },
+		// },
 		{
 			type: ToolbarItemType.ACTION,
 			icon: Icons.components,
