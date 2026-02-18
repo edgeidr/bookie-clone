@@ -10,13 +10,16 @@
 					severity="secondary"
 					:variant="isActive(item.tool) ? undefined : 'text'"
 					size="large"
-					class="aspect-square"
+					class="aspect-square p-0!"
 					:class="{ 'border-surface-300!': isActive(item.tool) }"
 					@click="selectTool(item.tool)"
 					v-tooltip.bottom="{ value: item.label, showDelay: '500', class: 'text-xs' }">
 					<template #icon="slotProps">
 						<div>
+							<img v-if="item.image" :src="item.image" class="size-8" />
+
 							<Icon
+								v-if="item.icon"
 								:name="item.icon"
 								mode="svg"
 								class="size-8 *:stroke-1"
@@ -30,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-	import { Icons } from "@repo/assets";
+	import { Icons, Svg } from "@repo/assets";
 	import { CanvasComponentName, type CanvasToolOrComponent } from "~~/types/canvas";
 
 	const emit = defineEmits(["selectTool"]);
@@ -41,7 +44,8 @@
 			label: string;
 			items: {
 				label: string;
-				icon: string;
+				icon?: string;
+				image?: string;
 				tool: CanvasComponentName;
 			}[];
 		}[]
@@ -50,39 +54,44 @@
 			label: t("common.layoutComponents.seats.title"),
 			items: [
 				{
-					label: t("common.layoutComponents.seats.items.seatA"),
-					icon: Icons.seat,
-					tool: CanvasComponentName.SEAT_A,
+					label: t("common.layoutComponents.seats.items.chair"),
+					image: Svg.Chair,
+					tool: CanvasComponentName.Chair,
 				},
 				{
-					label: t("common.layoutComponents.seats.items.seatB"),
-					icon: Icons.seatb,
-					tool: CanvasComponentName.SEAT_B,
+					label: t("common.layoutComponents.seats.items.armChairA"),
+					image: Svg.ArmChairA,
+					tool: CanvasComponentName.ArmChairA,
 				},
 				{
-					label: t("common.layoutComponents.seats.items.seatC"),
-					icon: Icons.seatc,
-					tool: CanvasComponentName.SEAT_C,
+					label: t("common.layoutComponents.seats.items.armChairB"),
+					image: Svg.ArmChairB,
+					tool: CanvasComponentName.ArmChairB,
+				},
+				{
+					label: t("common.layoutComponents.seats.items.armChairC"),
+					image: Svg.ArmChairC,
+					tool: CanvasComponentName.ArmChairC,
 				},
 			],
 		},
 		{
-			label: t("common.layoutComponents.tables.title"),
+			label: t("common.layoutComponents.doors.title"),
 			items: [
 				{
-					label: t("common.layoutComponents.tables.items.tableA"),
-					icon: Icons.table,
-					tool: CanvasComponentName.TABLE_A,
+					label: t("common.layoutComponents.doors.items.singleDoor"),
+					image: Svg.SingleDoor,
+					tool: CanvasComponentName.SingleDoor,
 				},
 				{
-					label: t("common.layoutComponents.tables.items.tableB"),
-					icon: Icons.table,
-					tool: CanvasComponentName.TABLE_B,
+					label: t("common.layoutComponents.doors.items.doubleDoor"),
+					image: Svg.DoubleDoor,
+					tool: CanvasComponentName.DoubleDoor,
 				},
 				{
-					label: t("common.layoutComponents.tables.items.tableC"),
-					icon: Icons.table,
-					tool: CanvasComponentName.TABLE_C,
+					label: t("common.layoutComponents.doors.items.slidingDoor"),
+					image: Svg.SlidingDoor,
+					tool: CanvasComponentName.SlidingDoor,
 				},
 			],
 		},
@@ -90,44 +99,14 @@
 			label: t("common.layoutComponents.misc.title"),
 			items: [
 				{
-					label: t("common.layoutComponents.misc.items.miscA"),
-					icon: Icons.misc,
-					tool: CanvasComponentName.MISC_A,
+					label: t("common.layoutComponents.misc.items.directionArrow"),
+					image: Svg.DirectionArrow,
+					tool: CanvasComponentName.DirectionArrow,
 				},
 				{
-					label: t("common.layoutComponents.misc.items.miscB"),
-					icon: Icons.misc,
-					tool: CanvasComponentName.MISC_B,
-				},
-				{
-					label: t("common.layoutComponents.misc.items.miscC"),
-					icon: Icons.misc,
-					tool: CanvasComponentName.MISC_C,
-				},
-				{
-					label: t("common.layoutComponents.misc.items.miscD"),
-					icon: Icons.misc,
-					tool: CanvasComponentName.MISC_D,
-				},
-				{
-					label: t("common.layoutComponents.misc.items.miscE"),
-					icon: Icons.misc,
-					tool: CanvasComponentName.MISC_E,
-				},
-				{
-					label: t("common.layoutComponents.misc.items.miscF"),
-					icon: Icons.misc,
-					tool: CanvasComponentName.MISC_F,
-				},
-				{
-					label: t("common.layoutComponents.misc.items.miscG"),
-					icon: Icons.misc,
-					tool: CanvasComponentName.MISC_G,
-				},
-				{
-					label: t("common.layoutComponents.misc.items.miscH"),
-					icon: Icons.misc,
-					tool: CanvasComponentName.MISC_H,
+					label: t("common.layoutComponents.misc.items.exitSign"),
+					image: Svg.ExitSign,
+					tool: CanvasComponentName.ExitSign,
 				},
 			],
 		},

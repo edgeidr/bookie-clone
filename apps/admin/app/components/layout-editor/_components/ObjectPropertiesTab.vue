@@ -194,7 +194,7 @@
 <script setup lang="ts">
 	import { Icons } from "@repo/assets";
 	import type { PanelPassThroughOptions } from "primevue";
-	import { CanvasObjectProperty } from "~~/types/canvas";
+	import { CanvasObjectProperty, type FabricObjectExtended } from "~~/types/canvas";
 
 	const { t } = useI18n();
 	const { activeObject, applyActiveObjectChanges } = useInjectedCanvas();
@@ -241,6 +241,12 @@
 			case "polygon":
 				properties.push(CanvasObjectProperty.fillColor);
 				break;
+
+			case "group": {
+				if (!(activeObject.object as FabricObjectExtended).isComponent) return [];
+				properties.push(CanvasObjectProperty.fillColor);
+				break;
+			}
 		}
 
 		return properties;

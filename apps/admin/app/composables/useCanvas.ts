@@ -1,4 +1,4 @@
-import { Canvas, InteractiveFabricObject, type FabricObject } from "fabric";
+import { Canvas, Group, InteractiveFabricObject, type FabricObject } from "fabric";
 import type { InjectionKey } from "vue";
 import { createToolRegistry } from "~/lib/fabric";
 import { fabricObjectControlDefaults } from "~/lib/fabric/defaults/objectControlDefaults";
@@ -9,6 +9,7 @@ import {
 	type CanvasProperties,
 	type CanvasTool,
 	type CanvasToolOrComponent,
+	type FabricObjectExtended,
 } from "~~/types/canvas";
 import { useCanvasViewport } from "./useCanvasViewport";
 import { preloadAllSVGs } from "~/lib/fabric/utils/svgPreload";
@@ -193,11 +194,22 @@ export const useCanvas = () => {
 		activeObject.width = obj.width ?? 0;
 		activeObject.height = obj.height ?? 0;
 		activeObject.angle = obj.angle ?? 0;
-		activeObject.strokeWidth = obj.strokeWidth ?? 1;
-		activeObject.strokeColor = obj.stroke?.toString() ?? "";
-		activeObject.fillColor = obj.fill?.toString() ?? "";
 		activeObject.rx = "rx" in obj ? ((obj.rx as number) ?? 0) : 0;
 		activeObject.ry = "ry" in obj ? ((obj.ry as number) ?? 0) : 0;
+
+		if (activeObject.object.type === "group") {
+			if (!(activeObject.object as FabricObjectExtended).isComponent) return;
+
+			const { fill, stroke, strokeWidth } = readGroupStyle(obj as Group);
+
+			activeObject.fillColor = fill ?? "";
+			activeObject.strokeColor = stroke ?? "";
+			activeObject.strokeWidth = strokeWidth ?? 1;
+		} else {
+			activeObject.fillColor = (obj as any).fill ?? "";
+			activeObject.strokeColor = (obj as any).stroke ?? "";
+			activeObject.strokeWidth = (obj as any).strokeWidth ?? 1;
+		}
 	};
 
 	const clearActiveObject = () => {
@@ -229,18 +241,15 @@ export const useCanvas = () => {
 		activeObject.object.set({
 			left: activeObject.left + before.x - after.x,
 			top: activeObject.top + before.y - after.y,
-			width: activeObject.width,
-			height: activeObject.height,
 			angle: activeObject.angle,
-			strokeWidth: activeObject.strokeWidth,
-			stroke: activeObject.strokeColor,
-			fill: activeObject.fillColor,
 		});
 
 		if (activeObject.object.type === "rect") {
 			activeObject.object.set({
 				rx: activeObject.rx,
 				ry: activeObject.rx,
+				width: activeObject.width,
+				height: activeObject.height,
 			});
 		}
 
@@ -248,6 +257,24 @@ export const useCanvas = () => {
 			activeObject.object.set({
 				rx: activeObject.rx,
 				ry: activeObject.ry,
+				width: activeObject.width,
+				height: activeObject.height,
+			});
+		}
+
+		if (activeObject.object.type === "group") {
+			if (!(activeObject.object as FabricObjectExtended).isComponent) return;
+
+			applyChangesToGroup(activeObject.object as Group, {
+				fillColor: activeObject.fillColor,
+				strokeColor: activeObject.strokeColor,
+				strokeWidth: activeObject.strokeWidth,
+			});
+		} else {
+			activeObject.object.set({
+				strokeWidth: activeObject.strokeWidth,
+				stroke: activeObject.strokeColor,
+				fill: activeObject.fillColor,
 			});
 		}
 
@@ -256,6 +283,64 @@ export const useCanvas = () => {
 
 		canvas.value.fire("object:modified", { target: activeObject.object });
 	};
+
+	const applyChangesToGroup = (
+		group: Group,
+		properties: { fillColor?: string; strokeWidth?: number; strokeColor?: string } = {},
+	) => {
+		const apply = (object: any) => {
+			if (object.type === "group") {
+				object.getObjects().forEach(apply);
+				return;
+			}
+
+			const patch: Partial<FabricObject> = {};
+
+			if (properties.fillColor !== undefined && canEditFill(object)) {
+				patch.fill = properties.fillColor;
+			}
+
+			if (properties.strokeColor !== undefined && canEditStroke(object)) {
+				patch.stroke = properties.strokeColor;
+			}
+
+			if (properties.strokeWidth !== undefined && canEditStroke(object)) {
+				patch.strokeWidth = properties.strokeWidth;
+			}
+
+			object.set(patch);
+		};
+
+		group.getObjects().forEach(apply);
+		group.setCoords();
+	};
+
+	const readGroupStyle = (group: Group) => {
+		let fill: string | undefined;
+		let stroke: string | undefined;
+		let strokeWidth: number | undefined;
+
+		const walk = (object: FabricObject) => {
+			if (object.type === "group") {
+				(object as Group).getObjects().forEach(walk);
+				return;
+			}
+
+			if (fill === undefined && "fill" in object) {
+				fill = object.fill as string;
+				stroke = object.stroke as string;
+				strokeWidth = object.strokeWidth;
+			}
+		};
+
+		group.getObjects().forEach(walk);
+
+		return { fill, stroke, strokeWidth };
+	};
+
+	const canEditFill = (o: FabricObject) => o.fill != null && o.fill !== "";
+
+	const canEditStroke = (o: FabricObject) => o.stroke != null && o.stroke !== "";
 
 	const setObjectCaching = (object: FabricObject, caching: boolean) => {
 		if (!object) return;

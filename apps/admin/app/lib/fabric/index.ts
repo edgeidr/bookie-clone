@@ -17,16 +17,15 @@ export const createToolRegistry = (
 	updateLayers: () => void,
 ) => {
 	const placeableComponents: CanvasComponentName[] = [
-		CanvasComponentName.SEAT_A,
-		CanvasComponentName.SEAT_B,
-		CanvasComponentName.SEAT_C,
-		CanvasComponentName.TABLE_A,
-		CanvasComponentName.TABLE_B,
-		CanvasComponentName.TABLE_C,
-		CanvasComponentName.MISC_A,
-		CanvasComponentName.MISC_B,
-		CanvasComponentName.MISC_C,
-		CanvasComponentName.MISC_D,
+		CanvasComponentName.Chair,
+		CanvasComponentName.ArmChairA,
+		CanvasComponentName.ArmChairB,
+		CanvasComponentName.ArmChairC,
+		CanvasComponentName.SingleDoor,
+		CanvasComponentName.DoubleDoor,
+		CanvasComponentName.SlidingDoor,
+		CanvasComponentName.DirectionArrow,
+		CanvasComponentName.ExitSign,
 	] as const;
 
 	const placeableTools = Object.fromEntries(

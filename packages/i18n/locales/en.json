@@ -27,31 +27,25 @@
 			"seats": {
 				"title": "Seats",
 				"items": {
-					"seatA": "Seat A",
-					"seatB": "Seat B",
-					"seatC": "Seat C",
-					"seatD": "Seat D"
+					"chair": "Chair",
+					"armChairA": "Arm Chair A",
+					"armChairB": "Arm Chair B",
+					"armChairC": "Arm Chair C"
 				}
 			},
-			"tables": {
-				"title": "Tables",
+			"doors": {
+				"title": "Doors",
 				"items": {
-					"tableA": "Table A",
-					"tableB": "Table B",
-					"tableC": "Table C"
+					"singleDoor": "SingleDoor",
+					"doubleDoor": "DoubleDoor",
+					"slidingDoor": "Sliding Door"
 				}
 			},
 			"misc": {
 				"title": "Misc.",
 				"items": {
-					"miscA": "Misc. A",
-					"miscB": "Misc. B",
-					"miscC": "Misc. C",
-					"miscD": "Misc. D",
-					"miscE": "Misc. E",
-					"miscF": "Misc. F",
-					"miscG": "Misc. G",
-					"miscH": "Misc. H"
+					"directionArrow": "Direction Arrow",
+					"exitSign": "Exit Sign"
 				}
 			},
 			"shapes": {

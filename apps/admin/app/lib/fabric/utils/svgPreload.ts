@@ -8,21 +8,23 @@ export const preloadSVG = async (id: string, svgString: string) => {
 	if (svgTemplates.has(id)) return;
 
 	const loaded = await loadSVGFromString(svgString);
+	const { fill, ..._fabricObjectDefaults } = fabricObjectDefaults;
 	const group = new Group(loaded.objects as FabricObject[], {
 		...loaded.options,
 		originX: "left",
 		originY: "top",
 	});
 
-	group.getObjects().forEach((child) =>
+	group.set({ isComponent: true });
+
+	group.getObjects().forEach((child) => {
 		child.set({
-			...fabricObjectDefaults,
+			..._fabricObjectDefaults,
 			originX: "center",
 			originY: "center",
-			fill: "#a1a1a1ff",
 			strokeWidth: 1,
-		}),
-	);
+		});
+	});
 
 	svgTemplates.set(id, group);
 };
@@ -36,7 +38,13 @@ export const cloneSVG = async (id: string) => {
 };
 
 export const preloadAllSVGs = async () => {
-	await Promise.all([preloadSVG("Seat A", Svg.SeatA)]);
-	await Promise.all([preloadSVG("Seat B", Svg.SeatB)]);
-	await Promise.all([preloadSVG("Seat C", Svg.SeatC)]);
+	await Promise.all([preloadSVG("Chair", Svg.ChairRaw)]);
+	await Promise.all([preloadSVG("Arm Chair A", Svg.ArmChairARaw)]);
+	await Promise.all([preloadSVG("Arm Chair B", Svg.ArmChairBRaw)]);
+	await Promise.all([preloadSVG("Arm Chair C", Svg.ArmChairCRaw)]);
+	await Promise.all([preloadSVG("Single Door", Svg.SingleDoorRaw)]);
+	await Promise.all([preloadSVG("Double Door", Svg.DoubleDoorRaw)]);
+	await Promise.all([preloadSVG("Sliding Door", Svg.SlidingDoorRaw)]);
+	await Promise.all([preloadSVG("Direction Arrow", Svg.DirectionArrowRaw)]);
+	await Promise.all([preloadSVG("Exit Sign", Svg.ExitSignRaw)]);
 };
