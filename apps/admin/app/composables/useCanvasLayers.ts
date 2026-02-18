@@ -22,6 +22,8 @@ export const useCanvasLayers = (canvas: Ref<Canvas | null>) => {
 			initObject(object, index);
 
 			tempLayers.push({
+				draggable: true,
+				droppable: false,
 				key: object.id!,
 				label: object.label,
 				icon: "hugeicons:square",
