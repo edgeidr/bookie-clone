@@ -5,12 +5,16 @@
 </template>
 
 <script setup lang="ts">
-	const { initCanvas, resizeCanvas } = useInjectedCanvas();
+	const { initCanvas, resizeCanvas, open } = useInjectedCanvas();
 	const layoutCanvasRef = useTemplateRef("layoutCanvasRef");
 	const canvasWrapper = useTemplateRef("canvasWrapper");
 
 	onMounted(() => {
 		initCanvas(layoutCanvasRef.value!);
 		useResizeObserver(canvasWrapper, resizeCanvas);
+
+		setTimeout(() => {
+			open();
+		}, 1000);
 	});
 </script>

@@ -32,6 +32,7 @@ export const useCanvas = () => {
 	const activeToolName = ref<CanvasToolOrComponent>(CanvasToolName.SELECT);
 	const canvas = shallowRef<Canvas | null>(null);
 	const canvasLayers = useCanvasLayers(canvas);
+	const canvasData = useCanvasData(canvas, canvasLayers.updateLayers);
 	const canvasHistory = useCanvasHistory(canvas, canvasLayers.updateLayers);
 	const canvasEditing = useCanvasEditing(
 		canvas,
@@ -365,6 +366,7 @@ export const useCanvas = () => {
 
 	useCanvasShortcuts(
 		{
+			save: canvasData.save,
 			copy: canvasClipboard.copy,
 			cut: canvasClipboard.cut,
 			paste: canvasClipboard.paste,
@@ -407,5 +409,6 @@ export const useCanvas = () => {
 		...canvasHistory,
 		...canvasViewport,
 		...canvasLayers,
+		...canvasData,
 	};
 };

@@ -14,5 +14,8 @@
 	"i18n-ally.regex.usageMatchAppend": ["\"((common.message|common.validation|pages)\\.[^\"]+)\""],
 	"files.eol": "\n",
 	"javascript.preferences.importModuleSpecifier": "shortest",
-	"typescript.preferences.importModuleSpecifier": "shortest"
+	"typescript.preferences.importModuleSpecifier": "shortest",
+	"[prisma]": {
+		"editor.defaultFormatter": "Prisma.prisma"
+	}
 }

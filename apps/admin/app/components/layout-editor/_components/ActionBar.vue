@@ -63,6 +63,7 @@
 		canRedo,
 		activeToolName,
 		selectTool,
+		save,
 	} = useInjectedCanvas();
 	const tooltipRef = useTemplateRef("tooltipRef");
 	const componentsRef = useTemplateRef("componentsRef");
@@ -75,6 +76,7 @@
 			icon: Icons.save,
 			label: t("common.actions.save"),
 			shortcut: { mod: true, key: "s" },
+			action: () => save(),
 		},
 		{
 			type: ToolbarItemType.DIVIDER,

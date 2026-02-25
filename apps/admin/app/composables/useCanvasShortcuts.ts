@@ -3,6 +3,7 @@ import type { Canvas } from "fabric";
 import { CanvasToolName, type CanvasToolOrComponent } from "~~/types/canvas";
 
 interface CanvasActions {
+	save: () => void;
 	copy: () => void;
 	cut: () => void;
 	paste: () => void;
@@ -15,6 +16,7 @@ interface CanvasActions {
 
 export const useCanvasShortcuts = (actions: CanvasActions, canvas: Ref<Canvas | null>) => {
 	const {
+		save,
 		copy,
 		cut,
 		paste,
@@ -26,6 +28,7 @@ export const useCanvasShortcuts = (actions: CanvasActions, canvas: Ref<Canvas | 
 	} = actions;
 	let attached = false;
 
+	const SAVE_SHORTCUT: Shortcut = { key: "s", mod: true };
 	const COPY_SHORTCUT: Shortcut = { key: "c", mod: true };
 	const CUT_SHORTCUT: Shortcut = { key: "x", mod: true };
 	const PASTE_SHORTCUT: Shortcut = { key: "v", mod: true };
@@ -75,6 +78,14 @@ export const useCanvasShortcuts = (actions: CanvasActions, canvas: Ref<Canvas | 
 			onKeyStroke(matchShortcut(MOVE_RIGHT_SHORTCUT), () => moveSelection(1, 0), { target });
 			onKeyStroke(matchShortcut(MOVE_UP_SHORTCUT), () => moveSelection(0, -1), { target });
 			onKeyStroke(matchShortcut(MOVE_DOWN_SHORTCUT), () => moveSelection(0, 1), { target });
+			onKeyStroke(
+				matchShortcut(SAVE_SHORTCUT),
+				(event) => {
+					event.preventDefault();
+					save();
+				},
+				{ target },
+			);
 		},
 		{ immediate: true },
 	);
