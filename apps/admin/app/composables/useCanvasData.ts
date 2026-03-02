@@ -2,6 +2,9 @@ import { LayoutStatus } from "@repo/shared";
 import type { Canvas } from "fabric";
 
 export const useCanvasData = (canvas: Ref<Canvas | null>, updateLayers: () => void) => {
+	const isLayoutModalOpen = ref(false);
+	const layouts = ref([]);
+
 	const layoutForm = reactive<{
 		name: string;
 		description: string;
@@ -20,6 +23,16 @@ export const useCanvasData = (canvas: Ref<Canvas | null>, updateLayers: () => vo
 			...layoutForm,
 			data: JSON.stringify(canvas.value?.toJSON()),
 		})),
+	});
+
+	const { execute: fetchAllLayouts, pending: isFetchingLayouts } = useCustomFetch("/layouts", {
+		method: "GET",
+		onResponse: ({ response }) => {
+			if (!response.ok) return;
+
+			const responseData = response._data as any;
+			layouts.value = responseData;
+		},
 	});
 
 	const { execute: loadCanvas, pending: isLoading } = useCustomFetch("/layouts", {
@@ -44,9 +57,26 @@ export const useCanvasData = (canvas: Ref<Canvas | null>, updateLayers: () => vo
 		saveCanvas();
 	};
 
-	const open = () => {
-		loadCanvas();
+	const setIsLayoutModalOpen = (isOpen = false) => {
+		isLayoutModalOpen.value = isOpen;
 	};
 
-	return { save, open, isSaving, layoutForm };
+	watch(
+		() => isLayoutModalOpen.value,
+		async (isOpen) => {
+			if (!isOpen) return;
+			await fetchAllLayouts();
+		},
+	);
+
+	return {
+		save,
+		isSaving,
+		layoutForm,
+		setIsLayoutModalOpen,
+		isLayoutModalOpen,
+		fetchAllLayouts,
+		isFetchingLayouts,
+		layouts,
+	};
 };

@@ -33,6 +33,75 @@
 			</Popover>
 		</template>
 	</Toolbar>
+
+	<Dialog
+		v-model:visible="isLayoutModalOpen"
+		header="Open Layout"
+		class="max-w-7xl"
+		modal
+		dismissableMask>
+		<DataView :value="layouts" layout="grid">
+			<template #grid="{ items }">
+				<div class="grid grid-cols-3 gap-4">
+					<Panel v-for="(item, index) in items" :key="index" :header="item.name">
+						<template #header>
+							<div class="flex w-full items-center justify-between gap-8">
+								<span>{{ item.name }}</span>
+								<Icon
+									:name="Icons[`flag${item.location.countryCode}`]"
+									size="0.75em" />
+							</div>
+						</template>
+
+						<template #icons>
+							<!-- <Tag
+								v-if="item.status === 'ACTIVE'"
+								value="Active"
+								severity="success"
+								rounded />
+
+							<Tag v-else value="Inactive" severity="danger" rounded /> -->
+						</template>
+
+						<template #footer>
+							<div class="flex items-center justify-between gap-16">
+								<div>
+									<Button
+										variant="text"
+										severity="secondary"
+										size="small"
+										rounded>
+										<template #icon>
+											<Icon :name="Icons.more" />
+										</template>
+									</Button>
+
+									<Button
+										variant="text"
+										severity="secondary"
+										size="small"
+										rounded>
+										<template #icon>
+											<Icon :name="Icons.addToFavorites" />
+										</template>
+									</Button>
+								</div>
+
+								<p class="text-muted-color text-sm">
+									{{
+										useTimeAgo(new Date(item.updatedAt), { fullDateFormatter })
+											.value
+									}}
+								</p>
+							</div>
+						</template>
+
+						<!-- <p class="line-clamp-1">{{ item.description }}</p> -->
+					</Panel>
+				</div>
+			</template>
+		</DataView>
+	</Dialog>
 </template>
 
 <script setup lang="ts">
@@ -45,6 +114,7 @@
 		type CanvasToolOrComponent,
 	} from "~~/types/canvas";
 	import type { PopoverPassThroughOptions } from "primevue";
+	import { formatTimeAgo } from "@vueuse/core";
 
 	const tooltipPT: PopoverPassThroughOptions = {
 		root: "bg-surface-600!",
@@ -64,6 +134,9 @@
 		activeToolName,
 		selectTool,
 		save,
+		setIsLayoutModalOpen,
+		isLayoutModalOpen,
+		layouts,
 	} = useInjectedCanvas();
 	const tooltipRef = useTemplateRef("tooltipRef");
 	const componentsRef = useTemplateRef("componentsRef");
@@ -77,6 +150,13 @@
 			label: t("common.actions.save"),
 			shortcut: { mod: true, key: "s" },
 			action: () => save(),
+		},
+		{
+			type: ToolbarItemType.ACTION,
+			icon: Icons.open,
+			label: t("common.actions.open"),
+			shortcut: { mod: true, key: "o" },
+			action: () => setIsLayoutModalOpen(true),
 		},
 		{
 			type: ToolbarItemType.DIVIDER,

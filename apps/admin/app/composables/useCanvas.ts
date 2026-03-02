@@ -367,6 +367,7 @@ export const useCanvas = () => {
 	useCanvasShortcuts(
 		{
 			save: canvasData.save,
+			open: canvasData.setIsLayoutModalOpen,
 			copy: canvasClipboard.copy,
 			cut: canvasClipboard.cut,
 			paste: canvasClipboard.paste,

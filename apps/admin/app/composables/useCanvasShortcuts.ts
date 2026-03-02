@@ -4,6 +4,7 @@ import { CanvasToolName, type CanvasToolOrComponent } from "~~/types/canvas";
 
 interface CanvasActions {
 	save: () => void;
+	open: (isOpen: boolean) => void;
 	copy: () => void;
 	cut: () => void;
 	paste: () => void;
@@ -17,6 +18,7 @@ interface CanvasActions {
 export const useCanvasShortcuts = (actions: CanvasActions, canvas: Ref<Canvas | null>) => {
 	const {
 		save,
+		open,
 		copy,
 		cut,
 		paste,
@@ -29,6 +31,7 @@ export const useCanvasShortcuts = (actions: CanvasActions, canvas: Ref<Canvas | 
 	let attached = false;
 
 	const SAVE_SHORTCUT: Shortcut = { key: "s", mod: true };
+	const OPEN_SHORTCUT: Shortcut = { key: "o", mod: true };
 	const COPY_SHORTCUT: Shortcut = { key: "c", mod: true };
 	const CUT_SHORTCUT: Shortcut = { key: "x", mod: true };
 	const PASTE_SHORTCUT: Shortcut = { key: "v", mod: true };
@@ -83,6 +86,14 @@ export const useCanvasShortcuts = (actions: CanvasActions, canvas: Ref<Canvas | 
 				(event) => {
 					event.preventDefault();
 					save();
+				},
+				{ target },
+			);
+			onKeyStroke(
+				matchShortcut(OPEN_SHORTCUT),
+				(event) => {
+					event.preventDefault();
+					open(true);
 				},
 				{ target },
 			);

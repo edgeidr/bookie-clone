@@ -12,6 +12,7 @@
 		"actions": {
 			"logout": "Logout",
 			"save": "Save",
+			"open": "Open",
 			"undo": "Undo",
 			"redo": "Redo",
 			"cut": "Cut",
@@ -102,6 +103,9 @@
 				"label": "Requires Approval",
 				"description": "Bookings must be approved before confirmation"
 			}
+		},
+		"timestamps": {
+			"timeAgo": "Updated {time}"
 		}
 	},
 	"pages": {

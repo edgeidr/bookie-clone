@@ -32,4 +32,7 @@ export const Icons = {
 	flagZA: "flagpack:za",
 	flagCA: "flagpack:ca",
 	flagUS: "flagpack:us",
+	open: "hugeicons:folder-02",
+	addToFavorites: "hugeicons:bookmark-02",
+	more: "hugeicons:more-vertical",
 };

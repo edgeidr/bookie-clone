@@ -21,7 +21,7 @@ export class LayoutController {
 	}
 
 	@Get()
-	load() {
-		return this.layoutService.findOne();
+	fetchAll() {
+		return this.layoutService.findAll();
 	}
 }
