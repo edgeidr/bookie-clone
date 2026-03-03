@@ -5,10 +5,8 @@
 <script setup lang="ts">
 	definePageMeta({
 		layout: "admin",
-		titleKey: "pages.layoutsNew.title",
+		titleKey: "pages.layoutEditor.title",
 	});
-
-	const isMac = navigator.platform.toUpperCase();
 
 	const canvasManager = useCanvas();
 </script>

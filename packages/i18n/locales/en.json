@@ -109,8 +109,8 @@
 		}
 	},
 	"pages": {
-		"layoutsNew": {
-			"title": "Create New Layout"
+		"layoutEditor": {
+			"title": "Layout Editor"
 		}
 	}
 }

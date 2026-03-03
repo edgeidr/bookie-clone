@@ -31,7 +31,7 @@ export default defineNuxtConfig({
 		pattern: ["**/*.vue", "!**/_components/**"],
 	},
 	routeRules: {
-		"/": { redirect: "/layouts/new" },
+		"/": { redirect: "/layout-editor" },
 	},
 	components: [
 		{
