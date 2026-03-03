@@ -24,7 +24,7 @@ export const useCanvasViewport = (
 
 			zoom *= 0.999 ** delta;
 			if (zoom > 20) zoom = 20;
-			if (zoom < 0.01) zoom = 0.01;
+			if (zoom < 0.1) zoom = 0.1;
 
 			canvasValue.zoomToPoint(new Point(event.offsetX, event.offsetY), zoom);
 			event.preventDefault();
@@ -93,28 +93,29 @@ export const useCanvasViewport = (
 		const canvasValue = canvas.value;
 		if (!canvasValue) return;
 
-		const size = 40;
-		const patternCanvas = document.createElement("canvas");
+		// const size = 40;
+		// const patternCanvas = document.createElement("canvas");
 
-		patternCanvas.width = size * 2;
-		patternCanvas.height = size * 2;
+		// patternCanvas.width = size * 2;
+		// patternCanvas.height = size * 2;
 
-		const ctx = patternCanvas.getContext("2d");
-		if (!ctx) return;
+		// const ctx = patternCanvas.getContext("2d");
+		// if (!ctx) return;
 
-		ctx.fillStyle = "#f8f8f8";
-		ctx.fillRect(0, 0, patternCanvas.width, patternCanvas.height);
+		// ctx.fillStyle = "#f8f8f8";
+		// ctx.fillRect(0, 0, patternCanvas.width, patternCanvas.height);
 
-		ctx.fillStyle = "#d9d9d9";
-		ctx.fillRect(0, 0, size, size);
-		ctx.fillRect(size, size, size, size);
+		// ctx.fillStyle = "#d9d9d9";
+		// ctx.fillRect(0, 0, size, size);
+		// ctx.fillRect(size, size, size, size);
 
-		const pattern = new Pattern({
-			source: patternCanvas,
-			repeat: "repeat",
-		});
+		// const pattern = new Pattern({
+		// 	source: patternCanvas,
+		// 	repeat: "repeat",
+		// });
 
-		canvasValue.backgroundColor = pattern;
+		canvasValue.backgroundColor = "oklch(97% 0.014 254.604)";
+		canvasValue.setZoom(0.5);
 		canvasValue.requestRenderAll();
 	};
 
