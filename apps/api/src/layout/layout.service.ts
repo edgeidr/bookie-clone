@@ -16,28 +16,27 @@ export class LayoutService {
 				canvas: input.data,
 			},
 		});
-		return;
-		if (await this.findOne()) {
-			await this.prismaService.layout.updateMany({
-				data: {
-					name: input.name,
-					description: input.description,
-					locationId: input.locationId,
-					status: input.status,
-					canvas: input.data,
-				},
-			});
-		} else {
-			await this.prismaService.layout.create({
-				data: {
-					name: input.name,
-					description: input.description,
-					locationId: input.locationId,
-					status: input.status,
-					canvas: input.data,
-				},
-			});
-		}
+		// if (await this.findOne()) {
+		// 	await this.prismaService.layout.updateMany({
+		// 		data: {
+		// 			name: input.name,
+		// 			description: input.description,
+		// 			locationId: input.locationId,
+		// 			status: input.status,
+		// 			canvas: input.data,
+		// 		},
+		// 	});
+		// } else {
+		// 	await this.prismaService.layout.create({
+		// 		data: {
+		// 			name: input.name,
+		// 			description: input.description,
+		// 			locationId: input.locationId,
+		// 			status: input.status,
+		// 			canvas: input.data,
+		// 		},
+		// 	});
+		// }
 	}
 
 	findAll() {
@@ -55,7 +54,12 @@ export class LayoutService {
 		});
 	}
 
-	async findOne() {
-		return await this.prismaService.layout.findFirst();
+	async findOne(uuid: string) {
+		return await this.prismaService.layout.findUniqueOrThrow({
+			where: { uuid },
+			include: {
+				location: true,
+			},
+		});
 	}
 }

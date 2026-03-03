@@ -1,5 +1,5 @@
 import { LayoutStatus } from "@repo/shared";
-import type { Canvas } from "fabric";
+import { Point, type Canvas } from "fabric";
 
 export const useCanvasData = (canvas: Ref<Canvas | null>, updateLayers: () => void) => {
 	const isLayoutModalOpen = ref(false);
@@ -35,10 +35,13 @@ export const useCanvasData = (canvas: Ref<Canvas | null>, updateLayers: () => vo
 		},
 	});
 
-	const { execute: loadCanvas, pending: isLoading } = useCustomFetch("/layouts", {
+	const { execute: loadCanvas, pending: isLoadingLayout } = useCustomFetch("", {
 		method: "GET",
 		onResponse: async ({ response }) => {
+			const canvasValue = canvas.value;
+
 			if (!response.ok) return;
+			if (!canvasValue) return;
 
 			const responseData = response._data as any;
 
@@ -47,14 +50,23 @@ export const useCanvasData = (canvas: Ref<Canvas | null>, updateLayers: () => vo
 			layoutForm.locationId = responseData.locationId;
 			layoutForm.status = responseData.status;
 
-			await canvas.value!.loadFromJSON(JSON.parse(responseData.canvas));
+			await canvasValue.loadFromJSON(JSON.parse(responseData.canvas));
 			updateLayers();
-			canvas.value!.renderAll();
+
+			canvasValue.setZoom(0.5);
+			canvasValue.absolutePan(new Point(0, 0));
+			canvasValue.requestRenderAll();
+			canvasValue.renderAll();
 		},
 	});
 
 	const save = () => {
 		saveCanvas();
+	};
+
+	const open = (layoutId: string) => {
+		setIsLayoutModalOpen(false);
+		loadCanvas(`/layouts/${layoutId}`);
 	};
 
 	const setIsLayoutModalOpen = (isOpen = false) => {
@@ -71,12 +83,14 @@ export const useCanvasData = (canvas: Ref<Canvas | null>, updateLayers: () => vo
 
 	return {
 		save,
+		open,
 		isSaving,
 		layoutForm,
 		setIsLayoutModalOpen,
 		isLayoutModalOpen,
 		fetchAllLayouts,
 		isFetchingLayouts,
+		isLoadingLayout,
 		layouts,
 	};
 };

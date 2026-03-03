@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { LayoutService } from "./layout.service";
 import { SaveLayoutDto } from "./dto/save-layout.dto";
 import { SaveLayoutInput } from "./inputs/save-layout.input";
@@ -23,5 +23,10 @@ export class LayoutController {
 	@Get()
 	fetchAll() {
 		return this.layoutService.findAll();
+	}
+
+	@Get(":uuid")
+	load(@Param("uuid") uuid: string) {
+		return this.layoutService.findOne(uuid);
 	}
 }
