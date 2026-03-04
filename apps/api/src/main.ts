@@ -3,6 +3,7 @@ import { AppModule } from "./app.module";
 import { ConfigService } from "@nestjs/config";
 import { ValidationError } from "class-validator";
 import { BadRequestException, ValidationPipe } from "@nestjs/common";
+import * as express from "express";
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
@@ -30,6 +31,8 @@ async function bootstrap() {
 			},
 		}),
 	);
+	app.use(express.json({ limit: "5mb" }));
+	app.use(express.urlencoded({ limit: "5mb", extended: true }));
 
 	await app.listen(port, host);
 }

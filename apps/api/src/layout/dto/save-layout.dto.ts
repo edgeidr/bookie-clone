@@ -1,7 +1,10 @@
-import { IsEnum, IsInt, IsOptional, IsString } from "class-validator";
+import { IsEnum, IsInt, IsObject, IsOptional, IsString } from "class-validator";
 import { LayoutStatus } from "src/generated/prisma/enums";
 
 export class SaveLayoutDto {
+	@IsString()
+	uuid?: string;
+
 	@IsString()
 	name: string;
 
@@ -15,6 +18,6 @@ export class SaveLayoutDto {
 	@IsEnum(LayoutStatus)
 	status: LayoutStatus;
 
-	@IsString()
-	data: string;
+	@IsObject()
+	data: Record<string, any>;
 }

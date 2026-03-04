@@ -4,13 +4,16 @@ import { Point, type Canvas } from "fabric";
 export const useCanvasData = (canvas: Ref<Canvas | null>, updateLayers: () => void) => {
 	const isLayoutModalOpen = ref(false);
 	const layouts = ref([]);
+	const { fetchAll } = useLayouts();
 
 	const layoutForm = reactive<{
+		uuid: string;
 		name: string;
 		description: string;
 		locationId: number | null;
 		status: string;
 	}>({
+		uuid: "",
 		name: "",
 		description: "",
 		locationId: null,
@@ -21,8 +24,14 @@ export const useCanvasData = (canvas: Ref<Canvas | null>, updateLayers: () => vo
 		method: "POST",
 		body: computed(() => ({
 			...layoutForm,
-			data: JSON.stringify(canvas.value?.toJSON()),
+			data: canvas.value?.toJSON(),
 		})),
+		onResponse: ({ response }) => {
+			if (!response.ok) return;
+
+			const responseData = response._data as any;
+			layoutForm.uuid = responseData.uuid;
+		},
 	});
 
 	const { execute: fetchAllLayouts, pending: isFetchingLayouts } = useCustomFetch("/layouts", {
@@ -45,12 +54,13 @@ export const useCanvasData = (canvas: Ref<Canvas | null>, updateLayers: () => vo
 
 			const responseData = response._data as any;
 
+			layoutForm.uuid = responseData.uuid;
 			layoutForm.name = responseData.name;
 			layoutForm.description = responseData.description;
 			layoutForm.locationId = responseData.locationId;
 			layoutForm.status = responseData.status;
 
-			await canvasValue.loadFromJSON(JSON.parse(responseData.canvas));
+			await canvasValue.loadFromJSON(responseData.canvas);
 			updateLayers();
 
 			canvasValue.setZoom(0.5);
@@ -77,7 +87,7 @@ export const useCanvasData = (canvas: Ref<Canvas | null>, updateLayers: () => vo
 		() => isLayoutModalOpen.value,
 		async (isOpen) => {
 			if (!isOpen) return;
-			await fetchAllLayouts();
+			await fetchAll();
 		},
 	);
 

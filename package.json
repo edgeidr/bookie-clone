@@ -2,6 +2,7 @@
 	"name": "bookie",
 	"private": true,
 	"scripts": {
+		"predev": "docker compose up -d",
 		"build": "turbo run build",
 		"dev": "turbo run dev",
 		"lint": "turbo run lint",

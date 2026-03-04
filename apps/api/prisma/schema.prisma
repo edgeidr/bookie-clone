@@ -5,42 +5,45 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider     = "prisma-client"
-  output       = "../src/generated/prisma"
-  moduleFormat = "cjs"
+    provider     = "prisma-client"
+    output       = "../src/generated/prisma"
+    moduleFormat = "cjs"
 }
 
 datasource db {
-  provider = "postgresql"
+    provider = "postgresql"
 }
 
 enum LayoutStatus {
-  ACTIVE
-  INACTIVE
+    ACTIVE
+    INACTIVE
 }
 
 model Location {
-  id          Int    @id @default(autoincrement())
-  name        String @unique
-  countryCode String
+    id          Int       @id @default(autoincrement())
+    name        String    @unique
+    countryCode String
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+    deletedAt   DateTime?
 
-  layouts Layout[]
+    layouts Layout[]
 
-  @@map("locations")
+    @@map("locations")
 }
 
 model Layout {
-  uuid        String       @id @default(cuid())
-  name        String       @unique
-  description String?
-  locationId  Int?
-  status      LayoutStatus @default(INACTIVE)
-  canvas      Json?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  deletedAt   DateTime?
+    uuid        String       @id @default(cuid())
+    name        String       @unique
+    description String?
+    locationId  Int?
+    status      LayoutStatus @default(INACTIVE)
+    canvas      Json?
+    createdAt   DateTime     @default(now())
+    updatedAt   DateTime     @updatedAt
+    deletedAt   DateTime?
 
-  location Location? @relation(fields: [locationId], references: [id], onDelete: SetNull)
+    location Location? @relation(fields: [locationId], references: [id], onDelete: SetNull)
 
-  @@map("layouts")
+    @@map("layouts")
 }

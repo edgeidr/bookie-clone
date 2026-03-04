@@ -70,7 +70,8 @@
 			"rectangle": "Rectangle",
 			"ellipse": "Ellipse",
 			"polygon": "Polygon",
-			"polyline": "Polyline"
+			"polyline": "Polyline",
+			"locations": "Locations"
 		},
 		"form": {
 			"bookable": "Bookable",

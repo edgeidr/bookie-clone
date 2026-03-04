@@ -10,6 +10,7 @@ export class LayoutController {
 	@Post()
 	save(@Body() dto: SaveLayoutDto) {
 		const payload: SaveLayoutInput = {
+			uuid: dto.uuid,
 			name: dto.name,
 			description: dto.description,
 			locationId: dto.locationId,

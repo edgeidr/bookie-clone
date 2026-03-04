@@ -13,13 +13,13 @@
 		<IftaLabel>
 			<Select
 				v-model="layoutForm.locationId"
-				:options="layoutLocations"
+				:options="locations!"
 				optionLabel="name"
 				optionValue="id"
 				fluid>
 				<template #value>
 					<div v-if="selectedLocation" class="flex items-center">
-						<Icon :name="selectedLocation.flag" class="mr-4" />
+						<Icon :name="getCountryFlag(selectedLocation.countryCode)" class="mr-4" />
 						<div class="font-medium">
 							{{ selectedLocation.name }}
 						</div>
@@ -28,7 +28,7 @@
 
 				<template #option="slotProps">
 					<div class="flex items-center">
-						<Icon :name="slotProps.option.flag" class="mr-4" />
+						<Icon :name="getCountryFlag(slotProps.option.countryCode)" class="mr-4" />
 						<div class="font-medium">{{ slotProps.option.name }}</div>
 					</div>
 				</template>
@@ -44,31 +44,18 @@
 </template>
 
 <script setup lang="ts">
-	import { Icons } from "@repo/assets";
 	import { LayoutStatus } from "@repo/shared";
-
-	interface LayoutLocation {
-		id: number;
-		flag: string;
-		name: string;
-	}
 
 	const { t } = useI18n();
 	const { layoutForm } = useInjectedCanvas();
-
-	const layoutLocations = ref<LayoutLocation[]>([
-		{ id: 1, name: "Manila", flag: Icons.flagPH },
-		{ id: 2, name: "Tacloban", flag: Icons.flagPH },
-		{ id: 3, name: "Mexico", flag: Icons.flagMX },
-		{ id: 4, name: "South Africa", flag: Icons.flagZA },
-		{ id: 5, name: "Canada", flag: Icons.flagCA },
-		{ id: 6, name: "US", flag: Icons.flagUS },
-	]);
+	const { locations, getCountryFlag } = useLocations();
 
 	const layoutStatuses = ref(Object.values(LayoutStatus));
 
 	const selectedLocation = computed(() => {
 		if (!layoutForm.locationId) return null;
-		return layoutLocations.value.find(({ id }) => id === layoutForm.locationId);
+		if (!locations.value) return null;
+
+		return locations.value.find(({ id }) => id === layoutForm.locationId);
 	});
 </script>

@@ -7,36 +7,32 @@ export class LayoutService {
 	constructor(private readonly prismaService: PrismaService) {}
 
 	async save(input: SaveLayoutInput) {
-		await this.prismaService.layout.create({
-			data: {
-				name: input.name,
-				description: input.description,
-				locationId: input.locationId,
-				status: input.status,
-				canvas: input.data,
-			},
-		});
-		// if (await this.findOne()) {
-		// 	await this.prismaService.layout.updateMany({
-		// 		data: {
-		// 			name: input.name,
-		// 			description: input.description,
-		// 			locationId: input.locationId,
-		// 			status: input.status,
-		// 			canvas: input.data,
-		// 		},
-		// 	});
-		// } else {
-		// 	await this.prismaService.layout.create({
-		// 		data: {
-		// 			name: input.name,
-		// 			description: input.description,
-		// 			locationId: input.locationId,
-		// 			status: input.status,
-		// 			canvas: input.data,
-		// 		},
-		// 	});
-		// }
+		if (input.uuid) {
+			await this.prismaService.layout.update({
+				where: { uuid: input.uuid },
+				data: {
+					name: input.name,
+					description: input.description,
+					locationId: input.locationId,
+					status: input.status,
+					canvas: input.data,
+				},
+			});
+
+			return { uuid: input.uuid };
+		} else {
+			const { uuid } = await this.prismaService.layout.create({
+				data: {
+					name: input.name,
+					description: input.description,
+					locationId: input.locationId,
+					status: input.status,
+					canvas: input.data,
+				},
+			});
+
+			return { uuid };
+		}
 	}
 
 	findAll() {
@@ -57,9 +53,7 @@ export class LayoutService {
 	async findOne(uuid: string) {
 		return await this.prismaService.layout.findUniqueOrThrow({
 			where: { uuid },
-			include: {
-				location: true,
-			},
+			include: { location: true },
 		});
 	}
 }
