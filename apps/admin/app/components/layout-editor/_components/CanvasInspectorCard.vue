@@ -7,12 +7,12 @@
 		<template #content>
 			<Tabs v-model:value="activeTab">
 				<TabList>
-					<Tab v-for="(item, index) in TABS" :key="index" :value="item">{{ item }}</Tab>
+					<Tab v-for="(item, index) in tabs" :key="index" :value="item">{{ item }}</Tab>
 				</TabList>
 
 				<TabPanels>
-					<TabPanel :value="TABS.CANVAS"> <CanvasPropertiesTab /> </TabPanel>
-					<TabPanel :value="TABS.LAYOUT"> <LayoutPropertiesTab /> </TabPanel>
+					<TabPanel :value="tabs.CANVAS"> <CanvasPropertiesTab /> </TabPanel>
+					<TabPanel :value="tabs.LAYOUT"> <LayoutPropertiesTab /> </TabPanel>
 				</TabPanels>
 			</Tabs>
 		</template>
@@ -23,10 +23,5 @@
 	import LayoutPropertiesTab from "./LayoutPropertiesTab.vue";
 	import CanvasPropertiesTab from "./CanvasPropertiesTab.vue";
 
-	const { t } = useI18n();
-	const TABS = {
-		CANVAS: t("common.ui.canvasProperties"),
-		LAYOUT: t("common.ui.layoutProperties"),
-	};
-	const activeTab = ref(TABS.CANVAS);
+	const { activeTab, tabs } = useInjectedCanvas();
 </script>

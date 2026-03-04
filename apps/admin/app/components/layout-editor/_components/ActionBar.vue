@@ -9,6 +9,7 @@
 					:variant="item.isActive ? 'outlined' : 'text'"
 					size="small"
 					:disabled="item.isDisabled"
+					:loading="item.isLoading"
 					@mouseenter="(event) => showTooltip(item, event)"
 					@mouseleave="hideTooltip"
 					@click="item.action">
@@ -67,6 +68,7 @@
 		activeToolName,
 		selectTool,
 		save,
+		isSaving,
 		setIsLayoutModalOpen,
 	} = useInjectedCanvas();
 	const tooltipRef = useTemplateRef("tooltipRef");
@@ -74,12 +76,14 @@
 	const tooltipItem = ref<ToolbarActionItem | null>(null);
 	const show = ref(false);
 	const showDebounced = refDebounced(show, 500);
-	const items = ref<ToolbarItem[]>([
+	const items = ref<(ToolbarItem & { isLoading?: Ref<boolean> })[]>([
 		{
 			type: ToolbarItemType.ACTION,
 			icon: Icons.save,
 			label: t("common.actions.save"),
 			shortcut: { mod: true, key: "s" },
+			isDisabled: isSaving.value,
+			isLoading: computed(() => isSaving.value),
 			action: () => save(),
 		},
 		{

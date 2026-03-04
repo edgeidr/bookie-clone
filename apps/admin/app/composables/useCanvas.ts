@@ -25,6 +25,12 @@ export const useInjectedCanvas = () => {
 };
 
 export const useCanvas = () => {
+	const { t } = useI18n();
+	const TABS = {
+		CANVAS: t("common.ui.canvasProperties"),
+		LAYOUT: t("common.ui.layoutProperties"),
+	};
+	const activeTab = ref(TABS.CANVAS);
 	const canvasProperties = reactive<CanvasProperties>({
 		isSnappingEnabled: true,
 	});
@@ -32,7 +38,7 @@ export const useCanvas = () => {
 	const activeToolName = ref<CanvasToolOrComponent>(CanvasToolName.SELECT);
 	const canvas = shallowRef<Canvas | null>(null);
 	const canvasLayers = useCanvasLayers(canvas);
-	const canvasData = useCanvasData(canvas, canvasLayers.updateLayers);
+	const canvasData = useCanvasData(canvas, canvasLayers.updateLayers, activeTab);
 	const canvasHistory = useCanvasHistory(canvas, canvasLayers.updateLayers);
 	const canvasEditing = useCanvasEditing(
 		canvas,
@@ -411,5 +417,7 @@ export const useCanvas = () => {
 		...canvasViewport,
 		...canvasLayers,
 		...canvasData,
+		tabs: TABS,
+		activeTab,
 	};
 };

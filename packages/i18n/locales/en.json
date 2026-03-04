@@ -1,7 +1,12 @@
 {
 	"common": {
 		"message": {
-			"tryAgain": "Something went wrong. Try again later."
+			"tryAgain": "Something went wrong. Try again later.",
+			"layoutSaveSuccess": "Layout saved successfully."
+		},
+		"validation": {
+			"required": "Required",
+			"invalidOption": "Must be a valid option"
 		},
 		"status": {
 			"info": "Info!",
@@ -93,7 +98,8 @@
 			"layoutLocation": "Location",
 			"layoutDescription": "Description",
 			"layoutStatus": "Status",
-			"enableSnapping": "Enable Snapping"
+			"enableSnapping": "Enable Snapping",
+			"optional": "Optional"
 		},
 		"bookingTypes": {
 			"instant": {

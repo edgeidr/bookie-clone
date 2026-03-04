@@ -1,10 +1,18 @@
-import { LayoutStatus } from "@repo/shared";
+import { LayoutStatus, type FormError } from "@repo/shared";
 import { Point, type Canvas } from "fabric";
 
-export const useCanvasData = (canvas: Ref<Canvas | null>, updateLayers: () => void) => {
+export const useCanvasData = (
+	canvas: Ref<Canvas | null>,
+	updateLayers: () => void,
+	activeTab: Ref<string>,
+) => {
 	const isLayoutModalOpen = ref(false);
 	const layouts = ref([]);
 	const { fetchAll } = useLayouts();
+	const layoutFormErrors = ref<FormError[]>([]);
+	const { hasError, clearAllErrors } = useFormErrors(layoutFormErrors);
+	const toast = useToast();
+	const { t } = useI18n();
 
 	const layoutForm = reactive<{
 		uuid: string;
@@ -31,16 +39,27 @@ export const useCanvasData = (canvas: Ref<Canvas | null>, updateLayers: () => vo
 
 			const responseData = response._data as any;
 			layoutForm.uuid = responseData.uuid;
+
+			toast.add({
+				summary: t("common.status.success"),
+				detail: t("common.message.layoutSaveSuccess"),
+				severity: "success",
+				life: useRuntimeConfig().public.toastLife,
+			});
 		},
-	});
+		onResponseError: ({ response }) => {
+			const { message } = response._data;
 
-	const { execute: fetchAllLayouts, pending: isFetchingLayouts } = useCustomFetch("/layouts", {
-		method: "GET",
-		onResponse: ({ response }) => {
-			if (!response.ok) return;
+			if (message && Array.isArray(message)) {
+				layoutFormErrors.value = message;
 
-			const responseData = response._data as any;
-			layouts.value = responseData;
+				const canvasValue = canvas.value;
+				if (!canvasValue) return;
+
+				canvasValue.discardActiveObject();
+				canvasValue.requestRenderAll();
+				activeTab.value = "Layout";
+			}
 		},
 	});
 
@@ -71,6 +90,7 @@ export const useCanvasData = (canvas: Ref<Canvas | null>, updateLayers: () => vo
 	});
 
 	const save = () => {
+		clearAllErrors();
 		saveCanvas();
 	};
 
@@ -96,10 +116,10 @@ export const useCanvasData = (canvas: Ref<Canvas | null>, updateLayers: () => vo
 		open,
 		isSaving,
 		layoutForm,
+		layoutFormErrors,
+		layoutFormHasErrors: hasError,
 		setIsLayoutModalOpen,
 		isLayoutModalOpen,
-		fetchAllLayouts,
-		isFetchingLayouts,
 		isLoadingLayout,
 		layouts,
 	};
