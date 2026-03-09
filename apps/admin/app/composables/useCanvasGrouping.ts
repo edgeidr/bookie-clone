@@ -20,7 +20,7 @@ export const useCanvasGrouping = (
 		canvasValue.discardActiveObject();
 		objects.forEach((object) => canvasValue.remove(object));
 
-		const group = new Group(objects);
+		const group = new Group(objects, { label: "Group" });
 
 		canvasValue.insertAt(groupIndex, group);
 		canvasValue.setActiveObject(group);
@@ -38,12 +38,13 @@ export const useCanvasGrouping = (
 		if (activeObject.isComponent) return;
 
 		const group = activeObject as Group;
-		const objects = [...group.getObjects()];
 		const canvasObjects = canvasValue.getObjects();
 		const groupIndex = canvasObjects.indexOf(group);
 
 		canvasValue.discardActiveObject();
 		canvasValue.remove(group);
+
+		const objects = group.removeAll();
 
 		objects.forEach((object, index) => {
 			canvasValue.insertAt(groupIndex + index, object);
