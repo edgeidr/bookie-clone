@@ -7,6 +7,7 @@ export default defineNuxtPlugin(() => {
 		"zIndex",
 		"excludeFromSnap",
 		"excludeFromLayers",
+		"excludeFromUngrouping",
 		"isComponent",
 	];
 });

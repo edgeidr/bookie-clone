@@ -50,6 +50,7 @@ export const createPlaceTool = (
 				selectable: false,
 				evented: false,
 				excludeFromLayers: true,
+				excludeFromUngrouping: true,
 			});
 
 			canvasValue.add(ghost);

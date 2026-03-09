@@ -38,6 +38,7 @@ export const useCanvas = () => {
 	const activeToolName = ref<CanvasToolOrComponent>(CanvasToolName.SELECT);
 	const canvas = shallowRef<Canvas | null>(null);
 	const canvasLayers = useCanvasLayers(canvas);
+	const canvasGrouping = useCanvasGrouping(canvas, canvasLayers);
 	const canvasData = useCanvasData(canvas, canvasLayers.updateLayers, activeTab);
 	const canvasHistory = useCanvasHistory(canvas, canvasLayers.updateLayers);
 	const canvasEditing = useCanvasEditing(
@@ -382,6 +383,7 @@ export const useCanvas = () => {
 			undoCanvas: canvasHistory.undoCanvas,
 			redoCanvas: canvasHistory.redoCanvas,
 			canvasEditing: canvasEditing,
+			canvasGrouping: canvasGrouping,
 		},
 		canvas,
 	);

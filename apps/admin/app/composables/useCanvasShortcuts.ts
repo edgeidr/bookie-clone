@@ -13,6 +13,7 @@ interface CanvasActions {
 	undoCanvas: () => void;
 	redoCanvas: () => void;
 	canvasEditing: ReturnType<typeof useCanvasEditing>;
+	canvasGrouping: ReturnType<typeof useCanvasGrouping>;
 }
 
 export const useCanvasShortcuts = (actions: CanvasActions, canvas: Ref<Canvas | null>) => {
@@ -27,6 +28,7 @@ export const useCanvasShortcuts = (actions: CanvasActions, canvas: Ref<Canvas | 
 		undoCanvas,
 		redoCanvas,
 		canvasEditing,
+		canvasGrouping,
 	} = actions;
 	let attached = false;
 
@@ -44,6 +46,7 @@ export const useCanvasShortcuts = (actions: CanvasActions, canvas: Ref<Canvas | 
 	const MOVE_RIGHT_SHORTCUT: Shortcut = { key: "ArrowRight" };
 	const MOVE_UP_SHORTCUT: Shortcut = { key: "ArrowUp" };
 	const MOVE_DOWN_SHORTCUT: Shortcut = { key: "ArrowDown" };
+	const GROUP_SHORTCUT: Shortcut = { key: "g", mod: true };
 
 	const matchShortcut = (shortcut: Shortcut) => (event: KeyboardEvent) => {
 		if (shortcut.mod && !(event.ctrlKey || event.metaKey)) return false;
@@ -94,6 +97,15 @@ export const useCanvasShortcuts = (actions: CanvasActions, canvas: Ref<Canvas | 
 				(event) => {
 					event.preventDefault();
 					open(true);
+				},
+				{ target },
+			);
+
+			onKeyStroke(
+				matchShortcut(GROUP_SHORTCUT),
+				(event) => {
+					event.preventDefault();
+					canvasGrouping.groupOrUngroup();
 				},
 				{ target },
 			);

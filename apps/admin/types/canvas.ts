@@ -68,5 +68,6 @@ export interface FabricObjectExtended extends FabricObject {
 	locked?: boolean;
 	excludeFromSnap?: boolean;
 	excludeFromLayers?: boolean;
+	excludeFromUngrouping?: boolean;
 	isComponent?: boolean;
 }
