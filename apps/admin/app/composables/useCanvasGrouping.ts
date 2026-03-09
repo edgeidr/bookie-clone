@@ -3,6 +3,7 @@ import { ActiveSelection, Group, type Canvas } from "fabric";
 export const useCanvasGrouping = (
 	canvas: Ref<Canvas | null>,
 	canvasLayers: ReturnType<typeof useCanvasLayers>,
+	canvasHistory: ReturnType<typeof useCanvasHistory>,
 ) => {
 	const group = () => {
 		const canvasValue = canvas.value;
@@ -26,6 +27,7 @@ export const useCanvasGrouping = (
 		canvasValue.setActiveObject(group);
 		canvasLayers.updateLayers();
 		canvasValue.requestRenderAll();
+		canvasHistory.pushCanvasState();
 	};
 
 	const ungroup = () => {
@@ -53,6 +55,7 @@ export const useCanvasGrouping = (
 		canvasValue.setActiveObject(new ActiveSelection(objects, { canvas: canvasValue }));
 		canvasLayers.updateLayers();
 		canvasValue.requestRenderAll();
+		canvasHistory.pushCanvasState();
 	};
 
 	const groupOrUngroup = () => {
