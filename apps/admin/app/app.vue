@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-	const { fetchAll: fetchAllLocations } = useLocations();
+	// const { fetchAll: fetchAllLocations } = useLocations();
 
-	await fetchAllLocations();
+	// await fetchAllLocations();
 </script>
