@@ -11,6 +11,9 @@
 		"dev": {
 			"cache": false,
 			"persistent": true
+		},
+		"admin:build": {
+			"env": ["NODE_ENV", "APP_PREFIX", "APP_NAME", "BRAND_NAME", "TOAST_LIFE"]
 		}
 	}
 }
